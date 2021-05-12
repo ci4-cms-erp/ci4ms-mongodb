@@ -8,7 +8,7 @@ class Mongo
 {
     private $db = "";
     private $hostname = '127.0.0.1';
-    private $userName = "";
+    private $userName = "root";
     private $password = "";
     private $port = 27017;
     private $m;

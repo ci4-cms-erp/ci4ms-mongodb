@@ -3,15 +3,17 @@
     border-radius: 1px 30px;
 }
 
-.login-page{
-    background: url(/assets/img/photo1.png) no-repeat center center fixed;
+.login-page, .register-page{
+    background: url(/be-assets/img/kunduzyazilim-auth.jpg) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+    align-items: unset !important;
+    margin-left:10%;
 }
 
-.navbar-cprz {
+.navbar-kun-cms {
     background-color: #3d9970;
 }
 
