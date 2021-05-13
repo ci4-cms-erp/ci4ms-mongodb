@@ -1,7 +1,7 @@
 <?= $this->extend('Modules\Backend\Views\base') ?>
 
 <?= $this->section('title') ?>
-Ofis Çalışan Listesi
+<?=lang('Backend.')?>Ofis Çalışan Listesi
 <?= $this->endSection() ?>
 <?= $this->section('head') ?>
 <link rel="stylesheet" href="/assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">

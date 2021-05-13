@@ -3,14 +3,15 @@
 namespace App\Libraries;
 
 use MongoDB\Client as client;
+use MongoDB\Driver\Command;
 
 class Mongo
 {
-    private $db = "";
-    private $hostname = '127.0.0.1';
+    private $db = "kun-cms"; //your database
+    private $hostname = '127.0.0.1'; //if you use remote server you should change host address
     private $userName = "root";
     private $password = "";
-    private $port = 27017;
+    private $port = 27017; //if you use different port you should change port address
     private $m;
 
     private $selects = array();

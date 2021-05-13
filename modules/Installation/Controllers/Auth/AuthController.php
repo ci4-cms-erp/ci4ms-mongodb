@@ -20,13 +20,13 @@ class AuthController extends BaseController
     public function login()
     {
         $cap = new CaptchaBuilder();
-        $cap->setBackgroundColor(139,203,183);
+        $cap->setBackgroundColor(90,176,147);
         $cap->setIgnoreAllEffects(false);
         $cap->setMaxFrontLines(1);
         $cap->setMaxBehindLines(1);
         $cap->setMaxAngle(1);
-        $cap->setTextColor(18,58,73);
-        $cap->setLineColor(18,58,73);
+        $cap->setTextColor(25,54,70);
+        $cap->setLineColor(25,54,70);
         $cap->build();
         $this->session->setFlashdata('cap', $cap->getPhrase());
         return view($this->config->views['login'], ['config' => $this->config, 'cap' => $cap]);
@@ -100,7 +100,7 @@ class AuthController extends BaseController
         $rules = [
             'email' => 'required|valid_email'
         ];
-
+        _printRdie($_POST);
         if (!$this->validate($rules))
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
 

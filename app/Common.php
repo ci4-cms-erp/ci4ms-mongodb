@@ -13,3 +13,20 @@
  *
  * @link: https://codeigniter4.github.io/CodeIgniter4/
  */
+
+if (!function_exists('clearFilter')) {
+    function clearFilter($array)
+    {
+        $clear = array_filter(
+            $array, function ($value) {
+            return $value !== '';
+        }
+        );
+
+        return array_filter(
+            $clear, function ($value) {
+            return $value !== null;
+        }
+        );
+    }
+}

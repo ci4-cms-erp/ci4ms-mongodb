@@ -42,9 +42,10 @@ class Autoload extends AutoloadConfig
     public $psr4 = [
         APP_NAMESPACE => APPPATH, // For custom app namespace
         'Config' => APPPATH . 'Config',
-        'Vulcan' => ROOTPATH . '/vendor/lonnieezell/vulcan',
         'Modules' => ROOTPATH . 'modules',
-        'Modules\Auth' => ROOTPATH . 'modules/Auth'
+        'Modules\Auth' => ROOTPATH . 'modules/Auth',
+        'Modules\Backend' => ROOTPATH . 'modules/Backend',
+        'Modules\Installation' => ROOTPATH . 'modules/Installation'//Delete this line
     ];
 
     /**

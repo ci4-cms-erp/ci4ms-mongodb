@@ -49,4 +49,9 @@ class CommonModel extends Model
     {
         return $this->m->options($options)->where($where)->deleteOne($collection);
     }
+
+    public function count(string $collection)
+    {
+        return $this->m->count($collection);
+    }
 }
