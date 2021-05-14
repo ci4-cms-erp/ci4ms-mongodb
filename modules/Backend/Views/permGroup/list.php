@@ -1,7 +1,7 @@
 <?= $this->extend('Modules\Backend\Views\base') ?>
 
 <?= $this->section('title') ?>
-Yetki Grup Listesi
+<?=lang('Backend.'.$title)?>
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -10,7 +10,7 @@ Yetki Grup Listesi
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Yetki Grup Listesi</h1>
+                <h1><?=lang('Backend.'.$title)?></h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">

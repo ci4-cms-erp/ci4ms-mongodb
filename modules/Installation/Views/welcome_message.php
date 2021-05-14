@@ -1,7 +1,7 @@
 <?= $this->extend('Modules\Backend\Views\base') ?>
 
 <?= $this->section('title') ?>
-Anasayfa
+Installation
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>

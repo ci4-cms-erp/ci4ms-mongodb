@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noimageindex, nofollow, nosnippet">
 
-    <title>Soar <?= $backConfig->vers ?> | <?= $this->renderSection('title') ?></title>
+    <title>Kun-CMS/ERP <?= $backConfig->vers ?> | <?= $this->renderSection('title') ?></title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"

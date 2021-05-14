@@ -1,9 +1,5 @@
 <?= $this->extend('Modules\Backend\Views\base') ?>
 
-<?= $this->section('title') ?>
-Kullanıcı Yetkilerini Güncelleme>
-<?= $this->endSection() ?>
-
 <?= $this->section('content') ?>
 <!-- Content Header (Page header) -->
 <section class="content-header">

@@ -76,11 +76,12 @@ class BaseController extends Controller
         }
         else
             $uri=$this->request->uri->getSegment(1);
-
+        $router = service('router');
         $this->defData = ['config' => $this->config,
             'logged_in_user' => $this->logged_in_user,
             'backConfig' => $this->backConfig,
             'navigation' => $this->commonModel->getList('auth_permissions_pages', ['inNavigation' => true]),
+            'title'=>$this->commonModel->getOne('auth_permissions_pages', ['className' => $router->controllerName(), $router->methodName(), 'methodName' => $router->controllerName(), $router->methodName()], ['projection' => ['pagename' => true]]),
             'uri' => $uri];
     }
 

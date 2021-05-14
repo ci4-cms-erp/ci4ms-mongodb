@@ -1,7 +1,7 @@
 <?= $this->extend('Modules\Backend\Views\base') ?>
 
 <?= $this->section('title') ?>
-Grup Yetkisi Ekleme
+<?=lang('Backend.'.$title)?>
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -10,7 +10,7 @@ Grup Yetkisi Ekleme
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Grup Yetkisi Ekleme</h1>
+                <h1><?=lang('Backend.'.$title)?></h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">

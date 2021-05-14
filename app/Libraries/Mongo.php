@@ -9,8 +9,8 @@ class Mongo
 {
     private $db = "kun-cms"; //your database
     private $hostname = '127.0.0.1'; //if you use remote server you should change host address
-    private $userName = "root";
-    private $password = "";
+    private $userName = "beaver";
+    private $password = "kun12345678";
     private $port = 27017; //if you use different port you should change port address
     private $m;
 

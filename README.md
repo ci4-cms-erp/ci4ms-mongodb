@@ -23,7 +23,7 @@ use yourDatabase
 
 db.createUser({
     user: "userName",
-    pwd: passwordPrompt(),      // Or  "<cleartext password>"
+    pwd: passwordPrompt(),      // Or  "cleartext password"
     roles: [{role: "readWrite", db: "yourDatabase"}],
     authenticationRestrictions: [{
         clientSource: [""],
@@ -42,8 +42,7 @@ private $password = "";
 private $port = 27017;//if you use different port you should change port address
 </pre>
 
-//TODO: yükleme adımı yazılacak. file:///home/bertug/Downloads/AdminLTE-3.1.0-rc/pages/forms/advanced.html içindeki bs-steper yükleme adımlarımları bittikten sonra totomatik olarak backend e yönlendirsin backend de installation modülü var mı diye kontrol edilerek silme işlemi ve Autoload.php deki kodu güncellesin.
-//coding installation module.
+### //coding installation module. I am following these steps
 After made settings. you should go link `http://site/installation` follow form attributes. Finish installation automaticly must detele installation module. If not delete installation module you must follow this steps:
 <ul>
 <li>you must delete <code>modules/installation</code> module</li>
