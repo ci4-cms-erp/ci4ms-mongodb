@@ -30,14 +30,14 @@ class CommonModel extends Model
         return $this->m->insertOne($collection, $credentials);
     }
 
-    public function getList(string $collection, array $where = [], array $options = [])
+    public function getList(string $collection, array $where = [], array $options = [],array $select=[])
     {
-        return $this->m->options($options)->where($where)->find($collection)->toArray();
+        return $this->m->options($options)->select($select)->where($where)->find($collection)->toArray();
     }
 
-    public function getOne(string $collection, array $where = [], array $options = [])
+    public function getOne(string $collection, array $where = [], array $options = [],array $select=[])
     {
-        return $this->m->options($options)->where($where)->findOne($collection);
+        return $this->m->options($options)->select($select)->where($where)->findOne($collection);
     }
 
     public function get_where(array $credentials, string $collection)
@@ -47,7 +47,7 @@ class CommonModel extends Model
 
     public function updateOne(string $collection, array $where, array $set, array $options = [])
     {
-        return $this->m->options($options)->where($where)->updateOne($collection, $set);
+        return $this->m->options($options)->where($where)->set($set)->updateOne($collection);
     }
 
     public function deleteOne(string $collection, array $where,array $options = [])

@@ -3,8 +3,8 @@
 namespace App\Libraries;
 
 use Config\MongoConfig;
+use MongoDB\BSON\Regex;
 use MongoDB\Client as client;
-use MongoDB\Driver\Command;
 
 class Mongo
 {
@@ -12,7 +12,7 @@ class Mongo
     private $selects = array();
     private $updates = array();
     private $wheres = array();
-    private $offset = 0;
+    private $offset = 0;//TODO: fix it
     private $sorts = array();
 
     /** Usage
@@ -25,29 +25,37 @@ class Mongo
      * */
     private $options = array();
     private $mongoConnectionInfos;
+
     function __construct()
     {
-        $this->mongoConnectionInfos=new MongoConfig();
+        $this->mongoConnectionInfos = new MongoConfig();
         $this->m = new client("mongodb://{$this->mongoConnectionInfos->hostname}:{$this->mongoConnectionInfos->port}/{$this->mongoConnectionInfos->db}",
             ["authMechanism" => "SCRAM-SHA-1",
                 'username' => $this->mongoConnectionInfos->userName,
                 'password' => $this->mongoConnectionInfos->password]);
     }
 
+    /**
+     * --------------------------------------------------------------------------------
+     * Listindexes
+     * --------------------------------------------------------------------------------
+     *
+     * @usage $this->>m->listindexes('collection');
+     */
     public function listindexes($collection)
     {
-        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix.$collection)->listIndexes();
+        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix . $collection)->listIndexes();
     }
 
     /**
      * --------------------------------------------------------------------------------
-     * //! Select
+     * Select
      * --------------------------------------------------------------------------------
      *
      * Determine which fields to include OR which to exclude during the query process.
      * If you want to only choose fields to exclude, leave $includes an empty array().
      *
-     * @usage: $this->mongo_db->select(array('foo', 'bar'))->get('foobar');
+     * @usage: $this->m->select(array('foo', 'bar'));
      */
     public function select($includes = array(), $excludes = array())
     {
@@ -72,6 +80,8 @@ class Mongo
                 $this->selects[$col] = 0;
             }
         }
+
+        $this->options['projection'] = $this->selects;
         return ($this);
     }
 
@@ -249,7 +259,7 @@ class Mongo
      *
      * Get the documents where the value of a $field is less than $x
      *
-     * @usage : $this->mongo_db->where_lt('foo', 20);
+     * @usage : $this->m->where_lt('foo', 20);
      */
     public function where_lt($field = "", $x)
     {
@@ -271,7 +281,7 @@ class Mongo
      *
      * Get the documents where the value of a $field is less than or equal to $x
      *
-     * @usage : $this->mongo_db->where_lte('foo', 20);
+     * @usage : $this->m->where_lte('foo', 20);
      */
     public function where_lte($field = "", $x)
     {
@@ -293,7 +303,7 @@ class Mongo
      *
      * Get the documents where the value of a $field is between $x and $y
      *
-     * @usage : $this->mongo_db->where_between('foo', 20, 30);
+     * @usage : $this->m->where_between('foo', 20, 30);
      */
     public function where_between($field = "", $x, $y)
     {
@@ -319,7 +329,7 @@ class Mongo
      *
      * Get the documents where the value of a $field is between but not equal to $x and $y
      *
-     * @usage : $this->mongo_db->where_between_ne('foo', 20, 30);
+     * @usage : $this->m->where_between_ne('foo', 20, 30);
      */
     public function where_between_ne($field = "", $x, $y)
     {
@@ -345,7 +355,7 @@ class Mongo
      *
      * Get the documents where the value of a $field is not equal to $x
      *
-     * @usage : $this->mongo_db->where_ne('foo', 1)->get('foobar');
+     * @usage : $this->m->where_ne('foo', 1)->get('foobar');
      */
     public function where_ne($field = '', $x)
     {
@@ -387,7 +397,7 @@ class Mongo
      * to the search value, representing only searching for a value at the end of
      * a line.
      *
-     * @usage : $this->mongo_db->like('foo', 'bar', 'im', FALSE, TRUE);
+     * @usage : $this->m->like('foo', 'bar', 'im', FALSE, TRUE);
      */
     public function like($field = "", $value = "", $flags = "i", $enable_start_wildcard = TRUE, $enable_end_wildcard = TRUE)
     {
@@ -407,7 +417,7 @@ class Mongo
         if ($enable_end_wildcard !== TRUE) {
             $value .= "$";
         }
-        $this->wheres[$field] = new \MongoDB\BSON\Regex($value, $flags);
+        $this->wheres[$field] = new Regex($value, $flags);
         return ($this);
     }
 
@@ -418,11 +428,11 @@ class Mongo
      *
      * Count the documents based upon the passed parameters
      *
-     * @usage : $this->mongo_db->count('foo');
+     * @usage : $this->m->count('foo');
      */
     public function count(string $collection)
     {
-        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix.$collection)->countDocuments($this->wheres, $this->options);
+        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix . $collection)->countDocuments($this->wheres, $this->options);
     }
 
     /**
@@ -432,18 +442,13 @@ class Mongo
      *
      * Sets a field to a value
      *
-     * @usage: $this->mongo_db->where(array('blog_id'=>123))->set('posted', 1)->update('blog_posts');
-     * @usage: $this->mongo_db->where(array('blog_id'=>123))->set(array('posted' => 1, 'time' => time()))->update('blog_posts');
+     * @usage: $this->m->where(array('blog_id'=>123))->set(array('posted' => 1, 'time' => time()))->update('blog_posts');
      */
-    public function set($fields, $value = NULL)
+    public function set($fields)
     {
         $this->_u('$set');
-        if (is_string($fields)) {
-            $this->updates['$set'][$fields] = $value;
-        } elseif (is_array($fields)) {
-            foreach ($fields as $field => $value) {
-                $this->updates['$set'][$field] = $value;
-            }
+        foreach ($fields as $field => $value) {
+            $this->updates['$set'][$field] = $value;
         }
         return $this;
     }
@@ -455,8 +460,8 @@ class Mongo
      *
      * Unsets a field (or fields)
      *
-     * @usage: $this->mongo_db->where(array('blog_id'=>123))->unset('posted')->update('blog_posts');
-     * @usage: $this->mongo_db->where(array('blog_id'=>123))->set(array('posted','time'))->update('blog_posts');
+     * @usage: $this->m->where(array('blog_id'=>123))->unset('posted')->update('blog_posts');
+     * @usage: $this->m->where(array('blog_id'=>123))->set(array('posted','time'))->update('blog_posts');
      */
     public function unset_field($fields)
     {
@@ -478,8 +483,8 @@ class Mongo
      *
      * Adds value to the array only if its not in the array already
      *
-     * @usage: $this->mongo_db->where(array('blog_id'=>123))->addtoset('tags', 'php')->update('blog_posts');
-     * @usage: $this->mongo_db->where(array('blog_id'=>123))->addtoset('tags', array('php', 'codeigniter', 'mongodb'))->update('blog_posts');
+     * @usage: $this->m->where(array('blog_id'=>123))->addtoset('tags', 'php')->update('blog_posts');
+     * @usage: $this->m->where(array('blog_id'=>123))->addtoset('tags', array('php', 'codeigniter', 'mongodb'))->update('blog_posts');
      */
     public function addtoset($field, $values)
     {
@@ -499,8 +504,8 @@ class Mongo
      *
      * Pushes values into a field (field must be an array)
      *
-     * @usage: $this->mongo_db->where(array('blog_id'=>123))->push('comments', array('text'=>'Hello world'))->update('blog_posts');
-     * @usage: $this->mongo_db->where(array('blog_id'=>123))->push(array('comments' => array('text'=>'Hello world')), 'viewed_by' => array('Alex')->update('blog_posts');
+     * @usage: $this->m->where(array('blog_id'=>123))->push('comments', array('text'=>'Hello world'))->update('blog_posts');
+     * @usage: $this->m->where(array('blog_id'=>123))->push(array('comments' => array('text'=>'Hello world')), 'viewed_by' => array('Alex')->update('blog_posts');
      */
     public function push($fields, $value = array())
     {
@@ -522,8 +527,8 @@ class Mongo
      *
      * Pops the last value from a field (field must be an array)
      *
-     * @usage: $this->mongo_db->where(array('blog_id'=>123))->pop('comments')->update('blog_posts');
-     * @usage: $this->mongo_db->where(array('blog_id'=>123))->pop(array('comments', 'viewed_by'))->update('blog_posts');
+     * @usage: $this->m->where(array('blog_id'=>123))->pop('comments')->update('blog_posts');
+     * @usage: $this->m->where(array('blog_id'=>123))->pop(array('comments', 'viewed_by'))->update('blog_posts');
      */
     public function pop($field)
     {
@@ -545,7 +550,7 @@ class Mongo
      *
      * Removes by an array by the value of a field
      *
-     * @usage: $this->mongo_db->pull('comments', array('comment_id'=>123))->update('blog_posts');
+     * @usage: $this->m->pull('comments', array('comment_id'=>123))->update('blog_posts');
      */
     public function pull($field = "", $value = array())
     {
@@ -561,7 +566,7 @@ class Mongo
      *
      * Renames a field
      *
-     * @usage: $this->mongo_db->where(array('blog_id'=>123))->rename_field('posted_by', 'author')->update('blog_posts');
+     * @usage: $this->m->where(array('blog_id'=>123))->rename_field('posted_by', 'author')->update('blog_posts');
      */
     public function rename_field($old, $new)
     {
@@ -577,7 +582,7 @@ class Mongo
      *
      * Increments the value of a field
      *
-     * @usage: $this->mongo_db->where(array('blog_id'=>123))->inc(array('num_comments' => 1))->update('blog_posts');
+     * @usage: $this->m->where(array('blog_id'=>123))->inc(array('num_comments' => 1))->update('blog_posts');
      */
     public function inc($fields = array(), $value = 0)
     {
@@ -599,7 +604,7 @@ class Mongo
      *
      * Multiple the value of a field
      *
-     * @usage: $this->mongo_db->where(array('blog_id'=>123))->mul(array('num_comments' => 3))->update('blog_posts');
+     * @usage: $this->m->where(array('blog_id'=>123))->mul(array('num_comments' => 3))->update('blog_posts');
      */
     public function mul($fields = array(), $value = 0)
     {
@@ -621,7 +626,7 @@ class Mongo
      *
      * The $max operator updates the value of the field to a specified value if the specified value is greater than the current value of the field.
      *
-     * @usage: $this->mongo_db->where(array('blog_id'=>123))->max(array('num_comments' => 3))->update('blog_posts');
+     * @usage: $this->m->where(array('blog_id'=>123))->max(array('num_comments' => 3))->update('blog_posts');
      */
     public function max($fields = array(), $value = 0)
     {
@@ -643,7 +648,7 @@ class Mongo
      *
      * The $min updates the value of the field to a specified value if the specified value is less than the current value of the field.
      *
-     * @usage: $this->mongo_db->where(array('blog_id'=>123))->min(array('num_comments' => 3))->update('blog_posts');
+     * @usage: $this->m->where(array('blog_id'=>123))->min(array('num_comments' => 3))->update('blog_posts');
      */
     public function min($fields = array(), $value = 0)
     {
@@ -665,7 +670,7 @@ class Mongo
      *
      * Finds the distinct values for a specified field across a single collection
      *
-     * @usage: $this->mongo_db->distinct('collection', 'field');
+     * @usage: $this->m->distinct('collection', 'field');
      */
     public function distinct($collection = "", $field = "")
     {
@@ -676,7 +681,7 @@ class Mongo
             show_error("Need Collection field information for performing distinct query", 500);
         }
         try {
-            $documents = $this->mongoConnectionInfos->db->{$this->mongoConnectionInfos->prefix.$collection}->distinct($field, $this->wheres);
+            $documents = $this->mongoConnectionInfos->db->{$this->mongoConnectionInfos->prefix . $collection}->distinct($field, $this->wheres);
             $this->_clear();
             if ($this->return_as == 'object') {
                 return (object)$documents;
@@ -701,27 +706,8 @@ class Mongo
                 $this->sorts[$col] = 1;
             }
         }
+        $this->options['sort'] = $this->sorts;
         return ($this);
-    }
-
-    /**
-     * --------------------------------------------------------------------------------
-     * Mongo Date
-     * --------------------------------------------------------------------------------
-     *
-     * Create new MongoDate object from current time or pass timestamp to create
-     * mongodate.
-     *
-     * @usage : $this->mongo_db->date($timestamp);
-     */
-    public function date($stamp = FALSE)
-    {
-        if ($stamp == FALSE) {
-            return new MongoDB\BSON\UTCDateTime();
-        } else {
-            return new MongoDB\BSON\UTCDateTime($stamp);
-        }
-
     }
 
     /**
@@ -731,7 +717,7 @@ class Mongo
      *
      * Offset the result set to skip $x number of documents
      *
-     * @usage : $this->mongo_db->offset($x);
+     * @usage : $this->m->offset($x);
      */
     public function offset($x = 0)
     {
@@ -805,7 +791,7 @@ class Mongo
 
     public function insertOne($collection, $insertArray = [])
     {
-        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix.$collection)->insertOne($insertArray)->getInsertedId();
+        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix . $collection)->insertOne($insertArray)->getInsertedId();
     }
 
     /**
@@ -818,7 +804,7 @@ class Mongo
      */
     public function insert($collection, $insertArray = [])
     {
-        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix.$collection)->insertMany($insertArray)->isAcknowledged();
+        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix . $collection)->insertMany($insertArray)->isAcknowledged();
     }
 
     /**
@@ -830,7 +816,7 @@ class Mongo
      */
     public function findOne($collection)
     {
-        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix.$collection)->findOne($this->wheres, $this->options);
+        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix . $collection)->findOne($this->wheres, $this->options);
     }
 
     /**
@@ -851,17 +837,17 @@ class Mongo
      */
     public function find($collection)
     {
-        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix.$collection)->find($this->wheres, $this->options);
+        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix . $collection)->find($this->wheres, $this->options);
     }
 
     public function findOneAndUpdate($collection, $update = [])
     {
-        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix.$collection)->findOneAndUpdate($this->wheres, ['$set' => $update], $this->options);
+        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix . $collection)->findOneAndUpdate($this->wheres, ['$set' => $update], $this->options);
     }
 
     public function findOneAndDelete($collection)
     {
-        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix.$collection)->findOneAndDelete($this->wheres, $this->options);
+        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix . $collection)->findOneAndDelete($this->wheres, $this->options);
     }
 
     /**
@@ -884,7 +870,7 @@ class Mongo
      */
     public function aggregate($collection, $pipeline = [])
     {
-        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix.$collection)->aggregate($pipeline, $this->options);
+        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix . $collection)->aggregate($pipeline, $this->options);
     }
 
     /**
@@ -894,23 +880,23 @@ class Mongo
      * ['upsert' => true]
      * );
      */
-    public function updateOne($collection, $set = [], $options = [])
+    public function updateOne($collection, $options = [])
     {
-        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix.$collection)->updateOne($this->wheres, ['$set' => $set], $options)->isAcknowledged();
+        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix . $collection)->updateOne($this->wheres, $this->updates, $options)->isAcknowledged();
     }
 
-    public function updateMany($collection, $where = [], $set = [])
+    public function updateMany($collection, $where = [])
     {
-        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix.$collection)->updateMany($where, ['$set' => $set], $this->options )->isAcknowledged();
+        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix . $collection)->updateMany($where, $this->updates, $this->options)->isAcknowledged();
     }
 
     public function deleteOne($collection)
     {
-        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix.$collection)->deleteOne($this->wheres, $this->options)->isAcknowledged();
+        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix . $collection)->deleteOne($this->wheres, $this->options)->isAcknowledged();
     }
 
     public function deleteMany($collection)
     {
-        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix.$collection)->deleteMany($this->wheres, $this->options)->isAcknowledged();
+        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix . $collection)->deleteMany($this->wheres, $this->options)->isAcknowledged();
     }
 }
