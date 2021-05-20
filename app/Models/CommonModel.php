@@ -15,6 +15,11 @@ class CommonModel extends Model
         $this->m = new Mongo();
     }
 
+    public function getIndexes(string $collection)
+    {
+        return $this->m->listindexes($collection);
+    }
+
     public function create(string $collection, array $credentials)
     {
         return $this->m->insert($collection, $credentials);

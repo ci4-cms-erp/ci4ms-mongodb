@@ -40,13 +40,13 @@
                         <div class="icheck-success">
                             <input type="checkbox" name="remember" id="remember">
                             <label for="remember">
-                                Beni Hatırla
+                                <?=lang('Auth.rememberMe')?>
                             </label>
                         </div>
                     </div>
                     <!-- /.col -->
                     <div class="col-4">
-                        <button type="submit" class="btn btn-success btn-block">Giriş Yap</button>
+                        <button type="submit" class="btn btn-success btn-block"><?=lang('Auth.loginAction')?></button>
                     </div>
                     <!-- /.col -->
                 </div>
@@ -55,7 +55,7 @@
             <hr>
 
             <p class="mb-1">
-                <a href="<?= route_to('backend/forgot') ?>">Şifremi unuttum</a>
+                <a href="<?= route_to('backend/forgot') ?>"><?=lang('Auth.forgotPassword')?></a>
             </p>
         </div>
         <!-- /.card-body -->

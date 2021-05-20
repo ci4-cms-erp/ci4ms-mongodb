@@ -2,13 +2,14 @@
 
 use App\Libraries\Mongo;
 use CodeIgniter\Model;
+use Config\MongoConfig;
 use Config\Services;
 use CodeIgniter\I18n\Time;
 use Modules\Backend\Config\Auth;
 
 class UserModel extends Model
 {
-    protected $table = 'users';
+    protected $table;
     protected $primaryKey = '_id';
     protected $returnType = 'Modules\Auth\Entities\UserEntity';
     protected $useTimestamps = true;
@@ -22,6 +23,8 @@ class UserModel extends Model
     {
         parent::__construct();
         $this->m = new Mongo();
+        $prefix=new MongoConfig();
+        $this->table=$prefix->prefix.'users';
     }
 
     public function findOne(array $credentials, array $select = [])

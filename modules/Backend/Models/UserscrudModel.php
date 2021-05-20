@@ -1,16 +1,20 @@
 <?php namespace Modules\Backend\Models;
 
 use App\Libraries\Mongo;
+use Config\MongoConfig;
 use CodeIgniter\Model;
 
 class UserscrudModel extends Model
 {
     protected $m;
+    protected $table;
 
     public function __construct()
     {
         parent::__construct();
         $this->m = new Mongo();
+        $prefix=new MongoConfig();
+        $this->table=$prefix->prefix.'users';
     }
 
     public function loggedUser(int $limit, array $select = [], array $credentials = [])
@@ -33,7 +37,7 @@ class UserscrudModel extends Model
         if (!empty($select))
             $data[] = ['$project' => $select];
 
-        return $this->m->aggregate('users', $data)->toArray();
+        return $this->m->aggregate($this->table, $data)->toArray();
     }
 
     public function userList(int $limit, array $select = [], array $credentials = [], $skip=null)
@@ -68,6 +72,6 @@ class UserscrudModel extends Model
         if (!empty($select))
             $data[] = ['$project' => $select];
 
-        return $this->m->aggregate('users', $data)->toArray();
+        return $this->m->aggregate($this->table, $data)->toArray();
     }
 }

@@ -2,18 +2,13 @@
 
 namespace App\Libraries;
 
+use Config\MongoConfig;
 use MongoDB\Client as client;
 use MongoDB\Driver\Command;
 
 class Mongo
 {
-    private $db = "kun-cms"; //your database
-    private $hostname = '127.0.0.1'; //if you use remote server you should change host address
-    private $userName = "beaver";
-    private $password = "kun12345678";
-    private $port = 27017; //if you use different port you should change port address
     private $m;
-
     private $selects = array();
     private $updates = array();
     private $wheres = array();
@@ -29,13 +24,19 @@ class Mongo
      * $options['readConcern'] = $read_concern;
      * */
     private $options = array();
-
+    private $mongoConnectionInfos;
     function __construct()
     {
-        $this->m = new client("mongodb://{$this->hostname}:{$this->port}/{$this->db}",
+        $this->mongoConnectionInfos=new MongoConfig();
+        $this->m = new client("mongodb://{$this->mongoConnectionInfos->hostname}:{$this->mongoConnectionInfos->port}/{$this->mongoConnectionInfos->db}",
             ["authMechanism" => "SCRAM-SHA-1",
-                'username' => $this->userName,
-                'password' => $this->password]);
+                'username' => $this->mongoConnectionInfos->userName,
+                'password' => $this->mongoConnectionInfos->password]);
+    }
+
+    public function listindexes($collection)
+    {
+        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix.$collection)->listIndexes();
     }
 
     /**
@@ -421,7 +422,7 @@ class Mongo
      */
     public function count(string $collection)
     {
-        return $this->m->selectCollection($this->db, $collection)->countDocuments($this->wheres, $this->options);
+        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix.$collection)->countDocuments($this->wheres, $this->options);
     }
 
     /**
@@ -675,7 +676,7 @@ class Mongo
             show_error("Need Collection field information for performing distinct query", 500);
         }
         try {
-            $documents = $this->db->{$collection}->distinct($field, $this->wheres);
+            $documents = $this->mongoConnectionInfos->db->{$this->mongoConnectionInfos->prefix.$collection}->distinct($field, $this->wheres);
             $this->_clear();
             if ($this->return_as == 'object') {
                 return (object)$documents;
@@ -804,7 +805,7 @@ class Mongo
 
     public function insertOne($collection, $insertArray = [])
     {
-        return $this->m->selectCollection($this->db, $collection)->insertOne($insertArray)->getInsertedId();
+        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix.$collection)->insertOne($insertArray)->getInsertedId();
     }
 
     /**
@@ -817,7 +818,7 @@ class Mongo
      */
     public function insert($collection, $insertArray = [])
     {
-        return $this->m->selectCollection($this->db, $collection)->insertMany($insertArray)->isAcknowledged();
+        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix.$collection)->insertMany($insertArray)->isAcknowledged();
     }
 
     /**
@@ -829,7 +830,7 @@ class Mongo
      */
     public function findOne($collection)
     {
-        return $this->m->selectCollection($this->db, $collection)->findOne($this->wheres, $this->options);
+        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix.$collection)->findOne($this->wheres, $this->options);
     }
 
     /**
@@ -850,17 +851,17 @@ class Mongo
      */
     public function find($collection)
     {
-        return $this->m->selectCollection($this->db, $collection)->find($this->wheres, $this->options);
+        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix.$collection)->find($this->wheres, $this->options);
     }
 
     public function findOneAndUpdate($collection, $update = [])
     {
-        return $this->m->selectCollection($this->db, $collection)->findOneAndUpdate($this->wheres, ['$set' => $update], $this->options);
+        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix.$collection)->findOneAndUpdate($this->wheres, ['$set' => $update], $this->options);
     }
 
     public function findOneAndDelete($collection)
     {
-        return $this->m->selectCollection($this->db, $collection)->findOneAndDelete($this->wheres, $this->options);
+        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix.$collection)->findOneAndDelete($this->wheres, $this->options);
     }
 
     /**
@@ -883,7 +884,7 @@ class Mongo
      */
     public function aggregate($collection, $pipeline = [])
     {
-        return $this->m->selectCollection($this->db, $collection)->aggregate($pipeline, $this->options);
+        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix.$collection)->aggregate($pipeline, $this->options);
     }
 
     /**
@@ -895,21 +896,21 @@ class Mongo
      */
     public function updateOne($collection, $set = [], $options = [])
     {
-        return $this->m->selectCollection($this->db, $collection)->updateOne($this->wheres, ['$set' => $set], $options)->isAcknowledged();
+        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix.$collection)->updateOne($this->wheres, ['$set' => $set], $options)->isAcknowledged();
     }
 
     public function updateMany($collection, $where = [], $set = [])
     {
-        return $this->m->selectCollection($this->db, $collection)->updateMany($where, ['$set' => $set], $this->options )->isAcknowledged();
+        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix.$collection)->updateMany($where, ['$set' => $set], $this->options )->isAcknowledged();
     }
 
     public function deleteOne($collection)
     {
-        return $this->m->selectCollection($this->db, $collection)->deleteOne($this->wheres, $this->options)->isAcknowledged();
+        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix.$collection)->deleteOne($this->wheres, $this->options)->isAcknowledged();
     }
 
     public function deleteMany($collection)
     {
-        return $this->m->selectCollection($this->db, $collection)->deleteMany($this->wheres, $this->options)->isAcknowledged();
+        return $this->m->selectCollection($this->mongoConnectionInfos->db, $this->mongoConnectionInfos->prefix.$collection)->deleteMany($this->wheres, $this->options)->isAcknowledged();
     }
 }

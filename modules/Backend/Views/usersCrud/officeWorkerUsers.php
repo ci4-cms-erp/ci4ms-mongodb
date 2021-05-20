@@ -159,8 +159,7 @@
         <?php if ($paginator->getNumPages() > 1): ?>
         <div class="card-footer clearfix">
                 <ul class="pagination pagination-sm m-0 float-right">
-                    <?php if ($paginator->getPrevUrl()):
-                        _printR($paginator->getPrevUrl());?>
+                    <?php if ($paginator->getPrevUrl()): ?>
                         <li class="page-item"><a class="page-link" href="<?php echo $paginator->getPrevUrl(); ?>">&laquo;</a></li>
                     <?php endif; ?>
 

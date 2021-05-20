@@ -12,10 +12,20 @@ Flat RBAC per NIST standards, described <a href="https://csrc.nist.gov/Projects/
 <li>Email-based account verification</li>
 </ul>
 
-## First installation
+## Installation
+You must have Mongo Driver and Composer. Follow these links for installation:
+<ul>
+<li><a href="https://getcomposer.org/doc/00-intro.md#installation-linux-unix-macos">Composer installation</a></li>
+<li><a href="https://www.php.net/manual/en/mongo.installation.php">Mongo driver installation</a></li>
+</ul>
 
 **you must do in terminal**
 
+`composer install`
+
+<hr>
+
+if do you want manual install you can follow these steps.
 <pre>
 mongo
 
@@ -23,16 +33,12 @@ use yourDatabase
 
 db.createUser({
     user: "userName",
-    pwd: passwordPrompt(),      // Or  "cleartext password"
-    roles: [{role: "readWrite", db: "yourDatabase"}],
-    authenticationRestrictions: [{
-        clientSource: [""],
-        serverAddress: [""]
-    }]
+    pwd: passwordPrompt(),      // Or  "cleartextPassword"
+    roles: [{role: "readWrite", db: "yourDatabase"}]
 });
 </pre>
 
-**You must update app/Libraries/Mongo.php class.**
+**You can update app/Libraries/Mongo.php class.**
 
 <pre>
 private $db = "";//your database
@@ -42,7 +48,9 @@ private $password = "";
 private $port = 27017;//if you use different port you should change port address
 </pre>
 
-### //coding installation module. I am following these steps
+<hr>
+
+### Automatic Installation
 After made settings. you should go link `http://site/installation` follow form attributes. Finish installation automaticly must detele installation module. If not delete installation module you must follow this steps:
 <ul>
 <li>you must delete <code>modules/installation</code> module</li>

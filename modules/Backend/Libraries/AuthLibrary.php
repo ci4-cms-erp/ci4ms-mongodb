@@ -3,6 +3,7 @@
 use App\Models\CommonModel;
 use CodeIgniter\Events\Events;
 use Config\App;
+use Config\MongoConfig;
 use Config\Services;
 use Modules\Backend\Config\Auth;
 use Modules\Backend\Exceptions\AuthException;
@@ -17,6 +18,7 @@ class AuthLibrary
     public $error;
     protected $user;
     protected $commonModel;
+    protected $prefix;
 
     public function __construct()
     {
@@ -24,6 +26,8 @@ class AuthLibrary
         $this->config = new Auth();
         $this->commonModel = new CommonModel();
         $this->user = null;
+        $this->prefix=new MongoConfig();
+        $this->config->userTable=$this->prefix->prefix.'users';
     }
 
     public function login(object $user = null, bool $remember = false): bool
@@ -33,7 +37,7 @@ class AuthLibrary
             return false;
         }
         $this->user = $user;
-        $groupSefLink = $this->commonModel->getOne('auth_groups', ['_id' => new ObjectId($this->user->group_id)], ['seflink' => true]);
+        $groupSefLink = $this->commonModel->getOne($this->prefix->prefix.'auth_groups', ['_id' => new ObjectId($this->user->group_id)], ['seflink' => true]);
 
         session()->set('redirect_url', $groupSefLink->seflink);
 
@@ -139,8 +143,8 @@ class AuthLibrary
         $userInfo = $this->commonModel->getOne($this->config->userTable, ['_id' => new ObjectId(session()->get($this->config->logged_in))], ['projection' => ['group_id' => true, 'auth_users_permissions' => true]]);
 
         $module = str_replace('\\', '-', $module);
-        $perms = $this->commonModel->getOne('auth_groups', ['_id' => $userInfo->group_id], ['projection' => ['auth_groups_permissions' => true]]);
-        $classID = $this->commonModel->getOne('auth_permissions_pages', ['className' => $module, 'methodName' => $method], ['projection' => ['typeOfPermissions' => true]]);
+        $perms = $this->commonModel->getOne($this->prefix->prefix.'auth_groups', ['_id' => $userInfo->group_id], ['projection' => ['auth_groups_permissions' => true]]);
+        $classID = $this->commonModel->getOne($this->prefix->prefix.'auth_permissions_pages', ['className' => $module, 'methodName' => $method], ['projection' => ['typeOfPermissions' => true]]);
         $allPerms = [];
 
         $permissions = (array)$perms->auth_groups_permissions;

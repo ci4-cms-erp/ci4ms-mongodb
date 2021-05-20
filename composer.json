@@ -1,7 +1,7 @@
 {
-	"name": "codeigniter4/auth-module",
+	"name": "codeigniter4/appstarter",
 	"type": "project",
-	"description": "CodeIgniter4 auth module",
+	"description": "CodeIgniter4 starter app",
 	"homepage": "https://bertugfahriozer.com/blogDetail/sistemde-kimlik-dogrulama-auth",
 	"license": "MIT",
 	"require": {

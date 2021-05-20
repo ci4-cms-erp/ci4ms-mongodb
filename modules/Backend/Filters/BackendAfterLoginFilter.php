@@ -26,6 +26,11 @@ class BackendAfterLoginFilter implements FilterInterface
 	 */
 	public function before(RequestInterface $request, $arguments = null)
 	{
+        helper('filesystem');
+        $result=delete_files(ROOTPATH.'/modules/Installation',true);
+        if($result==false)
+            return view('\Modules\Installation\Views\deleteModule');
+
         $authLib=new AuthLibrary();
         if (!$authLib->check()) {
             return redirect()->to('/backend/logout');
