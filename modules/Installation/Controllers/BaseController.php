@@ -1,8 +1,6 @@
-<?php
+<?php namespace Modules\Installation\Controllers;
 
-namespace Modules\Installation\Controllers;
-
-use App\Models\CommonModel;
+use ci4mongodblibrary\Models\CommonModel;
 
 /**
  * Class BaseController
@@ -31,7 +29,7 @@ class BaseController extends Controller
      *
      * @var array
      */
-    protected $helpers = ['debug'];
+    protected $helpers = [];
 
     /**
      * Constructor.

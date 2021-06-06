@@ -1,7 +1,7 @@
 {
-	"name": "codeigniter4/appstarter",
+	"name": "bertugfahriozer/ci4mongodbfirstinstallation",
 	"type": "project",
-	"description": "CodeIgniter4 starter app",
+	"description": "Codeigniter 4 create your first CMS Auth system with mongodb",
 	"homepage": "https://bertugfahriozer.com/blogDetail/sistemde-kimlik-dogrulama-auth",
 	"license": "MIT",
 	"require": {
@@ -12,13 +12,13 @@
 		"mongodb/mongodb": "^1.8",
 		"gregwar/captcha": "1.*",
 		"phpmailer/phpmailer": "^6.4",
-		"jasongrimes/paginator": "~1.0"
+		"jasongrimes/paginator": "~1.0",
+		"bertugfahriozer/ci4mongodblibrary": "^1.0"
 	},
 	"require-dev": {
 		"fakerphp/faker": "^1.9",
 		"mikey179/vfsstream": "^1.6",
-		"phpunit/phpunit": "^9.1",
-		"lonnieezell/vulcan": "dev-develop"
+		"phpunit/phpunit": "^9.1"
 	},
 	"suggest": {
 		"ext-fileinfo": "Improves mime type detection for files"

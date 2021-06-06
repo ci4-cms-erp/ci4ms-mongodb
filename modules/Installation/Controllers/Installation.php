@@ -1,7 +1,6 @@
 <?php namespace Modules\Installation\Controllers;
 
-use App\Models\CommonModel;
-use Modules\Backend\Libraries\AuthLibrary;
+use ci4mongodblibrary\Models\CommonModel;
 use MongoDB\BSON\ObjectId;
 use MongoDB\Client as client;
 
@@ -58,10 +57,63 @@ class Installation extends BaseController
             )
         );
 
-        //call MongoDB::command to create user in 'db_name' database
         $commondResult = $db->command($command)->toArray();
         $commandResult = (bool)$commondResult[0]->ok;
         if ($commandResult == true) {
+            //creating main files
+            helper('filesystem');
+            $autoload = "<?php namespace Config;
+use CodeIgniter\Config\AutoloadConfig;
+
+class Autoload extends AutoloadConfig
+{
+    public \$psr4 = [
+        APP_NAMESPACE => APPPATH,
+        'Config' => APPPATH . 'Config',
+        'Modules' => ROOTPATH . 'modules',
+        'Modules\Auth' => ROOTPATH . 'modules/Auth',
+        'Modules\Backend' => ROOTPATH . 'modules/Backend'
+    ];
+    public \$classmap = [];
+}
+";
+            $flag = false;
+            if (!is_writable(ROOTPATH . 'app/Config/Autoload.php')) {
+                chmod(ROOTPATH . 'app/Config/Autoload.php', 0777);
+                $flag = write_file(ROOTPATH . 'app/Config/Autoload.php', $autoload, 'r+');
+                chmod(ROOTPATH . 'app/Config/Autoload.php', 0664);
+            } else {
+                $flag = write_file(ROOTPATH . 'app/Config/Autoload.php', $autoload, 'w');
+                chmod(ROOTPATH . 'app/Config/Autoload.php', 0664);
+            }
+            if ($flag == true) {
+                $flag = false;
+                $mongoConfig = "<?php namespace App\Config;
+use CodeIgniter\Config\BaseConfig;
+
+class MongoConfig extends BaseConfig
+{
+    public $db = " . $this->request->getPost('dbname') . "; //your database
+    public $hostname = " . $this->request->getPost('host') . "; //if you use remote server you should change host address
+    public $userName = " . $this->request->getPost('un') . ";
+    public $password = " . $this->request->getPost('pwd') . ";
+    public $prefix = " . $this->request->getPost('pre') . ";
+    public $port = " . $this->request->getPost('port') . "; //if you use different port you should change port address
+}";
+                if (!is_writable(ROOTPATH . 'app/Config/MongoConfig.php')) {
+                    chmod(ROOTPATH . 'app/Config/MongoConfig.php', 0777);
+                    $flag = write_file(ROOTPATH . 'app/Config/MongoConfig.php', $mongoConfig, 'r+');
+                    chmod(ROOTPATH . 'app/Config/MongoConfig.php', 0664);
+                } else {
+                    $flag = write_file(ROOTPATH . 'app/Config/MongoConfig.php', $mongoConfig, 'w');
+                    chmod(ROOTPATH . 'app/Config/MongoConfig.php', 0664);
+                }
+                if ($flag == false)
+                    return redirect()->back()->withInput()->with('error', 'Can not update MongoConfig.php file. Please install manually. You can follow this <a href="https=>//github.com/bertugfahriozer/auth-ci4-mongodb">link</a>');
+            } else
+                return redirect()->back()->withInput()->with('error', 'Can not update Autoload.php file. Please install manually. You can follow this <a href="https=>//github.com/bertugfahriozer/auth-ci4-mongodb">link</a>');
+
+            //insert tables
             $pre = "";
             if (!empty($this->request->getPost('pre')))
                 $pre = $this->request->getPost('pre');
@@ -664,59 +716,6 @@ class Installation extends BaseController
             }
 
             if ($flagResult == true) {
-                helper('filesystem');
-                $autoload = "<?php
-namespace Config;
-use CodeIgniter\Config\AutoloadConfig;
-
-class Autoload extends AutoloadConfig
-{
-    public \$psr4 = [
-        APP_NAMESPACE => APPPATH,
-        'Config' => APPPATH . 'Config',
-        'Modules' => ROOTPATH . 'modules',
-        'Modules\Auth' => ROOTPATH . 'modules/Auth',
-        'Modules\Backend' => ROOTPATH . 'modules/Backend'
-    ];
-    public \$classmap = [];
-}
-";
-                $flag = false;
-                if (!is_writable(ROOTPATH . 'app/Config/Autoload.php')) {
-                    chmod(ROOTPATH . 'app/Config/Autoload.php', 0777);
-                    $flag = write_file(ROOTPATH . 'app/Config/Autoload.php', $autoload, 'r+');
-                    chmod(ROOTPATH . 'app/Config/Autoload.php', 0664);
-                } else {
-                    $flag = write_file(ROOTPATH . 'app/Config/Autoload.php', $autoload, 'w');
-                    chmod(ROOTPATH . 'app/Config/Autoload.php', 0664);
-                }
-                if ($flag == true) {
-                    $flag = false;
-                    $mongoConfig = "<?php namespace Config;
-use CodeIgniter\Config\BaseConfig;
-
-class MongoConfig extends BaseConfig
-{
-    public $db = " . $this->request->getPost('dbname') . "; //your database
-    public $hostname = " . $this->request->getPost('host') . "; //if you use remote server you should change host address
-    public $userName = " . $this->request->getPost('un') . ";
-    public $password = " . $this->request->getPost('pwd') . ";
-    public $prefix = " . $this->request->getPost('pre') . ";
-    public $port = " . $this->request->getPost('port') . "; //if you use different port you should change port address
-}";
-                    if (!is_writable(ROOTPATH . 'app/Config/MongoConfig.php')) {
-                        chmod(ROOTPATH . 'app/Config/MongoConfig.php', 0777);
-                        $flag = write_file(ROOTPATH . 'app/Config/MongoConfig.php', $mongoConfig, 'r+');
-                        chmod(ROOTPATH . 'app/Config/MongoConfig.php', 0664);
-                    } else {
-                        $flag = write_file(ROOTPATH . 'app/Config/MongoConfig.php', $mongoConfig, 'w');
-                        chmod(ROOTPATH . 'app/Config/MongoConfig.php', 0664);
-                    }
-                    if ($flag == false)
-                        return redirect()->back()->withInput()->with('error', 'Can not update MongoConfig.php file. Please install manually. You can follow this <a href="https=>//github.com/bertugfahriozer/auth-ci4-mongodb">link</a>');
-                } else
-                    return redirect()->back()->withInput()->with('error', 'Can not update Autoload.php file. Please install manually. You can follow this <a href="https=>//github.com/bertugfahriozer/auth-ci4-mongodb">link</a>');
-
                 return redirect()->to('/backend');
             } else {
                 $flag['message'] = 'We can not migrate database please install manually. You can follow this <a href="https=>//github.com/bertugfahriozer/auth-ci4-mongodb">link</a>';

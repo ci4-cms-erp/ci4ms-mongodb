@@ -21,7 +21,9 @@ You must have Mongo Driver and Composer. Follow these links for installation:
 
 **you must do in terminal**
 
-`composer install`
+you must change file permissions user and group.
+
+<code>chown user:group codeigniter_project_file</code>
 
 <hr>
 
@@ -36,16 +38,6 @@ db.createUser({
     pwd: passwordPrompt(),      // Or  "cleartextPassword"
     roles: [{role: "readWrite", db: "yourDatabase"}]
 });
-</pre>
-
-**You can update app/Libraries/Mongo.php class.**
-
-<pre>
-private $db = "";//your database
-private $hostname = '127.0.0.1';//if you use remote server you should change host address
-private $userName = "root";
-private $password = "";
-private $port = 27017;//if you use different port you should change port address
 </pre>
 
 <hr>

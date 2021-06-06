@@ -1,8 +1,6 @@
-<?php
+<?php namespace Modules\Backend\Controllers;
 
-namespace Modules\Backend\Controllers;
-
-use App\Models\CommonModel;
+use ci4mongodblibrary\Models\CommonModel;
 use Modules\Backend\Libraries\AuthLibrary;
 use Modules\Backend\Config\Auth;
 
@@ -40,7 +38,7 @@ class BaseController extends Controller
      *
      * @var array
      */
-    protected $helpers = ['debug'];
+    protected $helpers = [];
 
     /**
      * Constructor.

@@ -26,10 +26,15 @@ class BackendAuthFilter implements FilterInterface
 	 */
 	public function before(RequestInterface $request, $arguments = null)
 	{
-	    helper('filesystem');
-	    $result=delete_files(ROOTPATH.'/modules/Installation',true);
-	    if($result==false)
-            return view('\Modules\Installation\Views\deleteModule');
+        if(is_dir(ROOTPATH.'/modules/Installation')) {
+            helper('filesystem');
+            $result = delete_files(ROOTPATH . '/modules/Installation', true);
+            if($result==true)
+                $result=rmdir(ROOTPATH . '/modules/Installation');
+
+            if ($result == false)
+                return view('\Modules\Installation\Views\deleteModule');
+        }
 
         $authLib=new AuthLibrary();
         if ($authLib->check()) {

@@ -13,7 +13,7 @@
  * @package CodeIgniter
  */
 
-use App\Models\CommonModel;
+use ci4mongodblibrary\Models\CommonModel;
 use CodeIgniter\Controller;
 use Modules\Backend\Config\Auth;
 use Modules\Backend\Libraries\AuthLibrary;
@@ -31,7 +31,7 @@ class BaseController extends Controller
      *
      * @var array
      */
-    protected $helpers = ['debug'];
+    protected $helpers = [];
 
     /**
      * Constructor.

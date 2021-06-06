@@ -1,6 +1,6 @@
 <?php namespace Modules\Backend\Models;
 
-use App\Libraries\Mongo;
+use ci4mongodblibrary\Libraries\Mongo;
 use Config\MongoConfig;
 use CodeIgniter\Model;
 
