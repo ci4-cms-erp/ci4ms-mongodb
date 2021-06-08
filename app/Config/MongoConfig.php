@@ -8,5 +8,5 @@ class MongoConfig extends BaseConfig
     public $userName = 'beaver';
     public $password = 'RFVtgb1192';
     public $prefix = 'kun_';
-    public $port = '27017''; //if you use different port you should change port address
+    public $port = '27017'; //if you use different port you should change port address
 }

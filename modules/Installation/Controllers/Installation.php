@@ -99,7 +99,7 @@ class MongoConfig extends BaseConfig
     public \$userName = '" . $this->request->getPost('un') . "';
     public \$password = '" . $this->request->getPost('pwd') . "';
     public \$prefix = '" . $this->request->getPost('pre') . "';
-    public \$port = '" . $this->request->getPost('port') . "''; //if you use different port you should change port address
+    public \$port = '" . $this->request->getPost('port') . "'; //if you use different port you should change port address
 }";
                 if (!is_writable(ROOTPATH . 'app/Config/MongoConfig.php')) {
                     chmod(ROOTPATH . 'app/Config/MongoConfig.php', 0777);
