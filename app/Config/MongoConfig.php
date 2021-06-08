@@ -1,4 +1,4 @@
-<?php namespace App\Config;
+<?php namespace Config;
 use CodeIgniter\Config\BaseConfig;
 
 class MongoConfig extends BaseConfig

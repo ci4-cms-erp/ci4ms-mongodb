@@ -89,7 +89,7 @@ class Autoload extends AutoloadConfig
             }
             if ($flag == true) {
                 $flag = false;
-                $mongoConfig = "<?php namespace App\Config;
+                $mongoConfig = "<?php namespace Config;
 use CodeIgniter\Config\BaseConfig;
 
 class MongoConfig extends BaseConfig
