@@ -21,14 +21,14 @@ You must have Mongo Driver and Composer. Follow these links for installation:
 
 **you must do in terminal**
 
-you must change file permissions user and group.
+if you are installing to host, you must change file permissions user and group.
 
 <code>chown user:group codeigniter_project_file</code>
 
 <hr>
 
 if do you want manual install you can follow these steps.
-<pre>
+```
 mongo
 
 use yourDatabase
@@ -38,8 +38,29 @@ db.createUser({
     pwd: passwordPrompt(),      // Or  "cleartextPassword"
     roles: [{role: "readWrite", db: "yourDatabase"}]
 });
-</pre>
+```
 
+Create a config file at app/Config. File name should be MongoConfig.php.
+
+```
+<?php namespace Config;
+
+use CodeIgniter\Config\BaseConfig;
+
+class MongoConfig extends BaseConfig
+{
+    public $db = "kun-cms"; //your database
+    public $hostname = '127.0.0.1'; //if you use remote server you should change host address
+    public $userName = "beaver";
+    public $password = "kun12345678";
+    public $prefix = "";
+    public $port = 27017; //if you use different port you should change port address
+}
+```
+
+Move other files and change namespace.
+
+### <b>Congratulations!</b>
 <hr>
 
 ### Automatic Installation

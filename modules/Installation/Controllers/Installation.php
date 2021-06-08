@@ -28,7 +28,7 @@ class Installation extends BaseController
             'pass' => ['label' => 'Password', 'rules' => 'required']
         ]);
 
-        if ($this->request->getPost('sev'))
+        if (!empty($this->request->getPost('sev')))
             $valData['sev'] = ['label' => 'Search Engine Visibility', 'rules' => 'required'];
 
         if ($this->validate($valData) == false)

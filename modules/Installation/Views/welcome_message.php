@@ -98,7 +98,7 @@ Installation
                                         <div class="col-md-4 form-group font-weight-bold"><?=lang('Installation.dbHost')?></div>
                                         <div class="col-md-4 form-group">
                                             <input type="text" name="host" class="form-control" required
-                                                   value="localhost">
+                                                   value="127.0.0.1">
                                         </div>
                                         <div class="col-md-4 form-group"></div>
                                     </div>

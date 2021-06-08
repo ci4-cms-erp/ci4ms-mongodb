@@ -9,7 +9,8 @@ class Autoload extends AutoloadConfig
         'Config' => APPPATH . 'Config',
         'Modules' => ROOTPATH . 'modules',
         'Modules\Auth' => ROOTPATH . 'modules/Auth',
-        'Modules\Backend' => ROOTPATH . 'modules/Backend'
+        'Modules\Backend' => ROOTPATH . 'modules/Backend',
+        'Modules\Installation' => ROOTPATH . 'modules/Installation' //delete this line
     ];
     public $classmap = [];
 }
