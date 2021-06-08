@@ -75,7 +75,7 @@ class AuthController extends BaseController
             $this->authLib->logout();
         }
 
-        return redirect()->to('login');
+        return redirect()->to('backend/login');
     }
 
     /**

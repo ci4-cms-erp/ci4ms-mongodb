@@ -115,12 +115,10 @@ class MongoConfig extends BaseConfig
                 return redirect()->back()->withInput()->with('error', 'Can not update Autoload.php file. Please install manually. You can follow this <a href="https=>//github.com/bertugfahriozer/auth-ci4-mongodb">link</a>');
 
             //insert tables
-            $pre = "";
-            if (!empty($this->request->getPost('pre')))
-                $pre = $this->request->getPost('pre');
             $commonModel = new CommonModel();
             $authLib = new AuthLibrary();
-            $tablenames = [$pre . 'auth_permissions_pages' =>
+            $tablenames = [
+                'auth_permissions_pages' =>
                 [
                     [
                         "_id" => new ObjectId("60674971b3659f7bd99f9788"),
@@ -461,7 +459,7 @@ class MongoConfig extends BaseConfig
                         ]
                     ]
                 ],
-                $pre . 'auth_groups' =>
+                'auth_groups' =>
                     [
                         [
                             "_id" => new ObjectId("605f4fa8916eb59b540e95fa"),
@@ -657,7 +655,7 @@ class MongoConfig extends BaseConfig
                             "seflink" => "/backend"
                         ]
                     ],
-                $pre . 'users' =>
+                'users' =>
                     [
                         [
                             "auth_users_permissions" => [
@@ -679,7 +677,7 @@ class MongoConfig extends BaseConfig
                             "username" => $this->request->getPost('username')
                         ]
                     ],
-                $pre . 'settings' =>
+                'settings' =>
                     [
                         [
                             'siteName' => $this->request->getPost('title'),

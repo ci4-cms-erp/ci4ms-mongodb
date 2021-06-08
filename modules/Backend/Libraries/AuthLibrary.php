@@ -2,7 +2,7 @@
 
 use CodeIgniter\Events\Events;
 use Config\App;
-//use Config\MongoConfig;
+use Config\MongoConfig;
 use ci4mongodblibrary\Models\CommonModel;
 use Config\Services;
 use Modules\Backend\Config\Auth;
@@ -25,8 +25,8 @@ class AuthLibrary
         $this->config = new Auth();
         $this->commonModel = new CommonModel();
         $this->user = null;
-        //$this->prefix=new MongoConfig();
-        //$this->config->userTable=$this->prefix->prefix.'users';
+        $this->prefix=new MongoConfig();
+        $this->config->userTable=$this->prefix->prefix.'users';
     }
 
     public function login(object $user = null, bool $remember = false): bool
