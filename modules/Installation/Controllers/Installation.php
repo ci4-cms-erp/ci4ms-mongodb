@@ -1,6 +1,7 @@
 <?php namespace Modules\Installation\Controllers;
 
 use ci4mongodblibrary\Models\CommonModel;
+use Modules\Backend\Libraries\AuthLibrary;
 use MongoDB\BSON\ObjectId;
 use MongoDB\Client as client;
 
@@ -93,12 +94,12 @@ use CodeIgniter\Config\BaseConfig;
 
 class MongoConfig extends BaseConfig
 {
-    public $db = " . $this->request->getPost('dbname') . "; //your database
-    public $hostname = " . $this->request->getPost('host') . "; //if you use remote server you should change host address
-    public $userName = " . $this->request->getPost('un') . ";
-    public $password = " . $this->request->getPost('pwd') . ";
-    public $prefix = " . $this->request->getPost('pre') . ";
-    public $port = " . $this->request->getPost('port') . "; //if you use different port you should change port address
+    public \$db = '" . $this->request->getPost('dbname') . "'; //your database
+    public \$hostname = '" . $this->request->getPost('host') . "'; //if you use remote server you should change host address
+    public \$userName = '" . $this->request->getPost('un') . "';
+    public \$password = '" . $this->request->getPost('pwd') . "';
+    public \$prefix = '" . $this->request->getPost('pre') . "';
+    public \$port = '" . $this->request->getPost('port') . "''; //if you use different port you should change port address
 }";
                 if (!is_writable(ROOTPATH . 'app/Config/MongoConfig.php')) {
                     chmod(ROOTPATH . 'app/Config/MongoConfig.php', 0777);
