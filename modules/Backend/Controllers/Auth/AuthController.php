@@ -57,13 +57,13 @@ class AuthController extends BaseController
                 return redirect()->back()->withInput()->with('error', $this->authLib->error() ?? lang('Auth.badAttempt'));
             }
 
-            $redirectURL = session('redirect_url') ?? 'logout';
+            $redirectURL = session('redirect_url') ?? 'backend/logout';
             unset($_SESSION['redirect_url']);
 
             return redirect()->to($redirectURL)->withCookies()->with('message', lang('Auth.loginSuccess'));
         }
 
-        return redirect()->to('login')->withInput()->with('error', $this->authLib->error() ?? lang('Auth.badCaptcha'));
+        return redirect()->to('backend/login')->withInput()->with('error', $this->authLib->error() ?? lang('Auth.badCaptcha'));
     }
 
     /**
@@ -100,12 +100,12 @@ class AuthController extends BaseController
         $rules = [
             'email' => 'required|valid_email'
         ];
-
+        _printRdie($_POST);
         if (!$this->validate($rules))
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
 
         if ($this->config->activeResetter === false) {
-            return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
+            return redirect()->route('backend/login')->with('error', lang('Auth.forgotDisabled'));
         }
 
         $user = $this->userModel->findOne(['email' => $this->request->getPost('email')]);
@@ -141,7 +141,7 @@ class AuthController extends BaseController
 
             $mail->send();
 
-            return redirect()->to('login')->with('message', lang('Auth.forgotEmailSent'));
+            return redirect()->to('backend/login')->with('message', lang('Auth.forgotEmailSent'));
         } catch (Exception $e) {
             return redirect()->back()->withInput()->with('error', $mail->ErrorInfo ?? lang('Auth.unknownError'));
         }
@@ -153,7 +153,7 @@ class AuthController extends BaseController
     public function resetPassword($token)
     {
         if ($this->config->activeResetter === false) {
-            return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
+            return redirect()->route('backend/login')->with('error', lang('Auth.forgotDisabled'));
         }
 
         return view($this->config->views['reset'], ['config' => $this->config, 'token' => $token]);
@@ -168,7 +168,7 @@ class AuthController extends BaseController
     public function attemptReset($token)
     {
         if ($this->config->activeResetter === false) {
-            return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
+            return redirect()->route('backend/login')->with('error', lang('Auth.forgotDisabled'));
         }
 
         // First things first - log the reset attempt.
@@ -207,7 +207,7 @@ class AuthController extends BaseController
             'reset_at' => date('Y-m-d H:i:s'),
         ]);
 
-        return redirect()->route('login')->with('message', lang('Auth.resetSuccess'));
+        return redirect()->route('backend/login')->with('message', lang('Auth.resetSuccess'));
     }
 
     /**
@@ -232,11 +232,11 @@ class AuthController extends BaseController
         $user = $this->userModel->findOne(['activate_hash' => $token, 'status' => 'deactive']);
 
         if (is_null($user))
-            return redirect()->route('login')->with('error', lang('Auth.activationNoUser'));
+            return redirect()->route('backend/login')->with('error', lang('Auth.activationNoUser'));
 
         $this->commonModel->updateOne('users', ['_id' => $user->_id], ['status' => 'active', 'activate_hash' => null]);
 
-        return redirect()->route('login')->with('message', lang('Auth.registerSuccess'));
+        return redirect()->route('backend/login')->with('message', lang('Auth.registerSuccess'));
     }
 
     public function activateEmail($token)
@@ -256,10 +256,10 @@ class AuthController extends BaseController
         $user = $this->userModel->findOne(['activate_hash' => $token, 'status' => 'deactive']);
 
         if (is_null($user))
-            return redirect()->route('login')->with('error', lang('Auth.activationNoUser'));
+            return redirect()->route('backend/login')->with('error', lang('Auth.activationNoUser'));
 
         $this->commonModel->updateOne('users', ['_id' => $user->_id], ['status' => 'active', 'activate_hash' => null]);
 
-        return redirect()->route('login')->with('message', lang('Auth.emailActivationuccess'));
+        return redirect()->route('backend/login')->with('message', lang('Auth.emailActivationuccess'));
     }
 }

@@ -49,7 +49,7 @@
             </form>
 
             <p class="mt-3 mb-1">
-                <a href="<?=base_url('login')?>"><i class="fas fa-arrow-left"></i> Giriş Yap</a>
+                <a href="<?=base_url('backend/login')?>"><i class="fas fa-arrow-left"></i> Giriş Yap</a>
             </p>
         </div>
         <!-- /.login-card-body -->

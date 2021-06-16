@@ -11,10 +11,10 @@
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="/assets/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="/be-assets/plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="/assets/dist/css/adminlte.min.css">
-    <link rel="stylesheet" href="/assets/dist/custom.css">
+    <link rel="stylesheet" href="/be-assets/css/adminlte.min.css">
+    <link rel="stylesheet" href="/be-assets/custom.css">
 
     <?= $this->renderSection('head') ?>
 </head>
@@ -22,7 +22,7 @@
 <!-- Site wrapper -->
 <div class="wrapper">
     <!-- Navbar -->
-    <nav class="main-header navbar navbar-expand navbar-dark navbar-shl border-0">
+    <nav class="main-header navbar navbar-expand navbar-dark navbar-kun-cms border-0">
         <!-- Left navbar links -->
         <ul class="navbar-nav">
             <li class="nav-item">
@@ -54,7 +54,7 @@
                     <a href="#" class="dropdown-item">
                         <!-- Message Start -->
                         <div class="media">
-                            <img src="../../dist/img/user1-128x128.jpg" alt="User Avatar"
+                            <img src="../../be-assets/img/user1-128x128.jpg" alt="User Avatar"
                                  class="img-size-50 mr-3 img-circle">
                             <div class="media-body">
                                 <h3 class="dropdown-item-title">
@@ -71,7 +71,7 @@
                     <a href="#" class="dropdown-item">
                         <!-- Message Start -->
                         <div class="media">
-                            <img src="../../dist/img/user8-128x128.jpg" alt="User Avatar"
+                            <img src="../../be-assets/img/user8-128x128.jpg" alt="User Avatar"
                                  class="img-size-50 img-circle mr-3">
                             <div class="media-body">
                                 <h3 class="dropdown-item-title">
@@ -88,7 +88,7 @@
                     <a href="#" class="dropdown-item">
                         <!-- Message Start -->
                         <div class="media">
-                            <img src="../../dist/img/user3-128x128.jpg" alt="User Avatar"
+                            <img src="../../be-assets/img/user3-128x128.jpg" alt="User Avatar"
                                  class="img-size-50 img-circle mr-3">
                             <div class="media-body">
                                 <h3 class="dropdown-item-title">
@@ -167,13 +167,8 @@
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-light-olive elevation-1">
         <!-- Brand Logo -->
-        <a href="<?= base_url('backend') ?>" class="brand-link navbar-shl">
-            <div class="text-center">
-                <span class="brand-text font-weight-bold text-white">S</span>
-                <span class="brand-text font-weight-bold text-white">O</span>
-                <span class="brand-text font-weight-bold text-white">A</span>
-                <span class="brand-text font-weight-bold text-white">R</span>
-            </div>
+        <a href="<?= base_url('backend') ?>" class="brand-link navbar-kun-cms text-center">
+            <img src="/be-assets/img/logo-w.png" alt="" class="img-responsive" height="25">
         </a>
 
         <!-- Sidebar -->
@@ -181,7 +176,7 @@
             <!-- Sidebar user (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="image d-flex align-items-center">
-                    <img src="/assets/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                    <img src="/be-assets/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info w-100">
                     <button class="btn btn-light w-100" type="button" data-toggle="collapse"
@@ -210,18 +205,18 @@
                         foreach ($navigation as $nav) :
                             $p = null;
                             foreach ($navigation as $item) {
-                                if ($item->sefLink === $uri)
+                                if ($item->sefLink!='profile' && $item->sefLink === $uri)
                                     $p = $item;
                             }
                             if ($nav->parent_pk == $child) : ?>
-                                <li class="nav-item <?= ($p->parent_pk == $nav->_id) ? 'menu-is-opening menu-open' : '' ?>">
+                                <li class="nav-item <?= (!empty($p) && $p->parent_pk == $nav->_id) ? 'menu-is-opening menu-open' : '' ?>">
                                     <a href="<?php
                                     $u = explode('/', $nav->sefLink);
                                     if (empty($u[1]))
                                         echo route_to($u[0]);
                                     else
                                         echo route_to($u[0], $u[1]); ?>"
-                                       class="nav-link <?= ($nav->sefLink == $uri || $p->parent_pk == $nav->_id) ? 'active' : '' ?>">
+                                       class="nav-link <?php if(!empty($p)){ if($nav->sefLink == $uri || $p->parent_pk == $nav->_id) echo 'active'; else echo '';} ?>">
                                         <i class="nav-icon <?= $nav->symbol ?>"></i>
                                         <p><?= lang('Backend.'.$nav->pagename) ?><?= ($nav->hasChild == true) ? '<i class="right fas fa-angle-left"></i>' : '' ?></p>
                                     </a>
@@ -266,13 +261,13 @@
 <!-- ./wrapper -->
 
 <!-- jQuery -->
-<script src="/assets/plugins/jquery/jquery.min.js"></script>
+<script src="/be-assets/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
-<script src="/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/be-assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
-<script src="/assets/dist/js/adminlte.min.js"></script>
+<script src="/be-assets/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="/assets/dist/js/demo.js"></script>
+<script src="/be-assets/js/demo.js"></script>
 
 <?= $this->renderSection('javascript') ?>
 </body>

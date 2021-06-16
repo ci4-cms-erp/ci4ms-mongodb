@@ -1,5 +1,4 @@
-<?php
-namespace Config;
+<?php namespace Config;
 use CodeIgniter\Config\AutoloadConfig;
 
 class Autoload extends AutoloadConfig
@@ -9,8 +8,7 @@ class Autoload extends AutoloadConfig
         'Config' => APPPATH . 'Config',
         'Modules' => ROOTPATH . 'modules',
         'Modules\Auth' => ROOTPATH . 'modules/Auth',
-        'Modules\Backend' => ROOTPATH . 'modules/Backend',
-        'Modules\Installation' => ROOTPATH . 'modules/Installation' //delete this line
+        'Modules\Backend' => ROOTPATH . 'modules/Backend'
     ];
     public $classmap = [];
 }

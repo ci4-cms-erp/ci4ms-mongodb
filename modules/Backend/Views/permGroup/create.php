@@ -68,7 +68,7 @@
                             <?php foreach ($pages as $page): ?>
                                 <tr>
                                     <td><?= $page->pagename ?></td>
-                                    <td><?= $page->description ?></td>
+                                    <td><?= (!empty($page->description))?$page->description:'' ?></td>
                                     <td>
                                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                             <label class="btn btn-outline-secondary">

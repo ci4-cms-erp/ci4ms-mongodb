@@ -38,6 +38,7 @@ class UserController extends BaseController
     {
         $this->defData['groups'] = $this->commonModel->getList('auth_groups');
         $this->defData['authLib'] = $this->authLib;
+
         return view('Modules\Backend\Views\usersCrud\createUser', $this->defData);
     }
 
@@ -128,7 +129,7 @@ class UserController extends BaseController
 
             $mail->send();
 
-            return redirect()->to('/backend/officeWorker')->with('message', 'Üyelik oluşturuldu. Aktiflik maili gönderildi.');
+            return redirect()->to('/backend/officeWorker/1')->with('message', 'Üyelik oluşturuldu. Aktiflik maili gönderildi.');
         } catch (Exception $e) {
             return redirect()->back()->withInput()->with('error', $mail->ErrorInfo);
         }
@@ -175,7 +176,7 @@ class UserController extends BaseController
         if ((bool)$result == false)
             return redirect()->back()->withInput()->with('error', 'Kullanıcı oluşturulamadı.');
         else
-            return redirect()->to('/backend/officeWorker')->with('message', 'Üyelik Güncellendi.');
+            return redirect()->to('/backend/officeWorker/1')->with('message', 'Üyelik Güncellendi.');
     }
 
     public function profile()

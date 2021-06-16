@@ -1,20 +1,22 @@
 <?php namespace Modules\Backend\Models;
 
 use ci4mongodblibrary\Libraries\Mongo;
-use Config\MongoConfig;
 use CodeIgniter\Model;
+use Config\MongoConfig;
 
 class UserscrudModel extends Model
 {
     protected $m;
     protected $table;
+    protected $pre;
 
     public function __construct()
     {
         parent::__construct();
         $this->m = new Mongo();
-        $prefix=new MongoConfig();
-        $this->table=$prefix->prefix.'users';
+        $this->table='users';
+        $this->pre=new MongoConfig();
+        $this->pre=$this->pre->prefix;
     }
 
     public function loggedUser(int $limit, array $select = [], array $credentials = [])
@@ -22,7 +24,7 @@ class UserscrudModel extends Model
         $data = [
             [
                 '$lookup' => [
-                    'from' => 'auth_groups',
+                    'from' => $this->pre.'auth_groups',
                     'localField' => 'group_id',
                     'foreignField' => '_id',
                     'as' => 'groupInfo'
@@ -45,7 +47,7 @@ class UserscrudModel extends Model
         $data = [
             [
                 '$lookup' => [
-                    'from' => 'auth_groups',
+                    'from' => $this->pre.'auth_groups',
                     'localField' => 'group_id',
                     'foreignField' => '_id',
                     'as' => 'groupInfo'
@@ -54,7 +56,7 @@ class UserscrudModel extends Model
             ['$unwind' => ['path'=>'$groupInfo','preserveNullAndEmptyArrays'=>true]],
             [
                 '$lookup' => [
-                    'from' => 'black_list_users',
+                    'from' => $this->pre.'black_list_users',
                     'localField' => '_id',
                     'foreignField' => 'blacked_id',
                     'as' => 'inBlackList'

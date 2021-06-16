@@ -60,7 +60,7 @@ class BaseController extends Controller
         $this->commonModel = new CommonModel();
         $userModel = new UserscrudModel();
 
-        $this->logged_in_user = $userModel->loggedUser(0, [], ['_id' => new ObjectId(session()->get('logged_in'))]);
+        $this->logged_in_user = $userModel->loggedUser(0, [], ['_id' => new ObjectId(session()->get($this->config->logged_in))]);
         $this->logged_in_user = $this->logged_in_user[0];
 
         $uri='';
