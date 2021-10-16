@@ -1,12 +1,10 @@
 <?php namespace Modules\Backend\Controllers\Auth;
 
-use Config\Services;
+use CodeIgniter\I18n\Time;
 use Gregwar\Captcha\CaptchaBuilder;
 use Modules\Backend\Models\UserModel;
 use MongoDB\BSON\ObjectId;
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use CodeIgniter\I18n\Time;
 
 class AuthController extends BaseController
 {
@@ -53,9 +51,8 @@ class AuthController extends BaseController
             $remember = (bool)$this->request->getPost('remember');
 
             // Try to log them in...
-            if (!$this->authLib->attempt(['email' => $login, 'password' => $password], $remember)) {
+            if (!$this->authLib->attempt(['email' => $login, 'password' => $password], $remember))
                 return redirect()->back()->withInput()->with('error', $this->authLib->error() ?? lang('Auth.badAttempt'));
-            }
 
             $redirectURL = session('redirect_url') ?? 'backend/logout';
             unset($_SESSION['redirect_url']);
@@ -83,9 +80,8 @@ class AuthController extends BaseController
      */
     public function forgotPassword()
     {
-        if ($this->config->activeResetter === false) {
+        if ($this->config->activeResetter === false)
             return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
-        }
 
         return view($this->config->views['forgot'], ['config' => $this->config]);
     }
@@ -104,9 +100,8 @@ class AuthController extends BaseController
         if (!$this->validate($rules))
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
 
-        if ($this->config->activeResetter === false) {
+        if ($this->config->activeResetter === false)
             return redirect()->route('backend/login')->with('error', lang('Auth.forgotDisabled'));
-        }
 
         $user = $this->userModel->findOne(['email' => $this->request->getPost('email')]);
 
@@ -204,7 +199,7 @@ class AuthController extends BaseController
             'reset_hash' => null,
             'reset_expires' => null,
             'force_pass_reset' => false,
-            'reset_at' => date('Y-m-d H:i:s'),
+            'reset_at' => new Time('now'),
         ]);
 
         return redirect()->route('backend/login')->with('message', lang('Auth.resetSuccess'));

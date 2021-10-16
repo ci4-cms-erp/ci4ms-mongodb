@@ -1,5 +1,6 @@
 <?php namespace Modules\Backend\Controllers\UsersCrud;
 
+use CodeIgniter\I18n\Time;
 use JasonGrimes\Paginator;
 use Modules\Backend\Models\UserscrudModel;
 use Modules\Backend\Controllers\BaseController;
@@ -66,7 +67,7 @@ class UserController extends BaseController
             'status' => 'deactive',
             'force_pass_reset' => false,
             'group_id' => new ObjectId($this->request->getPost('group')),
-            'created_at' => date('Y-m-d H:i:s'),
+            'created_at' => new Time('now'),
             'who_created' => new ObjectId(session()->get('logged_in')),
             'auth_users_permissions' => [
                 [
@@ -76,7 +77,7 @@ class UserController extends BaseController
                     'read_r' => true,
                     'delete_r' => true,
                     'who_perm' => null,
-                    'created_at' => date('Y-m-d H:i:s')
+                    'created_at' => new Time('now')
                 ],
                 [
                     'page_id' => new ObjectId("606f224fcfae8326f5c0b358"),
@@ -85,7 +86,7 @@ class UserController extends BaseController
                     'read_r' => true,
                     'delete_r' => true,
                     'who_perm' => null,
-                    'created_at' => date('Y-m-d H:i:s')
+                    'created_at' => new Time('now')
                 ],
                 [
                     'page_id' => new ObjectId("606f224fcfae8326f5c0b359"),
@@ -94,7 +95,7 @@ class UserController extends BaseController
                     'read_r' => true,
                     'delete_r' => true,
                     'who_perm' => null,
-                    'created_at' => date('Y-m-d H:i:s')
+                    'created_at' => new Time('now')
                 ]
             ]
         ];
@@ -165,7 +166,7 @@ class UserController extends BaseController
             'status' => 'deactive',
             'force_pass_reset' => false,
             'group_id' => new ObjectId($this->request->getPost('group')),
-            'created_at' => date('Y-m-d H:i:s'),
+            'created_at' => new Time('now'),
             'who_created' => new ObjectId(session()->get('logged_in'))
         ];
         if ($this->request->getPost('password'))
@@ -268,7 +269,7 @@ class UserController extends BaseController
         $result = [];
 
         if ($this->commonModel->get_where(['blacked_id' => new ObjectId($this->request->getPost('uid'))], 'black_list_users') === 0)
-            $bid = $this->commonModel->createOne('black_list_users', ['blacked_id' => new ObjectId($this->request->getPost('uid')), 'who_blacklisted' => new ObjectId(session()->get('logged_in')), 'notes' => $this->request->getPost('note'), 'created_at' => date('Y-m-d H:i:s')]);
+            $bid = $this->commonModel->createOne('black_list_users', ['blacked_id' => new ObjectId($this->request->getPost('uid')), 'who_blacklisted' => new ObjectId(session()->get('logged_in')), 'notes' => $this->request->getPost('note'), 'created_at' => new Time('now')]);
         else
             $result = ['result' => true, 'error' => ['type' => 'warning', 'message' => 'üyelik karalisteye daha önce eklendi.']];
 

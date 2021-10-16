@@ -1,8 +1,6 @@
 <?php namespace Modules\Backend\Libraries;
-
 use CodeIgniter\Events\Events;
 use Config\App;
-use Config\MongoConfig;
 use ci4mongodblibrary\Models\CommonModel;
 use Config\Services;
 use Modules\Backend\Config\Auth;
@@ -134,46 +132,54 @@ class AuthLibrary
 
     public function has_perm(string $module, string $method): bool
     {
-        if($method=='error_403')
+        if ($method == 'error_403')
             return true;
 
         $userInfo = $this->commonModel->getOne($this->config->userTable, ['_id' => new ObjectId(session()->get($this->config->logged_in))], ['projection' => ['group_id' => true, 'auth_users_permissions' => true]]);
 
         $module = str_replace('\\', '-', $module);
-        $perms = $this->commonModel->getOne('auth_groups', ['_id' => $userInfo->group_id], ['projection' => ['auth_groups_permissions' => true]]);
-        $classID = $this->commonModel->getOne('auth_permissions_pages', ['className' => $module, 'methodName' => $method], ['projection' => ['typeOfPermissions' => true]]);
-        $allPerms = [];
+        $where=['className' => $module, 'methodName' => $method];
 
+        if(empty($method))
+            $where=['_id'=>new ObjectId($module)];
+
+        $classID = $this->commonModel->getOne('auth_permissions_pages', $where, ['projection' => ['typeOfPermissions' => true]]);
+        $perms = $this->commonModel->getOne('auth_groups', ['_id' => $userInfo->group_id], ['projection' => ['auth_groups_permissions' => true]]);
         $permissions = (array)$perms->auth_groups_permissions;
-        if (!empty($userInfo->auth_users_permissions)) {
+
+        $allPerms = [];
+        if (!empty($userInfo->auth_users_permissions)) {//kullanıcıya atanmış izinler
             $userPerms = (array)$userInfo->auth_users_permissions;
             $allPerms = array_merge($permissions, $userPerms);
         } else
             $allPerms = $permissions;
+
         if (!empty($classID)) {
+
             $perms = [];
             foreach ($allPerms as $allPerm) {
                 if ((string)$allPerm->page_id == (string)$classID->_id) {
                     $perms[] = $allPerm;
                 }
             }
+
             $allPerms = [];
             $c = 0;
+
             foreach ($perms as $key => $perm) {
                 if ($key > 0)
                     $c = $key - 1;
-
-                if ($perm->create_r == true && $perms[$c]->create_r == $perm->create_r)
+                if ($perm->create_r === true && $perms[$c]->create_r === $perm->create_r)
                     $allPerms[0]['create_r'] = true;
-                if ($perm->read_r == true && $perms[$c]->read_r == $perm->read_r)
+                if ($perm->read_r === true && $perms[$c]->read_r === $perm->read_r)
                     $allPerms[0]['read_r'] = true;
-                if ($perm->update_r == true && $perms[$c]->update_r == $perm->update_r)
+                if ($perm->update_r === true && $perms[$c]->update_r === $perm->update_r)
                     $allPerms[0]['update_r'] = true;
-                if ($perm->delete_r == true && $perms[$c]->delete_r == $perm->delete_r)
+                if ($perm->delete_r === true && $perms[$c]->delete_r === $perm->delete_r)
                     $allPerms[0]['delete_r'] = true;
             }
 
-            if(empty($allPerms))
+            if (empty($allPerms))
                 return false;
 
             $typeOfPerms = (array)$classID->typeOfPermissions;

@@ -2,6 +2,7 @@
 
 namespace Modules\Backend\Controllers\PermGroup;
 
+use CodeIgniter\I18n\Time;
 use JasonGrimes\Paginator;
 use Modules\Backend\Controllers\BaseController;
 use MongoDB\BSON\ObjectId;
@@ -44,7 +45,7 @@ class PermgroupController extends BaseController
             'name' => $this->request->getPost('groupName'),
             'description' => $this->request->getPost('description'),
             'seflink' => $this->request->getPost('seflink'),
-            'created_at' => date('Y-m-d H:i:s'),
+            'created_at' => new Time('now'),
             'who_created' => new ObjectId(session()->get('logged_in')),
             'auth_groups_permissions' => null
         ]);
@@ -63,7 +64,7 @@ class PermgroupController extends BaseController
                     'read_r' => (bool)$r,
                     'delete_r' => (bool)$d,
                     'who_perm' => new ObjectId($this->logged_in_user->_id),
-                    'created_at' => date('Y-m-d H:i:s')
+                    'created_at' => new Time('now')
                 ];
             }
             $result = $this->commonModel->updateOne('auth_groups', ['_id' => new ObjectId($result)], $data);
@@ -100,7 +101,7 @@ class PermgroupController extends BaseController
             'name' => $this->request->getPost('groupName'),
             'description' => $this->request->getPost('description'),
             'seflink' => $this->request->getPost('seflink'),
-            'updated_at' => date('Y-m-d H:i:s')
+            'updated_at' => new Time('now')
         ]);
 
         if ((bool)$result == true) {
@@ -117,7 +118,7 @@ class PermgroupController extends BaseController
                     'read_r' => (bool)$r,
                     'delete_r' => (bool)$d,
                     'who_perm' => new ObjectId($this->logged_in_user->_id),
-                    'created_at' => date('Y-m-d H:i:s')
+                    'created_at' => new Time('now')
                 ];
             }
 
@@ -156,7 +157,7 @@ class PermgroupController extends BaseController
                 'read_r' => (bool)$r,
                 'delete_r' => (bool)$d,
                 'who_perm' => new ObjectId($this->logged_in_user->_id),
-                'created_at' => date('Y-m-d H:i:s')
+                'created_at' => new Time('now')
             ];
         }
 

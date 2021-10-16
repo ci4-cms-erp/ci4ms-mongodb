@@ -59,10 +59,8 @@ class BaseController extends Controller
         $this->authLib = new AuthLibrary();
         $this->commonModel = new CommonModel();
         $userModel = new UserscrudModel();
-
         $this->logged_in_user = $userModel->loggedUser(0, [], ['_id' => new ObjectId(session()->get($this->config->logged_in))]);
         $this->logged_in_user = $this->logged_in_user[0];
-
         $uri='';
         if($this->request->uri->getTotalSegments()>1){
             $segs=$this->request->uri->getSegments();
@@ -75,12 +73,19 @@ class BaseController extends Controller
         else
             $uri=$this->request->uri->getSegment(1);
         $router = service('router');
+        $navigation=$this->commonModel->getList('auth_permissions_pages', ['inNavigation' => true, 'isBackoffice'=>true]);
+        $nav=[];
+        foreach ($navigation as $item) {
+            $result=$this->authLib->has_perm($item['_id'],'');
+            if($result===true)
+                $nav[]=$item;
+        }
+
         $this->defData = ['config' => $this->config,
             'logged_in_user' => $this->logged_in_user,
             'backConfig' => $this->backConfig,
-            'navigation' => $this->commonModel->getList('auth_permissions_pages', ['inNavigation' => true]),
-            'title'=>$this->commonModel->getOne('auth_permissions_pages', ['className' => $router->controllerName(), $router->methodName(), 'methodName' => $router->controllerName(), $router->methodName()], ['projection' => ['pagename' => true]]),
+            'navigation' => $nav,
+            'title'=>$this->commonModel->getOne('auth_permissions_pages', ['className' => $router->controllerName(), 'methodName' => $router->methodName()], ['projection' => ['pagename' => true]]),
             'uri' => $uri];
     }
-
 }
