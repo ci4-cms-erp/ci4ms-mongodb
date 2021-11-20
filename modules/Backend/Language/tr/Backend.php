@@ -12,4 +12,7 @@ return [
     'updateGroupPerms' => 'Grup Yetkisi Güncelleme',
     'specialAuthUser' => 'Kullanıcıya özel yetki verme',
     'updateUser' => 'Kullanıcı Güncelleme',
+    'settings'=>'Ayarlar',
+    'officeUsers'=>'Ofis Kullanıcıları',
+    'candidateUsers'=>'Aday Kullanıcılar'
 ];

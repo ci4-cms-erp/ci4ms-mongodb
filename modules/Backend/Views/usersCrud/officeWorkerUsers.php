@@ -63,12 +63,18 @@
                                                 class="fas fa-user-slash"></i> Kara Liste
                                     </button>
                                 <?php endif; ?>
-                                <a class="btn btn-outline-dark btn-sm" id="fpwd" data-uid="<?= $userList->_id ?>"><i class="fas fa-key"></i> Şifre Sıfırla</a>
+                                <button class="btn btn-outline-dark btn-sm <?php
+                                if(!empty($userList->reset_expires)) {
+                                    $time = $timeClass::parse($userList->reset_expires);
+                                    echo var_dump(time() > $time->getTimestamp());
+                                    if (time() < $time->getTimestamp())
+                                        echo 'disabled';
+                                    }?>" id="fpwd" data-uid="<?= $userList->_id ?>"><i class="fas fa-key"></i> Şifre Sıfırla</button>
                                 <a href="<?= route_to('user_perms', $userList->_id) ?>"
                                    class="btn btn-outline-primary btn-sm">
                                     <i class="fas fa-sitemap"></i> Özel Yetki
                                 </a>
-                                <a class="btn btn-outline-danger btn-sm"><i class="fas fa-user-minus"></i> sil</a>
+                                <a class="btn btn-outline-danger btn-sm" href="<?=route_to('user_del',$userList->_id)?>"><i class="fas fa-user-minus"></i> sil</a>
                             </td>
                             <?php if ($userList->status == 'banned'): ?>
                                 <div class="modal fade" id="inblackList<?= $userList->_id ?>" tabindex="-1"
@@ -217,6 +223,8 @@
     });
 
     $('#fpwd').on('click',function (){
+        $('#fpwd').addClass('disabled');
+        $('#fpwd').addClass('disabled');
        $.post("<?=route_to('forceResetPassword')?>", {uid:$(this).data('uid'),<?=csrf_token()?>:"<?=csrf_hash()?>"}, function (data){
             if (data.result == true) {
                 Toast.fire({icon: data.error.type, title: data.error.message}).then(function () {

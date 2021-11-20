@@ -8,8 +8,8 @@ use CodeIgniter\Filters\DebugToolbar;
 use CodeIgniter\Filters\Honeypot;
 use Modules\Backend\Filters\BackendAfterLoginFilter;
 use Modules\Backend\Filters\BackendAuthFilter;
-use Modules\Account\Filters\AfterLoginFilter;
-use Modules\Account\Filters\AuthFilter;
+use Modules\Candidate\Filters\CandidateAfterLoginFilter;
+use Modules\Candidate\Filters\CandidateAuthFilter;
 
 class Filters extends BaseConfig
 {
@@ -24,7 +24,9 @@ class Filters extends BaseConfig
         'toolbar' => DebugToolbar::class,
         'honeypot' => Honeypot::class,
         'backendAuthFilter' => BackendAuthFilter::class,
+        'candidateAuthFilter' => CandidateAuthFilter::class,
         'backendAfterLoginFilter' => BackendAfterLoginFilter::class,
+        'candidateAfterLoginFilter' => CandidateAfterLoginFilter::class,
     ];
 
     /**

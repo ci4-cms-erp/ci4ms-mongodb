@@ -1,4 +1,5 @@
 <?php namespace Modules\Backend\Libraries;
+
 use CodeIgniter\Events\Events;
 use Config\App;
 use ci4mongodblibrary\Models\CommonModel;
@@ -22,7 +23,7 @@ class AuthLibrary
         $this->config = new Auth();
         $this->commonModel = new CommonModel();
         $this->user = null;
-        $this->config->userTable='users';
+        $this->config->userTable = 'users';
     }
 
     public function login(object $user = null, bool $remember = false): bool

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noimageindex, nofollow, nosnippet">
 
-    <title>Kun-CMS/ERP <?= $backConfig->vers ?> | <?=lang('Backend.'.$title)?></title>
+    <title>Kun-CMS/ERP <?= $backConfig->vers ?> | <?=lang('Backend.'.$title->pagename)?></title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"

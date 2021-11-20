@@ -18,13 +18,13 @@ class AuthController extends BaseController
     public function login()
     {
         $cap = new CaptchaBuilder();
-        $cap->setBackgroundColor(139,203,183);
+        $cap->setBackgroundColor(139, 203, 183);
         $cap->setIgnoreAllEffects(false);
         $cap->setMaxFrontLines(1);
         $cap->setMaxBehindLines(1);
         $cap->setMaxAngle(1);
-        $cap->setTextColor(18,58,73);
-        $cap->setLineColor(18,58,73);
+        $cap->setTextColor(18, 58, 73);
+        $cap->setLineColor(18, 58, 73);
         $cap->build();
         $this->session->setFlashdata('cap', $cap->getPhrase());
         return view($this->config->views['login'], ['config' => $this->config, 'cap' => $cap]);
@@ -57,10 +57,10 @@ class AuthController extends BaseController
             $redirectURL = session('redirect_url') ?? 'backend/logout';
             unset($_SESSION['redirect_url']);
 
-            return redirect()->to($redirectURL)->withCookies()->with('message', lang('Auth.loginSuccess'));
+            return redirect()->route($redirectURL)->withCookies()->with('message', lang('Auth.loginSuccess'));
         }
 
-        return redirect()->to('backend/login')->withInput()->with('error', $this->authLib->error() ?? lang('Auth.badCaptcha'));
+        return redirect()->route('login')->withInput()->with('error', $this->authLib->error() ?? lang('Auth.badCaptcha'));
     }
 
     /**
@@ -72,7 +72,7 @@ class AuthController extends BaseController
             $this->authLib->logout();
         }
 
-        return redirect()->to('backend/login');
+        return redirect()->route('login');
     }
 
     /**
@@ -96,12 +96,11 @@ class AuthController extends BaseController
         $rules = [
             'email' => 'required|valid_email'
         ];
-        _printRdie($_POST);
         if (!$this->validate($rules))
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
 
         if ($this->config->activeResetter === false)
-            return redirect()->route('backend/login')->with('error', lang('Auth.forgotDisabled'));
+            return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
 
         $user = $this->userModel->findOne(['email' => $this->request->getPost('email')]);
 
@@ -115,14 +114,18 @@ class AuthController extends BaseController
 
         try {
             //Server settings
-            $mail->isSMTP();                                            // Send using SMTP
             $mail->Host = $this->config->mailConfig['SMTPHost'];        // Set the SMTP server to send through
-            $mail->SMTPAuth = true;                                     // Enable SMTP authentication
             $mail->Username = $this->config->mailConfig['SMTPUser'];    // SMTP username
             $mail->Password = $this->config->mailConfig['SMTPPass'];    // SMTP password
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
-            $mail->Port = 465;                                          // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
             $mail->CharSet = "UTF-8";
+
+            if ($this->config->mailConfig['protocol'] === 'smtp') {
+                $mail->Port = $this->config->mailConfig['SMTPPort'];                                          // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
+                $mail->isSMTP();                                            // Send using SMTP
+                $mail->SMTPAuth = true;                                     // Enable SMTP authentication
+            }
+            if ($this->config->mailConfig['TLS'] === true)
+                $mail->SMTPSecure = $this->config->mailConfig['SMTPCrypto'];         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
 
             //Recipients
             $mail->setFrom('noreply@shl.com.tr', 'noreply@shl.com.tr');
@@ -136,7 +139,7 @@ class AuthController extends BaseController
 
             $mail->send();
 
-            return redirect()->to('backend/login')->with('message', lang('Auth.forgotEmailSent'));
+            return redirect()->route('login')->with('message', lang('Auth.forgotEmailSent'));
         } catch (Exception $e) {
             return redirect()->back()->withInput()->with('error', $mail->ErrorInfo ?? lang('Auth.unknownError'));
         }
@@ -148,7 +151,7 @@ class AuthController extends BaseController
     public function resetPassword($token)
     {
         if ($this->config->activeResetter === false) {
-            return redirect()->route('backend/login')->with('error', lang('Auth.forgotDisabled'));
+            return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
         }
 
         return view($this->config->views['reset'], ['config' => $this->config, 'token' => $token]);
@@ -163,7 +166,7 @@ class AuthController extends BaseController
     public function attemptReset($token)
     {
         if ($this->config->activeResetter === false) {
-            return redirect()->route('backend/login')->with('error', lang('Auth.forgotDisabled'));
+            return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
         }
 
         // First things first - log the reset attempt.
@@ -183,7 +186,7 @@ class AuthController extends BaseController
         if (!$this->validate($rules))
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
 
-        $user = $this->userModel->findOne(['email'=> $this->request->getPost('email'), 'reset_hash'=>$token]);
+        $user = $this->userModel->findOne(['email' => $this->request->getPost('email'), 'reset_hash' => $token]);
 
         if (is_null($user)) {
             return redirect()->back()->with('error', lang('Auth.forgotNoUser'));
@@ -202,7 +205,7 @@ class AuthController extends BaseController
             'reset_at' => new Time('now'),
         ]);
 
-        return redirect()->route('backend/login')->with('message', lang('Auth.resetSuccess'));
+        return redirect()->route('login')->with('message', lang('Auth.resetSuccess'));
     }
 
     /**
@@ -227,11 +230,11 @@ class AuthController extends BaseController
         $user = $this->userModel->findOne(['activate_hash' => $token, 'status' => 'deactive']);
 
         if (is_null($user))
-            return redirect()->route('backend/login')->with('error', lang('Auth.activationNoUser'));
+            return redirect()->route('login')->with('error', lang('Auth.activationNoUser'));
 
         $this->commonModel->updateOne('users', ['_id' => $user->_id], ['status' => 'active', 'activate_hash' => null]);
 
-        return redirect()->route('backend/login')->with('message', lang('Auth.registerSuccess'));
+        return redirect()->route('login')->with('message', lang('Auth.registerSuccess'));
     }
 
     public function activateEmail($token)
@@ -251,10 +254,10 @@ class AuthController extends BaseController
         $user = $this->userModel->findOne(['activate_hash' => $token, 'status' => 'deactive']);
 
         if (is_null($user))
-            return redirect()->route('backend/login')->with('error', lang('Auth.activationNoUser'));
+            return redirect()->route('login')->with('error', lang('Auth.activationNoUser'));
 
         $this->commonModel->updateOne('users', ['_id' => $user->_id], ['status' => 'active', 'activate_hash' => null]);
 
-        return redirect()->route('backend/login')->with('message', lang('Auth.emailActivationuccess'));
+        return redirect()->route('login')->with('message', lang('Auth.emailActivationuccess'));
     }
 }

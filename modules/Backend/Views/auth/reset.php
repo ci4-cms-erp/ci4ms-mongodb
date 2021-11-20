@@ -10,8 +10,8 @@
         </div>
         <div class="card-body">
             <p class="login-box-msg">Yeni şifrenizden sadece bir adım uzaktasınız, şifrenizi şimdi oluşturun.</p>
-            <?= view('Modules\Backend\Views\Auth\_message_block') ?>
-            <form action="<?=route_to('backend/reset-password',$token)?>" method="post">
+            <?= view('Modules\Auth\Views\_message_block') ?>
+            <form action="<?=route_to('reset-password',$token)?>" method="post">
                 <?=csrf_field()?>
 
                 <div class="form-group">

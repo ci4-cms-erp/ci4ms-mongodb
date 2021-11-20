@@ -11,8 +11,8 @@
         </div>
         <div class="card-body">
             <p class="login-box-msg">Oturumunuzu başlatmak için giriş yapın</p>
-            <?= view('Modules\Backend\Views\auth\_message_block') ?>
-            <form action="<?= route_to('backend/login') ?>" method="post">
+            <?= view('Modules\Auth\Views\_message_block') ?>
+            <form action="<?= route_to('login') ?>" method="post">
                 <?= csrf_field() ?>
                 <div class="input-group mb-3">
                     <input type="email" name="email" class="form-control" placeholder="Email" required

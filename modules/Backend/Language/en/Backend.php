@@ -11,4 +11,7 @@ return [
     'updateGroupPerms' => 'Grup Yetkisi Güncelleme',
     'specialAuthUser' => 'Kullanıcıya özel yetki verme',
     'updateUser' => 'Kullanıcı Güncelleme',
+    'settings'=>'Settings',
+    'officeUsers'=>'Ofis Kullanıcıları',
+    'candidateUsers'=>'Aday Kullanıcılar'
 ];

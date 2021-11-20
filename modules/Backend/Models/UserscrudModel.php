@@ -10,13 +10,13 @@ class UserscrudModel extends Model
     protected $table;
     protected $pre;
 
-    public function __construct()
+    public function __construct($dbInfo = 'default')
     {
         parent::__construct();
         $this->m = new Mongo();
         $this->table='users';
         $this->pre=new MongoConfig();
-        $this->pre=$this->pre->prefix;
+        $this->pre=$this->pre->dbInfo[$dbInfo]->prefix;
     }
 
     public function loggedUser(int $limit, array $select = [], array $credentials = [])

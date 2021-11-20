@@ -10,8 +10,8 @@
         </div>
         <div class="card-body">
             <p class="login-box-msg">Şifrenizi mi unuttunuz? Burada e-mail adresiniz ile kolayca yeni bir şifre alabilirsiniz.</p>
-            <?= view('Modules\Backend\Views\auth\_message_block') ?>
-            <form action="<?=route_to('backend/forgot')?>" method="post">
+            <?= view('Modules\Auth\Views\_message_block') ?>
+            <form action="<?=route_to('forgot')?>" method="post">
                 <?=csrf_field()?>
                 <div class="input-group mb-3">
                     <input type="email" class="form-control" name="email" placeholder="Email">

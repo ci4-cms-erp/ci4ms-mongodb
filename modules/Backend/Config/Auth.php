@@ -200,7 +200,7 @@ class Auth extends BaseConfig
         'charset' => 'UTF-8',
         'mailtype' => 'html',
         'wordWrap' => 'true',
-        'userAgent' => 'kun-cms_system',
-        //'SMTPCrypto' => 'tls',
+        'SMTPCrypto' => 'tls',
+        'TLS'=>true,
         'newline' => "\r\n"];
 }

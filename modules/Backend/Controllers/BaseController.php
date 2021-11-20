@@ -38,7 +38,7 @@ class BaseController extends Controller
      *
      * @var array
      */
-    protected $helpers = [];
+    protected $helpers = ['text'];
 
     /**
      * Constructor.
@@ -80,12 +80,25 @@ class BaseController extends Controller
             if($result===true)
                 $nav[]=$item;
         }
+        $settings = $this->commonModel->getOne('settings');
+        $this->config->mailConfig=['protocol' => $settings->mailProtocol,
+            'SMTPHost' => $settings->mailServer,
+            'SMTPPort' => $settings->mailPort,
+            'SMTPUser' => $settings->mailAddress,
+            'SMTPPass' => $settings->mailPassword,
+            'charset' => 'UTF-8',
+            'mailtype' => 'html',
+            'wordWrap' => 'true',
+            'TLS'=>$settings->mailTLS,
+            'newline' => "\r\n"];
+        if($settings->mailProtocol==='smtp')
+            $this->config->mailConfig['SMTPCrypto']='PHPMailer::ENCRYPTION_STARTTLS';
 
         $this->defData = ['config' => $this->config,
             'logged_in_user' => $this->logged_in_user,
             'backConfig' => $this->backConfig,
             'navigation' => $nav,
-            'title'=>$this->commonModel->getOne('auth_permissions_pages', ['className' => $router->controllerName(), 'methodName' => $router->methodName()], ['projection' => ['pagename' => true]]),
+            'title'=>$this->commonModel->getOne('auth_permissions_pages', ['className' => str_replace('\\', '-',$router->controllerName()), 'methodName' => $router->methodName()], ['projection' => ['pagename' => true]]),
             'uri' => $uri];
     }
 }

@@ -72,7 +72,7 @@ class PermgroupController extends BaseController
             if (empty($result))
                 return redirect()->back()->withInput()->with('errors', ['Grup Yetkileri eklenemedi.']);
             else
-                return redirect()->to('groupList')->with('message', $this->request->getPost('groupName') . ' adlı grup ve yetkileri başarıyla eklendi.');
+                return redirect()->to(route_to('groupList',1))->with('message', $this->request->getPost('groupName') . ' adlı grup ve yetkileri başarıyla eklendi.');
         } else
             return redirect()->back()->withInput()->with('errors', ['Grup Eklenemedi. Veri tabanı hatası !']);
     }
@@ -126,7 +126,7 @@ class PermgroupController extends BaseController
             if ((bool)$result == false)
                 return redirect()->back()->withInput()->with('error', 'Grup Yetkileri eklenemedi.');
             else
-                return redirect()->to('/backend/groupList/1')->with('message', '<b>' . $this->request->getPost('groupName') . '</b> adlı grup ve yetkileri başarıyla eklendi.');
+                return redirect()->route('groupList',[1])->with('message', '<b>' . $this->request->getPost('groupName') . '</b> adlı grup ve yetkileri başarıyla eklendi.');
         } else
             return redirect()->back()->withInput()->with('error', 'Grup Eklenemedi. Veri tabanı hatası !');
     }
@@ -165,6 +165,6 @@ class PermgroupController extends BaseController
         if ((bool)$result == false)
             return redirect()->back()->withInput()->with('error', 'Kullanıcı Yetkileri eklenemedi.');
         else
-            return redirect()->to('/backend/officeWorker/1')->with('message', 'Kullanıcı yetkileri başarıyla eklendi.');
+            return redirect()->to(route_to('officeWorker/',1))->with('message', 'Kullanıcı yetkileri başarıyla eklendi.');
     }
 }

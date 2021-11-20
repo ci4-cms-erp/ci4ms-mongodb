@@ -51,6 +51,19 @@ class BaseController extends Controller
         $this->config = new Auth();
         $this->authLib = new AuthLibrary();
         $this->commonModel = new CommonModel();
+        $settings = $this->commonModel->getOne('settings');
+        $this->config->mailConfig=['protocol' => $settings->mailProtocol,
+            'SMTPHost' => $settings->mailServer,
+            'SMTPPort' => $settings->mailPort,
+            'SMTPUser' => $settings->mailAddress,
+            'SMTPPass' => $settings->mailPassword,
+            'charset' => 'UTF-8',
+            'mailtype' => 'html',
+            'wordWrap' => 'true',
+            'TLS'=>$settings->mailTLS,
+            'newline' => "\r\n"];
+        if($settings->mailProtocol==='smtp')
+            $this->config->mailConfig['SMTPCrypto']='PHPMailer::ENCRYPTION_STARTTLS';
     }
 
 }

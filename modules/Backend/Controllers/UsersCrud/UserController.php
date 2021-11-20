@@ -19,19 +19,18 @@ class UserController extends BaseController
 
     public function officeWorker($num = 1)
     {
-
-        $this->defData['userLists'] = $this->userModel->userList(10,
-            ['email' => true, 'firstname' => true, 'sirname' => true, 'status' => true, 'groupInfo' => true, 'inBlackList' => true],
-            ['group_id' => ['$ne' => new ObjectId("605f4fa8916eb59b540e95fa")]], ((int)$num - 1) * 12);
-
-        $c = count($this->defData['userLists']);
-        $totalItems = $c;
-        $itemsPerPage = 12;
-        $currentPage = 12;
+        $this->defData['timeClass']=new Time();
+        $totalItems = $this->commonModel->count('users',['group_id' => ['$ne' => new ObjectId("605f4fa8916eb59b540e95fa")],'deleted_at'=>null]);
+        $itemsPerPage = 20;
+        $currentPage = $this->request->uri->getSegment('3',1);
         $urlPattern = '/backend/officeWorker/(:num)';
         $paginator = new Paginator($totalItems, $itemsPerPage, $currentPage, $urlPattern);
         $paginator->setMaxPagesToShow(5);
         $this->defData['paginator'] = $paginator;
+        $bpk = ($this->request->uri->getSegment(3, 1) - 1) * $itemsPerPage;
+        $this->defData['userLists'] = $this->userModel->userList($itemsPerPage,
+            ['email' => true, 'firstname' => true, 'sirname' => true, 'status' => true, 'groupInfo' => true, 'inBlackList' => true,'reset_expires'=>true],
+            ['group_id' => ['$ne' => new ObjectId("605f4fa8916eb59b540e95fa")],'deleted_at'=>null], $bpk);
         return view('Modules\Backend\Views\usersCrud\officeWorkerUsers', $this->defData);
     }
 
@@ -103,20 +102,23 @@ class UserController extends BaseController
 
         if ((bool)$result == false)
             return redirect()->back()->withInput()->with('error', 'Kullanıcı oluşturulamadı.');
-
         $mail = new PHPMailer(true);
 
         try {
             //Server settings
-            $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      // Enable verbose debug output
-            $mail->isSMTP();                                            // Send using SMTP
+            $mail->Mailer='pop3';                                            // Send using SMTP
+            if($this->config->mailConfig['protocol']==='smtp') {
+                $mail->isSMTP();
+                $mail->SMTPAuth = true;                                     // Enable SMTP authentication
+            }
             $mail->Host = $this->config->mailConfig['SMTPHost'];        // Set the SMTP server to send through
-            $mail->SMTPAuth = true;                                     // Enable SMTP authentication
+            $mail->Port = $this->config->mailConfig['SMTPPort'];                                          // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
             $mail->Username = $this->config->mailConfig['SMTPUser'];    // SMTP username
             $mail->Password = $this->config->mailConfig['SMTPPass'];    // SMTP password
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
-            $mail->Port = 465;                                          // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
             $mail->CharSet = "UTF-8";
+
+            if($this->config->mailConfig['TLS']===true)
+                $mail->SMTPSecure = $this->config->mailConfig['SMTPCrypto'];         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
 
             //Recipients
             $mail->setFrom('noreply@shl.com.tr', 'noreply@shl.com.tr');
@@ -126,11 +128,11 @@ class UserController extends BaseController
             // Content
             $mail->isHTML(true);                                  // Set email format to HTML
             $mail->Subject = 'Üyelik Aktivasyonu';
-            $mail->Body = 'Üyeliğiniz şirket yetkilisi tarafından oluşturuldu. Üyeliğinizi aktif etmek için lütfen <a href="' . base_url('backend/activate-account/' . $data['activate_hash']) . '"><b>buraya</b></a> tıklayınız. Tıkladıktan sonra sizinle paylaşılan <b>email</b> ve <b>şifre</b> ile giriş yapabilirsiniz.<br>E-mail adresi : ' . $this->request->getPost('email') . '<br>Şifreniz : ' . $this->request->getPost('password');
+            $mail->Body = 'Üyeliğiniz şirket yetkilisi tarafından oluşturuldu. Üyeliğinizi aktif etmek için lütfen <a href="' . route_to('activate-account', $data['activate_hash']) . '"><b>buraya</b></a> tıklayınız. Tıkladıktan sonra sizinle paylaşılan <b>email</b> ve <b>şifre</b> ile giriş yapabilirsiniz.<br>E-mail adresi : ' . $this->request->getPost('email') . '<br>Şifreniz : ' . $this->request->getPost('password');
 
             $mail->send();
 
-            return redirect()->to('/backend/officeWorker/1')->with('message', 'Üyelik oluşturuldu. Aktiflik maili gönderildi.');
+            return redirect()->route('officeWorker',[1])->with('message', 'Üyelik oluşturuldu. Aktiflik maili gönderildi.');
         } catch (Exception $e) {
             return redirect()->back()->withInput()->with('error', $mail->ErrorInfo);
         }
@@ -177,7 +179,12 @@ class UserController extends BaseController
         if ((bool)$result == false)
             return redirect()->back()->withInput()->with('error', 'Kullanıcı oluşturulamadı.');
         else
-            return redirect()->to('/backend/officeWorker/1')->with('message', 'Üyelik Güncellendi.');
+            return redirect()->route('officeWorker',[1])->with('message', 'Üyelik Güncellendi.');
+    }
+
+    public function user_del($id)
+    {
+        dd($id);
     }
 
     public function profile()
@@ -225,14 +232,18 @@ class UserController extends BaseController
             if ((bool)$result == true) {
                 try {
                     //Server settings
-                    $mail->isSMTP();                                            // Send using SMTP
                     $mail->Host = $this->config->mailConfig['SMTPHost'];        // Set the SMTP server to send through
-                    $mail->SMTPAuth = true;                                     // Enable SMTP authentication
+                    $mail->Port = $this->config->mailConfig['SMTPPort'];                                          // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
                     $mail->Username = $this->config->mailConfig['SMTPUser'];    // SMTP username
                     $mail->Password = $this->config->mailConfig['SMTPPass'];    // SMTP password
-                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
-                    $mail->Port = 465;                                          // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
                     $mail->CharSet = "UTF-8";
+
+                    if($this->config->mailConfig['protocol']==='smtp') {
+                        $mail->isSMTP();                                            // Send using SMTP
+                        $mail->SMTPAuth = true;                                     // Enable SMTP authentication
+                    }
+                    if($this->config->mailConfig['TLS']===true)
+                        $mail->SMTPSecure = $this->config->mailConfig['SMTPCrypto'];         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
 
                     //Recipients
                     $mail->setFrom('noreply@shl.com.tr', 'noreply@shl.com.tr');
@@ -243,12 +254,12 @@ class UserController extends BaseController
                     $mail->isHTML(true);                                  // Set email format to HTML
                     $mail->Subject = 'Mail Aktivasyonu';
 
-                    $mail->Body = 'Mail adresiniz tarafınızdan güncellenmiştir. Lütfen <a href="' . base_url('backend/activate-email/' . $data['activate_hash']) . '"><b>buraya</b></a> tıklayınız.';
+                    $mail->Body = 'Mail adresiniz tarafınızdan güncellenmiştir. Lütfen <a href="' . route_to('activate-email', $data['activate_hash']) . '"><b>buraya</b></a> tıklayınız.';
                     $mail->send();
                 } catch (Exception $e) {
                     return redirect()->back()->withInput()->with('error', $mail->ErrorInfo);
                 }
-                return redirect()->to('/logout')->with('message', 'Profil Güncellendi. Aktivasyon linki için e-posta adresinizi kontrol ediniz.');
+                return redirect()->route('logout')->with('message', 'Profil Güncellendi. Aktivasyon linki için e-posta adresinizi kontrol ediniz.');
             }
         } else
             $result = (string)$this->commonModel->updateOne('users', ['_id' => new ObjectId(session()->get('logged_in'))], $data);
@@ -320,7 +331,7 @@ class UserController extends BaseController
                 $mail->isHTML(true);                                  // Set email format to HTML
                 $mail->Subject = 'Mail Aktivasyonu';
 
-                $mail->Body = 'Üyeliğinizi yeniden aktif edebilimeniz için şirket yetkilisi müdehale etti. Üyeliğinizi aktif etmek için lütfen <a href="' . base_url('backend/activate-account/' . $data['activate_hash']) . '"><b>buraya</b></a> tıklayınız. Tıkladıktan sonra sizinle paylaşılan <b>email</b> ve <b>şifre</b> ile giriş yapabilirsiniz.<br>E-mail adresi : ' . $user->email . '<br>Şifreniz : ' . $pwd;
+                $mail->Body = 'Üyeliğinizi yeniden aktif edebilimeniz için şirket yetkilisi müdehale etti. Üyeliğinizi aktif etmek için lütfen <a href="' . route_to('activate-account', $data['activate_hash']) . '"><b>buraya</b></a> tıklayınız. Tıkladıktan sonra sizinle paylaşılan <b>email</b> ve <b>şifre</b> ile giriş yapabilirsiniz.<br>E-mail adresi : ' . $user->email . '<br>Şifreniz : ' . $pwd;
                 $mail->send();
 
                 $result = ['result' => true, 'error' => ['type' => 'success', 'message' => $user->email . ' e-mail adresli üyelik karalisteden çıkarıldı.']];
@@ -365,7 +376,7 @@ class UserController extends BaseController
                 // Content
                 $mail->isHTML(true);                                  // Set email format to HTML
                 $mail->Subject = 'Üyelik Şifre Sıfırlama';
-                $mail->Body = 'Üyeliğinizin şifre sıfırlaması yetkili gerçekleştirildi. Şifre yenileme isteğiniz ' . date('d-m-Y H:i:s', strtotime($user->reset_expires)) . ' tarihine kadar geçerlidir. Lütfen yeni şifrenizi belirlemek için <a href="' . base_url('backend/reset-password/' . $user->reset_hash) . '"><b>buraya</b></a> tıklayınız.';
+                $mail->Body = 'Üyeliğinizin şifre sıfırlaması yetkili gerçekleştirildi. Şifre yenileme isteğiniz ' . date('d-m-Y H:i:s', strtotime($user->reset_expires)) . ' tarihine kadar geçerlidir. Lütfen yeni şifrenizi belirlemek için <a href="' . route_to('reset-password' , $user->reset_hash) . '"><b>buraya</b></a> tıklayınız.';
 
                 $mail->send();
                 $result = ['result' => true, 'error' => ['type' => 'success', 'message' => $user->email . ' e-posta adresli kullanıcıya şifre yenileme maili atıldı.']];
