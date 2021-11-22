@@ -1,0 +1,1 @@
+<?= $this->extend('Views\templates\default-template\base') ?>

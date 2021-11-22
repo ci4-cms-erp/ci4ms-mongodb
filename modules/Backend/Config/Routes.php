@@ -10,7 +10,7 @@ $routes->group('backend', ['namespace' => 'Modules\Backend\Controllers'], functi
     // Login/out
     $routes->get('login', 'Auth\AuthController::login', ['filter' => 'backendAuthFilter','as'=>'login']);
     $routes->post('login', 'Auth\AuthController::attemptLogin',['filter' => 'backendAuthFilter']);
-    $routes->get('logout', 'Auth\AuthController::logout',['filter' => 'backendAuthFilter','as'=>'logout']);
+    $routes->get('logout', 'Auth\AuthController::logout',['as'=>'logout']);
 
     // Activation
     $routes->get('activate-account/(:any)', 'Auth\AuthController::activateAccount/$1', ['filter' => 'backendAuthFilter','as'=>'activate-account']);

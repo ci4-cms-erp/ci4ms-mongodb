@@ -54,7 +54,7 @@ class AuthController extends BaseController
             if (!$this->authLib->attempt(['email' => $login, 'password' => $password], $remember))
                 return redirect()->back()->withInput()->with('error', $this->authLib->error() ?? lang('Auth.badAttempt'));
 
-            $redirectURL = session('redirect_url') ?? 'backend/logout';
+            $redirectURL = session('redirect_url') ?? redirect()->route('logout');
             unset($_SESSION['redirect_url']);
 
             return redirect()->route($redirectURL)->withCookies()->with('message', lang('Auth.loginSuccess'));
