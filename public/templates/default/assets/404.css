@@ -3,7 +3,7 @@
 =======================*/
 
 
-.page_404{ padding:40px 0; background:#fff; font-family: 'Arvo', serif;
+.page_404{ padding:9em 0; background:#fff; font-family: 'Arvo', serif;
 }
 
 .page_404  img{ width:100%;}
@@ -12,6 +12,7 @@
  
  background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
     height: 400px;
+    background-repeat: no-repeat;
     background-position: center;
  }
  

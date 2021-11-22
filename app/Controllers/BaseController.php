@@ -42,7 +42,6 @@ class BaseController extends Controller
 	{
 		// Do Not Edit This Line
 		parent::initController($request, $response, $logger);
-        throw new \CodeIgniter\Database\Exceptions\DatabaseException();
 
 		//--------------------------------------------------------------------
 		// Preload any models, libraries, etc, here.
