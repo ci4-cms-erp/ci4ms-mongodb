@@ -37,14 +37,12 @@ class BackendAfterLoginFilter implements FilterInterface
         }
 
         $authLib=new AuthLibrary();
-        if (!$authLib->check()) {
-            d('buradata');
-            return redirect()->route('logout');
-        }
+        if (!$authLib->check()) return redirect()->route('logout');
+
         $router = service('router');
         $perms = $authLib->has_perm($router->controllerName(), $router->methodName());
-        if ($perms === false)
-            return redirect()->to('/backend/403');
+
+        if ($perms === false) return redirect()->to('/backend/403');
 	}
 
 	/**

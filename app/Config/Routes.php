@@ -33,7 +33,14 @@ $routes->setAutoRoute(true);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
+$routes->add('/(:any)', 'Home::index/$1');
+$routes->get('maintenance-mode','Home::maintenanceMode');
 $routes->match(['get', 'post'], 'imageRender/(:segment)', 'RenderImage::index/$1');
+/*$routes->add('feed', function () {
+    $rss = new RSSFeeder();
+
+    return $rss->feed('general');
+});*/
 
 /*
  * --------------------------------------------------------------------
@@ -49,9 +56,7 @@ $routes->match(['get', 'post'], 'imageRender/(:segment)', 'RenderImage::index/$1
  * needing to reload it.
  */
 if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php'))
-{
 	require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
-}
 
 /**
  * --------------------------------------------------------------------
@@ -66,11 +71,8 @@ if (file_exists(ROOTPATH.'modules')) {
         if ($module === '.' || $module === '..') continue;
         if (is_dir($modulesPath) . '/' . $module) {
             $routesPath = $modulesPath . $module . '/Config/Routes.php';
-            if (file_exists($routesPath)) {
-                require($routesPath);
-            } else {
-                continue;
-            }
+            if (file_exists($routesPath)) require($routesPath);
+            else continue;
         }
     }
 }

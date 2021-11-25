@@ -1,39 +1,52 @@
-<?php namespace Modules\Backend\Controllers\UsersCrud;
+<?php namespace Modules\Backend\Controllers;
 
 use CodeIgniter\I18n\Time;
 use JasonGrimes\Paginator;
 use Modules\Backend\Models\UserscrudModel;
-use Modules\Backend\Controllers\BaseController;
 use MongoDB\BSON\ObjectId;
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
 
+/**
+ *
+ */
 class UserController extends BaseController
 {
+    /**
+     * @var UserscrudModel
+     */
     protected $userModel;
 
+    /**
+     *
+     */
     public function __construct()
     {
         $this->userModel = new UserscrudModel();
     }
 
-    public function officeWorker($num = 1)
+    /**
+     * @return string
+     */
+    public function officeWorker()
     {
-        $this->defData['timeClass']=new Time();
-        $totalItems = $this->commonModel->count('users',['group_id' => ['$ne' => new ObjectId("605f4fa8916eb59b540e95fa")],'deleted_at'=>null]);
+        $this->defData['timeClass'] = new Time();
+        $totalItems = $this->commonModel->count('users', ['group_id' => ['$ne' => new ObjectId("605f4fa8916eb59b540e95fa")], 'deleted_at' => null]);
         $itemsPerPage = 20;
-        $currentPage = $this->request->uri->getSegment('3',1);
+        $currentPage = $this->request->uri->getSegment('3', 1);
         $urlPattern = '/backend/officeWorker/(:num)';
         $paginator = new Paginator($totalItems, $itemsPerPage, $currentPage, $urlPattern);
         $paginator->setMaxPagesToShow(5);
         $this->defData['paginator'] = $paginator;
         $bpk = ($this->request->uri->getSegment(3, 1) - 1) * $itemsPerPage;
         $this->defData['userLists'] = $this->userModel->userList($itemsPerPage,
-            ['email' => true, 'firstname' => true, 'sirname' => true, 'status' => true, 'groupInfo' => true, 'inBlackList' => true,'reset_expires'=>true],
-            ['group_id' => ['$ne' => new ObjectId("605f4fa8916eb59b540e95fa")],'deleted_at'=>null], $bpk);
+            ['email' => true, 'firstname' => true, 'sirname' => true, 'status' => true, 'groupInfo' => true, 'inBlackList' => true, 'reset_expires' => true],
+            ['group_id' => ['$ne' => new ObjectId("605f4fa8916eb59b540e95fa")], 'deleted_at' => null], $bpk);
         return view('Modules\Backend\Views\usersCrud\officeWorkerUsers', $this->defData);
     }
 
+    /**
+     * @return string
+     */
     public function create_user()
     {
         $this->defData['groups'] = $this->commonModel->getList('auth_groups');
@@ -42,6 +55,10 @@ class UserController extends BaseController
         return view('Modules\Backend\Views\usersCrud\createUser', $this->defData);
     }
 
+    /**
+     * @return \CodeIgniter\HTTP\RedirectResponse
+     * @throws \PHPMailer\PHPMailer\Exception
+     */
     public function create_user_post()
     {
         $valData = ([
@@ -106,8 +123,8 @@ class UserController extends BaseController
 
         try {
             //Server settings
-            $mail->Mailer='pop3';                                            // Send using SMTP
-            if($this->config->mailConfig['protocol']==='smtp') {
+            $mail->Mailer = 'pop3';                                            // Send using SMTP
+            if ($this->config->mailConfig['protocol'] === 'smtp') {
                 $mail->isSMTP();
                 $mail->SMTPAuth = true;                                     // Enable SMTP authentication
             }
@@ -117,7 +134,7 @@ class UserController extends BaseController
             $mail->Password = $this->config->mailConfig['SMTPPass'];    // SMTP password
             $mail->CharSet = "UTF-8";
 
-            if($this->config->mailConfig['TLS']===true)
+            if ($this->config->mailConfig['TLS'] === true)
                 $mail->SMTPSecure = $this->config->mailConfig['SMTPCrypto'];         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
 
             //Recipients
@@ -132,12 +149,16 @@ class UserController extends BaseController
 
             $mail->send();
 
-            return redirect()->route('officeWorker',[1])->with('message', 'Üyelik oluşturuldu. Aktiflik maili gönderildi.');
+            return redirect()->route('officeWorker', [1])->with('message', 'Üyelik oluşturuldu. Aktiflik maili gönderildi.');
         } catch (Exception $e) {
             return redirect()->back()->withInput()->with('error', $mail->ErrorInfo);
         }
     }
 
+    /**
+     * @param $id
+     * @return string
+     */
     public function update_user($id)
     {
         $this->defData['groups'] = $this->commonModel->getList('auth_groups', [], []);
@@ -146,6 +167,10 @@ class UserController extends BaseController
         return view('Modules\Backend\Views\usersCrud\updateUser', $this->defData);
     }
 
+    /**
+     * @param $id
+     * @return \CodeIgniter\HTTP\RedirectResponse
+     */
     public function update_user_post($id)
     {
         $valData = ([
@@ -179,20 +204,33 @@ class UserController extends BaseController
         if ((bool)$result == false)
             return redirect()->back()->withInput()->with('error', 'Kullanıcı oluşturulamadı.');
         else
-            return redirect()->route('officeWorker',[1])->with('message', 'Üyelik Güncellendi.');
+            return redirect()->route('officeWorker', [1])->with('message', 'Üyelik Güncellendi.');
     }
 
-    public function user_del($id)
+    /**
+     * @param string $id
+     */
+    public function user_del(string $id)
     {
-        dd($id);
+        if ($this->commonModel->updateOne('users', ['_id' => new ObjectId($id)], ['deleted_at' => date('Y-m-d H:i:s'), 'status' => 'deleted']) === true)
+            return redirect()->route('officeWorker', [1])->with('message', 'Üyelik Silindi.');
+
+        return redirect()->route('officeWorker', [1])->with('error', 'Üyelik Silinemedi.');
     }
 
+    /**
+     * @return string
+     */
     public function profile()
     {
         $this->defData['user'] = $this->commonModel->getOne('users', ['_id' => new ObjectId(session()->get('logged_in'))], ['projection' => ['email' => true, 'firstname' => true, 'sirname' => true]]);
         return view('Modules\Backend\Views\usersCrud\profile', $this->defData);
     }
 
+    /**
+     * @return \CodeIgniter\HTTP\RedirectResponse
+     * @throws \PHPMailer\PHPMailer\Exception
+     */
     public function profile_post()
     {
         $valData = ([
@@ -238,11 +276,11 @@ class UserController extends BaseController
                     $mail->Password = $this->config->mailConfig['SMTPPass'];    // SMTP password
                     $mail->CharSet = "UTF-8";
 
-                    if($this->config->mailConfig['protocol']==='smtp') {
+                    if ($this->config->mailConfig['protocol'] === 'smtp') {
                         $mail->isSMTP();                                            // Send using SMTP
                         $mail->SMTPAuth = true;                                     // Enable SMTP authentication
                     }
-                    if($this->config->mailConfig['TLS']===true)
+                    if ($this->config->mailConfig['TLS'] === true)
                         $mail->SMTPSecure = $this->config->mailConfig['SMTPCrypto'];         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
 
                     //Recipients
@@ -270,6 +308,9 @@ class UserController extends BaseController
             return redirect()->back()->withInput()->with('message', 'Profil Güncellendi.');
     }
 
+    /**
+     * @return false|string|string[]
+     */
     public function ajax_blackList_post()
     {
         $valData = (['note' => ['label' => 'Note', 'rules' => 'required'], 'uid' => ['label' => 'Kullanıcı id', 'rules' => 'required']]);
@@ -292,6 +333,10 @@ class UserController extends BaseController
         return json_encode($result);
     }
 
+    /**
+     * @return array|false|string|string[]
+     * @throws \PHPMailer\PHPMailer\Exception
+     */
     public function ajax_remove_from_blackList_post()
     {
         $valData = (['uid' => ['label' => 'Kullanıcı id', 'rules' => 'required']]);
@@ -344,6 +389,10 @@ class UserController extends BaseController
         return json_encode($result);
     }
 
+    /**
+     * @return false|string|string[]
+     * @throws \PHPMailer\PHPMailer\Exception
+     */
     public function ajax_force_reset_password()
     {
         $valData = (['uid' => ['label' => 'Kullanıcı id', 'rules' => 'required']]);
@@ -376,7 +425,7 @@ class UserController extends BaseController
                 // Content
                 $mail->isHTML(true);                                  // Set email format to HTML
                 $mail->Subject = 'Üyelik Şifre Sıfırlama';
-                $mail->Body = 'Üyeliğinizin şifre sıfırlaması yetkili gerçekleştirildi. Şifre yenileme isteğiniz ' . date('d-m-Y H:i:s', strtotime($user->reset_expires)) . ' tarihine kadar geçerlidir. Lütfen yeni şifrenizi belirlemek için <a href="' . route_to('reset-password' , $user->reset_hash) . '"><b>buraya</b></a> tıklayınız.';
+                $mail->Body = 'Üyeliğinizin şifre sıfırlaması yetkili gerçekleştirildi. Şifre yenileme isteğiniz ' . date('d-m-Y H:i:s', strtotime($user->reset_expires)) . ' tarihine kadar geçerlidir. Lütfen yeni şifrenizi belirlemek için <a href="' . route_to('reset-password', $user->reset_hash) . '"><b>buraya</b></a> tıklayınız.';
 
                 $mail->send();
                 $result = ['result' => true, 'error' => ['type' => 'success', 'message' => $user->email . ' e-posta adresli kullanıcıya şifre yenileme maili atıldı.']];

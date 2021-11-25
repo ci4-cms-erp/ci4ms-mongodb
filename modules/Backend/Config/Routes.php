@@ -26,27 +26,32 @@ $routes->group('backend', ['namespace' => 'Modules\Backend\Controllers'], functi
 
     // Users Module
     $routes->group('officeWorker',function($routes){
-        $routes->get('(:num)', 'UsersCrud\UserController::officeWorker/$1', ['as' => 'officeWorker', 'filter' => 'backendAfterLoginFilter']);
-        $routes->get('create_user', 'UsersCrud\UserController::create_user', ['as' => 'create_user', 'filter' => 'backendAfterLoginFilter']);
-        $routes->post('create_user', 'UsersCrud\UserController::create_user_post', ['filter' => 'backendAfterLoginFilter']);
-        $routes->get('update_user/(:any)', 'UsersCrud\UserController::update_user/$1', ['filter' => 'backendAfterLoginFilter', 'as' => 'update_user']);
-        $routes->post('update_user/(:any)', 'UsersCrud\UserController::update_user_post/$1', ['filter' => 'backendAfterLoginFilter']);
-        $routes->get('user_del/(:any)', 'UsersCrud\UserController::user_del/$1', ['filter' => 'backendAfterLoginFilter','as'=>'user_del']);
-        $routes->post('blackList', 'UsersCrud\UserController::ajax_blackList_post', ['filter' => 'backendAfterLoginFilter']);
-        $routes->post('removeFromBlacklist', 'UsersCrud\UserController::ajax_remove_from_blackList_post', ['filter' => 'backendAfterLoginFilter']);
-        $routes->post('forceResetPassword', 'UsersCrud\UserController::ajax_force_reset_password', ['filter' => 'backendAfterLoginFilter']);
-        $routes->get('user_perms/(:any)', 'PermGroup\PermgroupController::user_perms/$1', ['filter' => 'backendAfterLoginFilter', 'as' => 'user_perms']);
-        $routes->post('user_perms/(:any)', 'PermGroup\PermgroupController::user_perms_post/$1', ['filter' => 'backendAfterLoginFilter']);
+        $routes->get('(:num)', 'UserController::officeWorker/$1', ['as' => 'officeWorker', 'filter' => 'backendAfterLoginFilter']);
+        $routes->get('create_user', 'UserController::create_user', ['as' => 'create_user', 'filter' => 'backendAfterLoginFilter']);
+        $routes->post('create_user', 'UserController::create_user_post', ['filter' => 'backendAfterLoginFilter']);
+        $routes->get('update_user/(:any)', 'UserController::update_user/$1', ['filter' => 'backendAfterLoginFilter', 'as' => 'update_user']);
+        $routes->post('update_user/(:any)', 'UserController::update_user_post/$1', ['filter' => 'backendAfterLoginFilter']);
+        $routes->get('user_del/(:any)', 'UserController::user_del/$1', ['filter' => 'backendAfterLoginFilter','as'=>'user_del']);
+        $routes->post('blackList', 'UserController::ajax_blackList_post', ['filter' => 'backendAfterLoginFilter']);
+        $routes->post('removeFromBlacklist', 'UserController::ajax_remove_from_blackList_post', ['filter' => 'backendAfterLoginFilter']);
+        $routes->post('forceResetPassword', 'UserController::ajax_force_reset_password', ['filter' => 'backendAfterLoginFilter']);
+        $routes->get('user_perms/(:any)', 'PermgroupController::user_perms/$1', ['filter' => 'backendAfterLoginFilter', 'as' => 'user_perms']);
+        $routes->post('user_perms/(:any)', 'PermgroupController::user_perms_post/$1', ['filter' => 'backendAfterLoginFilter']);
 
-        $routes->get('groupList/(:num)', 'PermGroup\PermgroupController::groupList/$1', ['as' => 'groupList', 'filter' => 'backendAfterLoginFilter']);
-        $routes->get('group_create', 'PermGroup\PermgroupController::group_create', ['as' => 'group_create', 'filter' => 'backendAfterLoginFilter']);
-        $routes->post('group_create', 'PermGroup\PermgroupController::group_create_post', ['filter' => 'backendAfterLoginFilter']);
-        $routes->get('group_update/(:any)', 'PermGroup\PermgroupController::group_update/$1', ['filter' => 'backendAfterLoginFilter', 'as' => 'group_update']);
-        $routes->post('group_update/(:any)', 'PermGroup\PermgroupController::group_update_post/$1', ['filter' => 'backendAfterLoginFilter','as'=>'group_update']);
+        $routes->get('groupList/(:num)', 'PermgroupController::groupList/$1', ['as' => 'groupList', 'filter' => 'backendAfterLoginFilter']);
+        $routes->get('group_create', 'PermgroupController::group_create', ['as' => 'group_create', 'filter' => 'backendAfterLoginFilter']);
+        $routes->post('group_create', 'PermgroupController::group_create_post', ['filter' => 'backendAfterLoginFilter']);
+        $routes->get('group_update/(:any)', 'PermgroupController::group_update/$1', ['filter' => 'backendAfterLoginFilter', 'as' => 'group_update']);
+        $routes->post('group_update/(:any)', 'PermgroupController::group_update_post/$1', ['filter' => 'backendAfterLoginFilter','as'=>'group_update']);
     });
 
-    $routes->get('profile', 'UsersCrud\UserController::profile', ['filter' => 'backendAfterLoginFilter','as'=>'profile']);
-    $routes->post('profile', 'UsersCrud\UserController::profile_post', ['filter' => 'backendAfterLoginFilter']);
+    //Pages Module
+    $routes->group('pages',function($routes){
+       $routes->get('(:num)','Pages::index/$1',['as'=>'pages','filter'=>'backendAfterLoginFilter']);
+    });
+
+    $routes->get('profile', 'UserController::profile', ['filter' => 'backendAfterLoginFilter','as'=>'profile']);
+    $routes->post('profile', 'UserController::profile_post', ['filter' => 'backendAfterLoginFilter']);
 
     //setting module
     $routes->group('settings', function ($routes) {

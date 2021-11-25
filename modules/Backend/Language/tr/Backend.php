@@ -14,5 +14,6 @@ return [
     'updateUser' => 'Kullanıcı Güncelleme',
     'settings'=>'Ayarlar',
     'officeUsers'=>'Ofis Kullanıcıları',
-    'candidateUsers'=>'Aday Kullanıcılar'
+    'candidateUsers'=>'Aday Kullanıcılar',
+    'pages'=>'Sayfalar'
 ];

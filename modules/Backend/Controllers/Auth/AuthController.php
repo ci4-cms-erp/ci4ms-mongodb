@@ -20,8 +20,8 @@ class AuthController extends BaseController
         $cap = new CaptchaBuilder();
         $cap->setBackgroundColor(139, 203, 183);
         $cap->setIgnoreAllEffects(false);
-        $cap->setMaxFrontLines(1);
-        $cap->setMaxBehindLines(1);
+        $cap->setMaxFrontLines(0);
+        $cap->setMaxBehindLines(0);
         $cap->setMaxAngle(1);
         $cap->setTextColor(18, 58, 73);
         $cap->setLineColor(18, 58, 73);

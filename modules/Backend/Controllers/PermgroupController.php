@@ -1,10 +1,9 @@
 <?php
 
-namespace Modules\Backend\Controllers\PermGroup;
+namespace Modules\Backend\Controllers;
 
 use CodeIgniter\I18n\Time;
 use JasonGrimes\Paginator;
-use Modules\Backend\Controllers\BaseController;
 use MongoDB\BSON\ObjectId;
 
 class PermgroupController extends BaseController

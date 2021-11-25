@@ -73,7 +73,7 @@ class BaseController extends Controller
         else
             $uri=$this->request->uri->getSegment(1);
         $router = service('router');
-        $navigation=$this->commonModel->getList('auth_permissions_pages', ['inNavigation' => true, 'isBackoffice'=>true]);
+        $navigation=$this->commonModel->getList('auth_permissions_pages', ['inNavigation' => true, 'isBackoffice'=>true],['sort'=> ['pageSort'=>1]]);
         $nav=[];
         foreach ($navigation as $item) {
             $result=$this->authLib->has_perm($item['_id'],'');
