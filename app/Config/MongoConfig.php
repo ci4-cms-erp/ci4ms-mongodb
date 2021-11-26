@@ -11,11 +11,11 @@ class MongoConfig extends BaseConfig
         $this->dbInfo = [
             'default' => (object)[
                 'db' => 'kun-cms', //your database
-                'hostname' => "127.0.0.1", //127.0.0.1 if you use remote server you should change host address
+                'hostname' => "37.156.246.140", //127.0.0.1 if you use remote server you should change host address
                 'userName' => "beaver",
-                'password' => "123456789",
+                'password' => "RFVtgb.2021",
                 'prefix' => 'kun_',
-                'port' => "27017",//27017 if you use different port you should change port address
+                'port' => "49217",//27017 if you use different port you should change port address
                 'srv' => 'mongodb',//mongodb+srv
                 //SCRAM-SHA-256 - SCRAM-SHA-1
                 'authMechanism' => "SCRAM-SHA-256",

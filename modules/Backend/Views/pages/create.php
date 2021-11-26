@@ -22,7 +22,7 @@
     <!-- Default box -->
     <div class="card card-outline card-shl">
         <div class="card-header">
-            <h3 class="card-title font-weight-bold">Site Ayarlarını güncelle</h3>
+            <h3 class="card-title font-weight-bold">Sayfa Oluşur</h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -32,7 +32,12 @@
         </div>
         <div class="card-body">
             <?= view('Modules\Auth\Views\_message_block') ?>
-
+            <form action="<?=route_to('create')?>" class="form-row">
+                <div class="form-group col-md-12">
+                    <label for="">Sayfa Başlığı</label>
+                    <input type="text" name="title" class="form-control" placeholder="Sayfa Başlığı">
+                </div>
+            </form>
         </div>
         <!-- /.card-body -->
     </div>

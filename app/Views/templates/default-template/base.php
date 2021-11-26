@@ -67,7 +67,7 @@
 <!-- Bootstrap core JS-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Core theme JS-->
-<script src="js/scripts.js"></script>
+<script src="<?=base_url("templates/default/assets/node_modules/startbootstrap-modern-business/dist/js/scripts.js")?>"></script>
 <?= $this->renderSection('javascript') ?>
 </body>
 </html>
