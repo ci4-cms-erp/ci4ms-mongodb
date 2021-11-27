@@ -14,5 +14,6 @@ return [
     'settings'=>'Settings',
     'officeUsers'=>'Ofis Kullanıcıları',
     'candidateUsers'=>'Aday Kullanıcılar',
-    'pages'=>'Sayfalar'
+    'pages'=>'Sayfalar',
+    'pageAdd'=>'Sayfa Oluşturma'
 ];

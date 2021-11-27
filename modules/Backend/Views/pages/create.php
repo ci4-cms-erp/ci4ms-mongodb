@@ -20,8 +20,11 @@
                 <h1><?= lang('Backend.' . $title->pagename) ?></h1>
             </div>
             <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right"></ol>
-            </div>
+            <ol class="breadcrumb float-sm-right">
+                <a href="<?= route_to('pages',1) ?>" class="btn btn-outline-info"><i
+                            class="fas fa-arrow-circle-left"></i> Listeye Dön</a>
+            </ol>
+        </div>
         </div>
     </div><!-- /.container-fluid -->
 </section>

@@ -3,7 +3,7 @@
 <?=lang('Backend.'.$title->pagename)?>
 <?= $this->endSection() ?>
 <?= $this->section('head') ?>
-<link rel="stylesheet" href="/assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+<link rel="stylesheet" href="/be-assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
 <?= $this->endSection() ?>
 <?= $this->section('content') ?>
 <!-- Content Header (Page header) -->
@@ -14,7 +14,7 @@
                 <h1><?=lang('Backend.'.$title->pagename)?></h1>
             </div>
             <div class="col-sm-6">
-                <a href="<?= route_to('pageCreate') ?>" class="btn btn-success float-right">Sayfa Oluşturma</a>
+                <a href="<?= route_to('pageCreate') ?>" class="btn btn-success float-right"><?=lang('Backend.pageAdd')?></a>
             </div>
         </div>
     </div><!-- /.container-fluid -->
@@ -59,5 +59,5 @@
 <!-- /.content -->
 <?= $this->endSection() ?>
 <?= $this->section('javascript') ?>
-<script src="/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
+<script src="/be-assets/plugins/sweetalert2/sweetalert2.min.js"></script>
 <?= $this->endSection() ?>

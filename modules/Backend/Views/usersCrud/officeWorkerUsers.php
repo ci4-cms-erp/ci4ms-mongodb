@@ -4,7 +4,7 @@
 <?=lang('Backend.')?>Ofis Çalışan Listesi
 <?= $this->endSection() ?>
 <?= $this->section('head') ?>
-<link rel="stylesheet" href="/assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+<link rel="stylesheet" href="/be-assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
 <?= $this->endSection() ?>
 <?= $this->section('content') ?>
 <!-- Content Header (Page header) -->
@@ -193,7 +193,7 @@
 
 <?= $this->section('javascript') ?>
 <!-- SweetAlert2 -->
-<script src="/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
+<script src="/be-assets/plugins/sweetalert2/sweetalert2.min.js"></script>
 
 <script>
     var Toast = Swal.mixin({

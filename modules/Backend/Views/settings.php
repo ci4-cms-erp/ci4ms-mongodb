@@ -5,7 +5,7 @@ Anasayfa
 <?= $this->endSection() ?>
 
 <?= $this->section('head') ?>
-<link rel="stylesheet" href="/assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+<link rel="stylesheet" href="/be-assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -199,7 +199,7 @@ Anasayfa
 <?= $this->endSection() ?>
 
 <?= $this->section('javascript') ?>
-<script src="/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
+<script src="/be-assets/plugins/sweetalert2/sweetalert2.min.js"></script>
 <script src="/be-assets/node_modules/jquery.repeater/jquery.repeater.js"></script>
 <script>
     $(document).ready(function () {

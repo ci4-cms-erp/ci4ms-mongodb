@@ -98,9 +98,9 @@
 
 <?= $this->section('javascript') ?>
 <!-- jQuery Knob -->
-<script src="/assets/plugins/jquery-knob/jquery.knob.min.js"></script>
+<script src="/be-assets/plugins/jquery-knob/jquery.knob.min.js"></script>
 <!-- Sparkline -->
-<script src="/assets/plugins/sparklines/sparkline.js"></script>
+<script src="/be-assets/plugins/sparklines/sparkline.js"></script>
 <script>
     $(function () {
         /* jQueryKnob */
