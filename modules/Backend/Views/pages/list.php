@@ -14,7 +14,7 @@
                 <h1><?=lang('Backend.'.$title->pagename)?></h1>
             </div>
             <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right"></ol>
+                <a href="<?= route_to('pageCreate') ?>" class="btn btn-success float-right">Sayfa Oluşturma</a>
             </div>
         </div>
     </div><!-- /.container-fluid -->

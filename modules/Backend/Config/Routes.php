@@ -48,6 +48,7 @@ $routes->group('backend', ['namespace' => 'Modules\Backend\Controllers'], functi
     //Pages Module
     $routes->group('pages',function($routes){
        $routes->get('(:num)','Pages::index/$1',['as'=>'pages','filter'=>'backendAfterLoginFilter']);
+       $routes->get('create','Pages::create',['as'=>'pageCreate','filter'=>'backendAfterLoginFilter']);
     });
 
     $routes->get('profile', 'UserController::profile', ['filter' => 'backendAfterLoginFilter','as'=>'profile']);

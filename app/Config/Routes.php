@@ -36,6 +36,7 @@ $routes->get('/', 'Home::index');
 $routes->add('/(:any)', 'Home::index/$1');
 $routes->get('maintenance-mode','Home::maintenanceMode');
 $routes->match(['get', 'post'], 'imageRender/(:segment)', 'RenderImage::index/$1');
+$routes->match(['get', 'post'], 'renderElfinder', 'RenderImage::renderElfinder');
 /*$routes->add('feed', function () {
     $rss = new RSSFeeder();
 
