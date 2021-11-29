@@ -4,27 +4,48 @@ use ci4mongodblibrary\Libraries\Mongo;
 use CodeIgniter\Model;
 use Config\MongoConfig;
 
+/**
+ *
+ */
 class UserscrudModel extends Model
 {
+    /**
+     * @var Mongo
+     */
     protected $m;
+    /**
+     * @var string
+     */
     protected $table;
+    /**
+     * @var
+     */
     protected $pre;
 
+    /**
+     * @param string $dbInfo
+     */
     public function __construct($dbInfo = 'default')
     {
         parent::__construct();
         $this->m = new Mongo();
-        $this->table='users';
-        $this->pre=new MongoConfig();
-        $this->pre=$this->pre->dbInfo[$dbInfo]->prefix;
+        $this->table = 'users';
+        $this->pre = new MongoConfig();
+        $this->pre = $this->pre->dbInfo[$dbInfo]->prefix;
     }
 
+    /**
+     * @param int $limit
+     * @param array $select
+     * @param array $credentials
+     * @return mixed
+     */
     public function loggedUser(int $limit, array $select = [], array $credentials = [])
     {
         $data = [
             [
                 '$lookup' => [
-                    'from' => $this->pre.'auth_groups',
+                    'from' => $this->pre . 'auth_groups',
                     'localField' => 'group_id',
                     'foreignField' => '_id',
                     'as' => 'groupInfo'
@@ -42,33 +63,40 @@ class UserscrudModel extends Model
         return $this->m->aggregate($this->table, $data)->toArray();
     }
 
-    public function userList(int $limit, array $select = [], array $credentials = [], $skip=null)
+    /**
+     * @param int $limit
+     * @param array $select
+     * @param array $credentials
+     * @param null $skip
+     * @return mixed
+     */
+    public function userList(int $limit, array $select = [], array $credentials = [], $skip = null)
     {
         $data = [
             [
                 '$lookup' => [
-                    'from' => $this->pre.'auth_groups',
+                    'from' => $this->pre . 'auth_groups',
                     'localField' => 'group_id',
                     'foreignField' => '_id',
                     'as' => 'groupInfo'
                 ]
             ],
-            ['$unwind' => ['path'=>'$groupInfo','preserveNullAndEmptyArrays'=>true]],
+            ['$unwind' => ['path' => '$groupInfo', 'preserveNullAndEmptyArrays' => true]],
             [
                 '$lookup' => [
-                    'from' => $this->pre.'black_list_users',
+                    'from' => $this->pre . 'black_list_users',
                     'localField' => '_id',
                     'foreignField' => 'blacked_id',
                     'as' => 'inBlackList'
                 ]
             ],
-            ['$unwind' => ['path'=>'$inBlackList','preserveNullAndEmptyArrays'=>true]]
+            ['$unwind' => ['path' => '$inBlackList', 'preserveNullAndEmptyArrays' => true]]
         ];
 
         if ($limit > 0)
             $data[] = ['$limit' => $limit];
-        if(!empty($skip))
-            $date[]=['$skip'=>$skip];
+        if (!empty($skip))
+            $date[] = ['$skip' => $skip];
         if (!empty($credentials))
             $data[] = ['$match' => $credentials];
         if (!empty($select))

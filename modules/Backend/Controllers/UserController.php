@@ -313,24 +313,26 @@ class UserController extends BaseController
      */
     public function ajax_blackList_post()
     {
-        $valData = (['note' => ['label' => 'Note', 'rules' => 'required'], 'uid' => ['label' => 'Kullanıcı id', 'rules' => 'required']]);
+        if($this->request->isAJAX()) {
+            $valData = (['note' => ['label' => 'Note', 'rules' => 'required'], 'uid' => ['label' => 'Kullanıcı id', 'rules' => 'required']]);
 
-        if ($this->validate($valData) == false)
-            return $this->validator->getErrors();
+            if ($this->validate($valData) == false)
+                return $this->validator->getErrors();
 
-        $result = [];
+            $result = [];
 
-        if ($this->commonModel->get_where(['blacked_id' => new ObjectId($this->request->getPost('uid'))], 'black_list_users') === 0)
-            $bid = $this->commonModel->createOne('black_list_users', ['blacked_id' => new ObjectId($this->request->getPost('uid')), 'who_blacklisted' => new ObjectId(session()->get('logged_in')), 'notes' => $this->request->getPost('note'), 'created_at' => new Time('now')]);
-        else
-            $result = ['result' => true, 'error' => ['type' => 'warning', 'message' => 'üyelik karalisteye daha önce eklendi.']];
+            if ($this->commonModel->get_where(['blacked_id' => new ObjectId($this->request->getPost('uid'))], 'black_list_users') === 0)
+                $bid = $this->commonModel->createOne('black_list_users', ['blacked_id' => new ObjectId($this->request->getPost('uid')), 'who_blacklisted' => new ObjectId(session()->get('logged_in')), 'notes' => $this->request->getPost('note'), 'created_at' => new Time('now')]);
+            else
+                $result = ['result' => true, 'error' => ['type' => 'warning', 'message' => 'üyelik karalisteye daha önce eklendi.']];
 
-        if (!empty($bid) && $this->commonModel->updateOne('users', ['_id' => new ObjectId($this->request->getPost('uid'))], ['status' => 'banned', 'statusMessage' => $this->request->getPost('note')]))
-            $result = ['result' => true, 'error' => ['type' => 'success', 'message' => 'üyelik karalisteye eklendi.']];
-        else
-            $result = ['result' => true, 'error' => ['type' => 'danger', 'message' => 'üyelik karalisteye eklenemedi.']];
+            if (!empty($bid) && $this->commonModel->updateOne('users', ['_id' => new ObjectId($this->request->getPost('uid'))], ['status' => 'banned', 'statusMessage' => $this->request->getPost('note')]))
+                $result = ['result' => true, 'error' => ['type' => 'success', 'message' => 'üyelik karalisteye eklendi.']];
+            else
+                $result = ['result' => true, 'error' => ['type' => 'danger', 'message' => 'üyelik karalisteye eklenemedi.']];
 
-        return json_encode($result);
+            return json_encode($result);
+        }
     }
 
     /**
@@ -339,54 +341,56 @@ class UserController extends BaseController
      */
     public function ajax_remove_from_blackList_post()
     {
-        $valData = (['uid' => ['label' => 'Kullanıcı id', 'rules' => 'required']]);
+        if($this->request->isAJAX()) {
+            $valData = (['uid' => ['label' => 'Kullanıcı id', 'rules' => 'required']]);
 
-        if ($this->validate($valData) == false)
-            return $this->validator->getErrors();
+            if ($this->validate($valData) == false)
+                return $this->validator->getErrors();
 
-        $result = [];
+            $result = [];
 
-        $pwd = $this->authLib->randomPassword();
-        $data = ['password_hash' => $this->authLib->setPassword($pwd),
-            'status' => 'deactive',
-            'activate_hash' => $this->authLib->generateActivateHash(),
-            'statusMessage' => null];
-        if ($this->commonModel->updateOne('users', ['_id' => new ObjectId($this->request->getPost('uid'))], $data) && $this->commonModel->deleteOne('black_list_users', ['blacked_id' => new ObjectId($this->request->getPost('uid'))])) {
-            $user = $this->commonModel->getOne('users', ['_id' => new ObjectId($this->request->getPost('uid'))], ['email']);
+            $pwd = $this->authLib->randomPassword();
+            $data = ['password_hash' => $this->authLib->setPassword($pwd),
+                'status' => 'deactive',
+                'activate_hash' => $this->authLib->generateActivateHash(),
+                'statusMessage' => null];
+            if ($this->commonModel->updateOne('users', ['_id' => new ObjectId($this->request->getPost('uid'))], $data) && $this->commonModel->deleteOne('black_list_users', ['blacked_id' => new ObjectId($this->request->getPost('uid'))])) {
+                $user = $this->commonModel->getOne('users', ['_id' => new ObjectId($this->request->getPost('uid'))], ['email']);
 
-            $mail = new PHPMailer(true);
+                $mail = new PHPMailer(true);
 
-            try {
-                //Server settings
-                $mail->isSMTP();                                            // Send using SMTP
-                $mail->Host = $this->config->mailConfig['SMTPHost'];        // Set the SMTP server to send through
-                $mail->SMTPAuth = true;                                     // Enable SMTP authentication
-                $mail->Username = $this->config->mailConfig['SMTPUser'];    // SMTP username
-                $mail->Password = $this->config->mailConfig['SMTPPass'];    // SMTP password
-                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
-                $mail->Port = 465;                                          // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
-                $mail->CharSet = "UTF-8";
+                try {
+                    //Server settings
+                    $mail->isSMTP();                                            // Send using SMTP
+                    $mail->Host = $this->config->mailConfig['SMTPHost'];        // Set the SMTP server to send through
+                    $mail->SMTPAuth = true;                                     // Enable SMTP authentication
+                    $mail->Username = $this->config->mailConfig['SMTPUser'];    // SMTP username
+                    $mail->Password = $this->config->mailConfig['SMTPPass'];    // SMTP password
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
+                    $mail->Port = 465;                                          // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
+                    $mail->CharSet = "UTF-8";
 
-                //Recipients
-                $mail->setFrom('noreply@shl.com.tr', 'noreply@shl.com.tr');
-                $mail->addAddress($user->email);  // Name is optional
-                $mail->addReplyTo('noreply@shl.com.tr', 'Üyelik Aktivasyonu');
+                    //Recipients
+                    $mail->setFrom('noreply@shl.com.tr', 'noreply@shl.com.tr');
+                    $mail->addAddress($user->email);  // Name is optional
+                    $mail->addReplyTo('noreply@shl.com.tr', 'Üyelik Aktivasyonu');
 
-                // Content
-                $mail->isHTML(true);                                  // Set email format to HTML
-                $mail->Subject = 'Mail Aktivasyonu';
+                    // Content
+                    $mail->isHTML(true);                                  // Set email format to HTML
+                    $mail->Subject = 'Mail Aktivasyonu';
 
-                $mail->Body = 'Üyeliğinizi yeniden aktif edebilimeniz için şirket yetkilisi müdehale etti. Üyeliğinizi aktif etmek için lütfen <a href="' . route_to('activate-account', $data['activate_hash']) . '"><b>buraya</b></a> tıklayınız. Tıkladıktan sonra sizinle paylaşılan <b>email</b> ve <b>şifre</b> ile giriş yapabilirsiniz.<br>E-mail adresi : ' . $user->email . '<br>Şifreniz : ' . $pwd;
-                $mail->send();
+                    $mail->Body = 'Üyeliğinizi yeniden aktif edebilimeniz için şirket yetkilisi müdehale etti. Üyeliğinizi aktif etmek için lütfen <a href="' . route_to('activate-account', $data['activate_hash']) . '"><b>buraya</b></a> tıklayınız. Tıkladıktan sonra sizinle paylaşılan <b>email</b> ve <b>şifre</b> ile giriş yapabilirsiniz.<br>E-mail adresi : ' . $user->email . '<br>Şifreniz : ' . $pwd;
+                    $mail->send();
 
-                $result = ['result' => true, 'error' => ['type' => 'success', 'message' => $user->email . ' e-mail adresli üyelik karalisteden çıkarıldı.']];
-            } catch (Exception $e) {
-                return ['result' => false, 'error' => ['type' => 'danger', 'message' => $mail->ErrorInfo]];
-            }
-        } else
-            $result = ['result' => false, 'error' => ['type' => 'danger', 'message' => 'üyelik karalisteden çıkarılamadı.']];
+                    $result = ['result' => true, 'error' => ['type' => 'success', 'message' => $user->email . ' e-mail adresli üyelik karalisteden çıkarıldı.']];
+                } catch (Exception $e) {
+                    return ['result' => false, 'error' => ['type' => 'danger', 'message' => $mail->ErrorInfo]];
+                }
+            } else
+                $result = ['result' => false, 'error' => ['type' => 'danger', 'message' => 'üyelik karalisteden çıkarılamadı.']];
 
-        return json_encode($result);
+            return json_encode($result);
+        }
     }
 
     /**
@@ -395,46 +399,48 @@ class UserController extends BaseController
      */
     public function ajax_force_reset_password()
     {
-        $valData = (['uid' => ['label' => 'Kullanıcı id', 'rules' => 'required']]);
+        if($this->request->isAJAX()) {
+            $valData = (['uid' => ['label' => 'Kullanıcı id', 'rules' => 'required']]);
 
-        if ($this->validate($valData) == false)
-            return $this->validator->getErrors();
+            if ($this->validate($valData) == false)
+                return $this->validator->getErrors();
 
-        $result = [];
+            $result = [];
 
-        if ($this->commonModel->updateOne('users', ['_id' => new ObjectId($this->request->getPost('uid'))], ['status' => 'deactive', 'reset_hash' => $this->authLib->generateActivateHash(), 'reset_expires' => date('Y-m-d H:i:s', time() + $this->config->resetTime)])) {
-            $user = $this->commonModel->getOne('users', ['_id' => new ObjectId($this->request->getPost('uid'))]);
-            $mail = new PHPMailer(true);
+            if ($this->commonModel->updateOne('users', ['_id' => new ObjectId($this->request->getPost('uid'))], ['status' => 'deactive', 'reset_hash' => $this->authLib->generateActivateHash(), 'reset_expires' => date('Y-m-d H:i:s', time() + $this->config->resetTime)])) {
+                $user = $this->commonModel->getOne('users', ['_id' => new ObjectId($this->request->getPost('uid'))]);
+                $mail = new PHPMailer(true);
 
-            try {
-                //Server settings
-                $mail->isSMTP();                                            // Send using SMTP
-                $mail->Host = $this->config->mailConfig['SMTPHost'];        // Set the SMTP server to send through
-                $mail->SMTPAuth = true;                                     // Enable SMTP authentication
-                $mail->Username = $this->config->mailConfig['SMTPUser'];    // SMTP username
-                $mail->Password = $this->config->mailConfig['SMTPPass'];    // SMTP password
-                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
-                $mail->Port = 465;                                          // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
-                $mail->CharSet = "UTF-8";
+                try {
+                    //Server settings
+                    $mail->isSMTP();                                            // Send using SMTP
+                    $mail->Host = $this->config->mailConfig['SMTPHost'];        // Set the SMTP server to send through
+                    $mail->SMTPAuth = true;                                     // Enable SMTP authentication
+                    $mail->Username = $this->config->mailConfig['SMTPUser'];    // SMTP username
+                    $mail->Password = $this->config->mailConfig['SMTPPass'];    // SMTP password
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
+                    $mail->Port = 465;                                          // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
+                    $mail->CharSet = "UTF-8";
 
-                //Recipients
-                $mail->setFrom('noreply@shl.com.tr', 'noreply@shl.com.tr');
-                $mail->addAddress($user->email);  // Name is optional
-                $mail->addReplyTo('noreply@shl.com.tr', 'Information');
+                    //Recipients
+                    $mail->setFrom('noreply@shl.com.tr', 'noreply@shl.com.tr');
+                    $mail->addAddress($user->email);  // Name is optional
+                    $mail->addReplyTo('noreply@shl.com.tr', 'Information');
 
-                // Content
-                $mail->isHTML(true);                                  // Set email format to HTML
-                $mail->Subject = 'Üyelik Şifre Sıfırlama';
-                $mail->Body = 'Üyeliğinizin şifre sıfırlaması yetkili gerçekleştirildi. Şifre yenileme isteğiniz ' . date('d-m-Y H:i:s', strtotime($user->reset_expires)) . ' tarihine kadar geçerlidir. Lütfen yeni şifrenizi belirlemek için <a href="' . route_to('reset-password', $user->reset_hash) . '"><b>buraya</b></a> tıklayınız.';
+                    // Content
+                    $mail->isHTML(true);                                  // Set email format to HTML
+                    $mail->Subject = 'Üyelik Şifre Sıfırlama';
+                    $mail->Body = 'Üyeliğinizin şifre sıfırlaması yetkili gerçekleştirildi. Şifre yenileme isteğiniz ' . date('d-m-Y H:i:s', strtotime($user->reset_expires)) . ' tarihine kadar geçerlidir. Lütfen yeni şifrenizi belirlemek için <a href="' . route_to('reset-password', $user->reset_hash) . '"><b>buraya</b></a> tıklayınız.';
 
-                $mail->send();
-                $result = ['result' => true, 'error' => ['type' => 'success', 'message' => $user->email . ' e-posta adresli kullanıcıya şifre yenileme maili atıldı.']];
-            } catch (Exception $e) {
-                $result = ['result' => false, 'error' => ['type' => 'danger', 'message' => $mail->ErrorInfo]];
-            }
-        } else
-            $result = ['result' => false, 'error' => ['type' => 'danger', 'message' => 'Şifre sıfırlama isteği gerçekleştirilemedi.']];
+                    $mail->send();
+                    $result = ['result' => true, 'error' => ['type' => 'success', 'message' => $user->email . ' e-posta adresli kullanıcıya şifre yenileme maili atıldı.']];
+                } catch (Exception $e) {
+                    $result = ['result' => false, 'error' => ['type' => 'danger', 'message' => $mail->ErrorInfo]];
+                }
+            } else
+                $result = ['result' => false, 'error' => ['type' => 'danger', 'message' => 'Şifre sıfırlama isteği gerçekleştirilemedi.']];
 
-        return json_encode($result);
+            return json_encode($result);
+        }
     }
 }

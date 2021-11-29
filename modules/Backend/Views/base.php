@@ -15,7 +15,7 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="<?= site_url("be-assets/css/adminlte.min.css")?>">
     <link rel="stylesheet" href="<?= site_url("be-assets/custom.css")?>">
-
+    <?= csrf_meta() ?>
     <?= $this->renderSection('head') ?>
 </head>
 <body class="hold-transition sidebar-mini">

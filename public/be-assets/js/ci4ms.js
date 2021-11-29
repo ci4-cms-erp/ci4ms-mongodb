@@ -5,7 +5,7 @@ function pageImgelfinderDialog() {
         width: 1024,
         height: 768,
         destroyOnClose: true,
-        cssAutoLoad: ['/be-assets/node_modules/elfinder-material-theme/Material/css/theme-gray.css'],
+        cssAutoLoad: [window.location.origin+'/be-assets/node_modules/elfinder-material-theme/Material/css/theme-gray.css'],
         getFileCallback: function (files, fm) {
             console.log(files);
             $('.pageimg-input').val(files.url);
@@ -64,7 +64,7 @@ function elfinderDialog() {
         width: 1024,
         height: 768,
         destroyOnClose: true,
-        cssAutoLoad: ['/be-assets/node_modules/elfinder-material-theme/Material/css/theme-gray.css'],
+        cssAutoLoad: [window.location.origin+'/be-assets/node_modules/elfinder-material-theme/Material/css/theme-gray.css'],
         getFileCallback: function (files, fm) {
             console.log(files);
             $('.editor').summernote('editor.insertImage', files.url);
@@ -76,4 +76,16 @@ function elfinderDialog() {
             }
         }
     }).dialogelfinder('instance');
+}
+
+function tags(data) {
+    $('.keywords').tagify({
+        whitelist: data,
+        dropdown: {
+            maxItems: 10,           // <- mixumum allowed rendered suggestions
+            classname: "tags-look", // <- custom classname for this dropdown, so it could be targeted
+            enabled: 0,             // <- show suggestions on focus
+            closeOnSelect: false    // <- do not hide the suggestions dropdown once an item has been selected
+        }
+    });
 }

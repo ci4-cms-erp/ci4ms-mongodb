@@ -5,7 +5,7 @@
  */
 
 $routes->group('backend', ['namespace' => 'Modules\Backend\Controllers'], function ($routes) {
-    $routes->get('403', 'Errors::error_403', ['filter' => 'backendAfterLoginFilter']);
+    $routes->get('403', 'Errors::error_403', ["as"=>"403",'filter' => 'backendAfterLoginFilter']);
 
     // Login/out
     $routes->get('login', 'Auth\AuthController::login', ['filter' => 'backendAuthFilter','as'=>'login']);
@@ -49,6 +49,10 @@ $routes->group('backend', ['namespace' => 'Modules\Backend\Controllers'], functi
     $routes->group('pages',function($routes){
        $routes->get('(:num)','Pages::index/$1',['as'=>'pages','filter'=>'backendAfterLoginFilter']);
        $routes->get('create','Pages::create',['as'=>'pageCreate','filter'=>'backendAfterLoginFilter']);
+       $routes->post('create','Pages::create_post',['filter'=>'backendAfterLoginFilter']);
+       $routes->get('pageUpdate/(:any)','Pages::update/$1',['as'=>'pageUpdate','filter'=>'backendAfterLoginFilter']);
+       $routes->post('pageUpdate/(:any)','Pages::update_post/$1',['filter'=>'backendAfterLoginFilter']);
+       $routes->post('pageDelete/(:any)','Pages::delete_post/$1',['filter'=>'backendAfterLoginFilter']);
     });
 
     $routes->get('profile', 'UserController::profile', ['filter' => 'backendAfterLoginFilter','as'=>'profile']);
@@ -61,5 +65,8 @@ $routes->group('backend', ['namespace' => 'Modules\Backend\Controllers'], functi
         $routes->post('socialMedia','Settings::socialMediaPost',['as'=>'socialMediaPost','filter' => 'backendAfterLoginFilter']);
         $routes->post('mailSettings','Settings::mailSettingsPost',['as'=>'mailSettingsPost','filter' => 'backendAfterLoginFilter']);
     });
+
     // Other Pages
+    $routes->post('tagify','AJAX::limitTags_ajax',['as'=>'tagify','filter' => 'backendAfterLoginFilter']);
+    $routes->post('checkSeflink','AJAX::autoLookSeflinks',['as'=>'checkSeflink','filter' => 'backendAfterLoginFilter']);
 });

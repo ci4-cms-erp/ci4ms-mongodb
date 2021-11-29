@@ -43,15 +43,43 @@
                     </tr>
                     </thead>
                     <tbody>
+                    <?php foreach ($pages as $page): ?>
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td><?=$page->title?></td>
+                        <td><?=$page->isActive?></td>
+                        <td>
+                            <a href="<?= route_to('pageUpdate', $page->_id) ?>"
+                               class="btn btn-outline-info btn-sm"><i class="fas fa-edit"></i> Düzenle</a>
+                        </td>
                     </tr>
+                    <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
         </div>
+        <?php if ($paginator->getNumPages() > 1): ?>
+            <div class="card-footer clearfix">
+                <ul class="pagination pagination-sm m-0 float-right">
+                    <?php if ($paginator->getPrevUrl()): ?>
+                        <li class="page-item"><a class="page-link" href="<?php echo $paginator->getPrevUrl(); ?>">&laquo;</a></li>
+                    <?php endif; ?>
+
+                    <?php foreach ($paginator->getPages() as $page): ?>
+                        <?php if ($page['url']): ?>
+                            <li class="page-item <?php echo $page['isCurrent'] ? 'active' : ''; ?>">
+                                <a class="page-link" href="<?php echo $page['url']; ?>"><?php echo $page['num']; ?></a>
+                            </li>
+                        <?php else: ?>
+                            <li class="disabled page-item"><span><?php echo $page['num']; ?></span></li>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+
+                    <?php if ($paginator->getNextUrl()): ?>
+                        <li class="page-item"><a class="page-link" href="<?php echo $paginator->getNextUrl(); ?>">&raquo;</a></li>
+                    <?php endif; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
         <!-- /.card-body -->
     </div>
     <!-- /.card -->
