@@ -75,22 +75,22 @@
                     <div class="form-group col-md-12 row">
                         <div class="col-12 form-group">
                             <label for="">Sayfa Görseli</label>
-                            <img src="<?=$pageInfo->seo->coverImage?>" alt="" class="pageimg img-fluid">
+                            <img src="<?=(!empty($pageInfo->seo->coverImage))?$pageInfo->seo->coverImage:''?>" alt="" class="pageimg img-fluid">
                         </div>
                         <div class="col-12 form-group">
                             <label for="">Görsel URL</label>
-                            <input type="text" name="pageimg" class="form-control pageimg-input" value="<?=$pageInfo->seo->coverImage?>"
+                            <input type="text" name="pageimg" class="form-control pageimg-input" value="<?=(!empty($pageInfo->seo->coverImage))?$pageInfo->seo->coverImage:''?>"
                                    placeholder="Görsel URL">
                         </div>
                         <div class="col-12 row form-group">
                             <div class="col-sm-6">
                                 <label for="">Görsel Genişliği</label>
-                                <input type="number" name="pageIMGWidth" class="form-control" id="pageIMGWidth" value="<?=$pageInfo->seo->IMGWidth?>"
+                                <input type="number" name="pageIMGWidth" class="form-control" id="pageIMGWidth" value="<?=(!empty($pageInfo->seo->IMGWidth))?$pageInfo->seo->IMGWidth:''?>"
                                        readonly>
                             </div>
                             <div class="col-sm-6">
                                 <label for="">Görsel Yüksekliği</label>
-                                <input type="number" name="pageIMGHeight" class="form-control" id="pageIMGHeight" value="<?=$pageInfo->seo->IMGHeight?>"
+                                <input type="number" name="pageIMGHeight" class="form-control" id="pageIMGHeight" value="<?=(!empty($pageInfo->seo->IMGHeight))?$pageInfo->seo->IMGHeight:''?>"
                                        readonly>
                             </div>
                         </div>
@@ -100,11 +100,11 @@
                     </div>
                     <div class="form-group col-md-12">
                         <label for="">Seo Açıklaması</label>
-                        <textarea class="form-control" name="description"><?=$pageInfo->seo->description?></textarea>
+                        <textarea class="form-control" name="description"><?=(!empty($pageInfo->seo->description))?$pageInfo->seo->description:''?></textarea>
                     </div>
                     <div class="form-group col-md-12">
                         <label for="">Seo Anahtar Kelimeleri</label>
-                        <textarea name="keywords" class="keywords" placeholder="write some tags"><?=$tags?></textarea>
+                        <textarea name="keywords" class="keywords" placeholder="write some tags"><?=(!empty($tags))?$tags:''?></textarea>
                     </div>
                 </div>
                 <div class="form-group col-md-12">

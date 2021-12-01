@@ -28,7 +28,9 @@ class AjaxModel extends Model
                     'as' => 'pivot'
                 ]
             ],
-            ['$unwind' => ['path' => '$pivot', 'preserveNullAndEmptyArrays' => true]]
+            ['$unwind' => ['path' => '$pivot', 'preserveNullAndEmptyArrays' => true]],
+            ['$sort'=>['_id'=>-1]],
+            ['$limit'=>10]
         ];
         if (!empty($credentials))
             $query[] = ['$match' => $credentials];

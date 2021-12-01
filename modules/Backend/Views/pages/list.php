@@ -33,7 +33,7 @@
         </div>
         <div class="card-body">
             <?= view('Modules\Auth\Views\_message_block') ?>
-            <div class="table-responsive">
+            <div class="container-fluid">
                 <table class="table table-striped">
                     <thead>
                     <tr class="row">
@@ -108,7 +108,7 @@
             {"<?=csrf_token()?>": "<?=csrf_hash()?>",
                 "id":id,
                 'isActive':isActive,
-                'where':'page'},'json').done();
+                'where':'pages'},'json').done();
     });
 </script>
 <?= $this->endSection() ?>

@@ -3,16 +3,19 @@
 namespace Modules\Backend\Controllers;
 
 use JasonGrimes\Paginator;
+use Modules\Backend\Libraries\CommonTagsLibrary;
 use Modules\Backend\Models\AjaxModel;
 use MongoDB\BSON\ObjectId;
 
 class Pages extends BaseController
 {
     protected $model;
+    protected $commonTagsLib;
 
     public function __construct()
     {
         $this->model = new AjaxModel();
+        $this->commonTagsLib = new CommonTagsLibrary();
     }
 
     public function index()
@@ -71,22 +74,9 @@ class Pages extends BaseController
 
         $insertID = $this->commonModel->createOne('pages', $data);
         if ($insertID) {
-            if (!empty($this->request->getPost('keywords'))) {
-                $jsons = json_decode($this->request->getPost('keywords'));
-                foreach ($jsons as $item) {
-                    if (!empty($item->id)) {
-                        $tag = $this->commonModel->getOne('tags', ['tag' => $item->value]);
-                        if ($item->value == $tag->tag)
-                            $this->commonModel->createOne('tags_pivot', ['tag_id' => new ObjectId($item->id), 'tagType' => 'page', 'piv_id' => new ObjectId($insertID)]);
-                        else {
-                            $this->commonModel->updateOne('tags', ['_id' => new ObjectId($item->id)], ['tag' => $item->value]);
-                        }
-                    } else {
-                        $addedTagID = $this->commonModel->createOne('tags', ['tag' => $item->value, 'seflink' => seflink($item->value, true)]);
-                        $this->commonModel->createOne('tags_pivot', ['tag_id' => new ObjectId($addedTagID), 'tagType' => 'page', 'piv_id' => new ObjectId($insertID)]);
-                    }
-                }
-            }
+            if (!empty($this->request->getPost('keywords')))
+                $this->commonTagsLib->checkTags($this->request->getPost('keywords'),'page',(string)$insertID,'tags');
+
             return redirect()->route('pages', [1])->with('message', '<b>' . $this->request->getPost('title') . '</b> adlı sayfa Oluşturuldu.');
         } else
             return redirect()->back()->withInput()->with('error', 'Sayfa oluşturulamadı.');
@@ -95,10 +85,10 @@ class Pages extends BaseController
     public function update($id)
     {
         $this->defData['pageInfo'] = $this->commonModel->getOne('pages', ['_id' => new ObjectId($id)]);
-        $this->defData['tags'] = $this->model->limitTags_ajax(['pivot.tagType' => 'page', 'pivot.piv_id' => new ObjectId($id)], [], ['tag' => true]);
+        $this->defData['tags'] = $this->model->limitTags_ajax(['pivot.tagType' => 'page', 'pivot.piv_id' => new ObjectId($id)], []);
         $t = [];
         foreach ($this->defData['tags'] as $tag) {
-            $t[] = ['id' => (string)$tag->_id, 'value' => $tag->tag];
+            $t[] = ['id' => (string)$tag->_id->id, 'value' => $tag->_id->value];
         }
         $this->defData['tags'] = json_encode($t);
         unset($t);
@@ -142,23 +132,8 @@ class Pages extends BaseController
         if (!empty($this->request->getPost('description')))
             $data['seo']['description'] = $this->request->getPost('description');
 
-        if (!empty($this->request->getPost('keywords'))) {
-            $this->commonModel->deleteMany('tags_pivot', ['piv_id' => new ObjectId($id), 'tagType' => 'page']);
-            $jsons = json_decode($this->request->getPost('keywords'));
-            foreach ($jsons as $item) {
-                if (!empty($item->id)) {
-                    $tag = $this->commonModel->getOne('tags', ['tag' => $item->value]);
-                    if ($item->value == $tag->tag)
-                        $this->commonModel->createOne('tags_pivot', ['tag_id' => new ObjectId($item->id), 'tagType' => 'page', 'piv_id' => new ObjectId($id)]);
-                    else {
-                        $this->commonModel->updateOne('tags', ['_id' => new ObjectId($item->id)], ['tag' => $item->value]);
-                    }
-                } else {
-                    $addedTagID = $this->commonModel->createOne('tags', ['tag' => $item->value, 'seflink' => seflink($item->value, true)]);
-                    $this->commonModel->createOne('tags_pivot', ['tag_id' => new ObjectId($addedTagID), 'tagType' => 'page', 'piv_id' => new ObjectId($id)]);
-                }
-            }
-        }
+        if (!empty($this->request->getPost('keywords')))
+            $this->commonTagsLib->checkTags($this->request->getPost('keywords'),'page',$id,'tags',true);
 
         if ($this->commonModel->updateOne('pages', ['_id' => new ObjectId($id)], $data))
             return redirect()->route('pages', [1])->with('message', '<b>' . $this->request->getPost('title') . '</b> adlı sayfa güncellendi.');
@@ -169,7 +144,7 @@ class Pages extends BaseController
     public function delete_post($id)
     {
         if ($this->commonModel->deleteMany('tags_pivot', ['piv_id' => new ObjectId($id), 'tagType' => 'page'])) {
-            if ($this->commonModel->deteleOne('pages', ['_id' => new ObjectId($id)]))
+            if ($this->commonModel->deleteOne('pages', ['_id' => new ObjectId($id)])===true)
                 return redirect()->route('pages', [1])->with('message', '<b>' . $this->request->getPost('title') . '</b> adlı sayfa silindi.');
             else
                 return redirect()->back()->withInput()->with('error', 'Sayfa Silinemedi.');
