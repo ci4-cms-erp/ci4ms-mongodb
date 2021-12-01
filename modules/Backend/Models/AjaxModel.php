@@ -17,7 +17,7 @@ class AjaxModel extends Model
         $this->mongoConfig = new MongoConfig();
     }
 
-    public function limitTags_ajax(array $credentials = [], array $options = [], array $select = [])
+    public function limitTags_ajax(array $credentials = [], array $options = [])
     {
         $query = [
             [
@@ -32,9 +32,7 @@ class AjaxModel extends Model
         ];
         if (!empty($credentials))
             $query[] = ['$match' => $credentials];
-        if (!empty($select))
-            $query[] = ['$project' => $select];
-
+        $query[]=['$group'=>['_id'=>['id'=>'$_id','value'=>'$tag']]];
         return $this->m->options($options)->aggregate('tags', $query)->toArray();
     }
 }

@@ -36,20 +36,24 @@
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
-                    <tr>
-                        <th>Sayfa Adı</th>
-                        <th>Durumu</th>
-                        <th>#İşlemler</th>
+                    <tr class="row">
+                        <th class="col-md-9">Sayfa Adı</th>
+                        <th class="col-md-1">Durumu</th>
+                        <th class="col-md-2">#İşlemler</th>
                     </tr>
                     </thead>
                     <tbody>
                     <?php foreach ($pages as $page): ?>
-                    <tr>
-                        <td><?=$page->title?></td>
-                        <td><?=$page->isActive?></td>
-                        <td>
+                    <tr class="row">
+                        <td class="col-md-9"><?=$page->title?></td>
+                        <td class="col-md-1">
+                            <input type="checkbox" name="my-checkbox" class="bswitch" <?=($page->isActive===true)?'checked':''?> data-id="<?=$page->_id?>" data-off-color="danger" data-on-color="success">
+                        </td>
+                        <td class="col-md-2">
                             <a href="<?= route_to('pageUpdate', $page->_id) ?>"
                                class="btn btn-outline-info btn-sm"><i class="fas fa-edit"></i> Düzenle</a>
+                            <a href="<?= route_to('pageDelete', $page->_id) ?>"
+                               class="btn btn-outline-danger btn-sm"><i class="fas fa-edit"></i> Sil</a>
                         </td>
                     </tr>
                     <?php endforeach; ?>
@@ -88,4 +92,23 @@
 <?= $this->endSection() ?>
 <?= $this->section('javascript') ?>
 <script src="/be-assets/plugins/sweetalert2/sweetalert2.min.js"></script>
+<!-- Bootstrap Switch -->
+<script src="/be-assets/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+<script>
+    $('.bswitch').bootstrapSwitch();
+    $('.bswitch').on('switchChange.bootstrapSwitch',function(){
+        var id=$(this).data('id'), isActive;
+
+        if($(this).prop('checked'))
+            isActive=1;
+        else
+            isActive=0;
+
+        $.post('<?=route_to('isActive')?>',
+            {"<?=csrf_token()?>": "<?=csrf_hash()?>",
+                "id":id,
+                'isActive':isActive,
+                'where':'page'},'json').done();
+    });
+</script>
 <?= $this->endSection() ?>

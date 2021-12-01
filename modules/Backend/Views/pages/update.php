@@ -34,7 +34,7 @@
     <!-- Default box -->
     <div class="card card-outline card-shl">
         <div class="card-header">
-            <h3 class="card-title font-weight-bold">Sayfa Oluşur</h3>
+            <h3 class="card-title font-weight-bold"><?= lang('Backend.' . $title->pagename) ?></h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -44,53 +44,53 @@
         </div>
         <div class="card-body">
             <?= view('Modules\Auth\Views\_message_block') ?>
-            <form action="<?= route_to('pageCreate') ?>" class="form-row" method="post">
+            <form action="<?= route_to('pageUpdate',$pageInfo->_id) ?>" class="form-row" method="post">
                 <?= csrf_field() ?>
                 <div class="col-md-8 form-group row">
                     <div class="form-group col-md-12">
                         <label for="">Sayfa Başlığı</label>
-                        <input type="text" name="title" class="form-control ptitle" placeholder="Sayfa Başlığı"
+                        <input type="text" name="title" class="form-control ptitle" placeholder="Sayfa Başlığı" value="<?=$pageInfo->title?>"
                                required>
                     </div>
                     <div class="form-group col-md-12">
                         <label for="">Sayfa URL</label>
-                        <input type="text" class="form-control seflink" name="seflink" required">
+                        <input type="text" class="form-control seflink" name="seflink" required" value="<?=$pageInfo->seflink?>">
                     </div>
                     <div class="form-group col-md-12">
                         <label for="">İçerik</label>
-                        <textarea name="content" rows="60" class="form-control editor" required></textarea>
+                        <textarea name="content" rows="60" class="form-control editor" required><?=$pageInfo->content?></textarea>
                     </div>
                 </div>
                 <div class="col-md-4 form-group row">
                     <div class="form-group col-12">
                         <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
-                        <label class="btn btn-outline-secondary">
-                            <input type="radio" name="isActive" id="option1" autocomplete="off" value="0"> Taslak
+                        <label class="btn btn-outline-secondary" <?=($pageInfo->isActive===false)?'active':''?>>
+                            <input type="radio" name="isActive" id="option1" autocomplete="off" value="0" <?=($pageInfo->isActive===false)?'checked':''?>> Taslak
                         </label>
-                            <label class="btn btn-outline-secondary active">
-                                <input type="radio" name="isActive" id="option2" autocomplete="off" checked value="1"> Yayında
+                            <label class="btn btn-outline-secondary <?=($pageInfo->isActive===true)?'active':''?>">
+                                <input type="radio" name="isActive" id="option2" autocomplete="off" <?=($pageInfo->isActive===true)?'checked':''?> value="1"> Yayında
                             </label>
                         </div>
                     </div>
                     <div class="form-group col-md-12 row">
                         <div class="col-12 form-group">
                             <label for="">Sayfa Görseli</label>
-                            <img src="" alt="" class="pageimg img-fluid">
+                            <img src="<?=$pageInfo->seo->coverImage?>" alt="" class="pageimg img-fluid">
                         </div>
                         <div class="col-12 form-group">
                             <label for="">Görsel URL</label>
-                            <input type="text" name="pageimg" class="form-control pageimg-input"
+                            <input type="text" name="pageimg" class="form-control pageimg-input" value="<?=$pageInfo->seo->coverImage?>"
                                    placeholder="Görsel URL">
                         </div>
                         <div class="col-12 row form-group">
                             <div class="col-sm-6">
                                 <label for="">Görsel Genişliği</label>
-                                <input type="number" name="pageIMGWidth" class="form-control" id="pageIMGWidth"
+                                <input type="number" name="pageIMGWidth" class="form-control" id="pageIMGWidth" value="<?=$pageInfo->seo->IMGWidth?>"
                                        readonly>
                             </div>
                             <div class="col-sm-6">
                                 <label for="">Görsel Yüksekliği</label>
-                                <input type="number" name="pageIMGHeight" class="form-control" id="pageIMGHeight"
+                                <input type="number" name="pageIMGHeight" class="form-control" id="pageIMGHeight" value="<?=$pageInfo->seo->IMGHeight?>"
                                        readonly>
                             </div>
                         </div>
@@ -100,11 +100,11 @@
                     </div>
                     <div class="form-group col-md-12">
                         <label for="">Seo Açıklaması</label>
-                        <textarea class="form-control" name="description"></textarea>
+                        <textarea class="form-control" name="description"><?=$pageInfo->seo->description?></textarea>
                     </div>
                     <div class="form-group col-md-12">
                         <label for="">Seo Anahtar Kelimeleri</label>
-                        <textarea name="keywords" class="keywords" placeholder="write some tags"></textarea>
+                        <textarea name="keywords" class="keywords" placeholder="write some tags"><?=$tags?></textarea>
                     </div>
                 </div>
                 <div class="form-group col-md-12">

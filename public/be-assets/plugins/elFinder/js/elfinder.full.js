@@ -11740,7 +11740,7 @@ elFinder.prototype._options = {
 				tuiImgEditOpts : {
 					// Path prefix of icon-a.svg, icon-b.svg, icon-c.svg and icon-d.svg in the Theme. 
 					// `iconsPath` MUST follow the same origin policy.
-					iconsPath : void(0), // default is "./img/tui-"
+					iconsPath : void(0), // default is "/img/tui-"
 					// Theme object
 					theme : {}
 				},

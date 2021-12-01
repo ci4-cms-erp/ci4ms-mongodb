@@ -11,10 +11,10 @@
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="<?= site_url("be-assets/plugins/fontawesome-free/css/all.min.css")?>">
+    <link rel="stylesheet" href="/be-assets/plugins/fontawesome-free/css/all.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="<?= site_url("be-assets/css/adminlte.min.css")?>">
-    <link rel="stylesheet" href="<?= site_url("be-assets/custom.css")?>">
+    <link rel="stylesheet" href="/be-assets/css/adminlte.min.css">
+    <link rel="stylesheet" href="/be-assets/custom.css">
     <?= csrf_meta() ?>
     <?= $this->renderSection('head') ?>
 </head>
@@ -141,13 +141,13 @@
 <!-- ./wrapper -->
 
 <!-- jQuery -->
-<script src="<?= site_url("be-assets/plugins/jquery/jquery.min.js")?>"></script>
+<script src="/be-assets/plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
-<script src="<?= site_url("be-assets/plugins/bootstrap/js/bootstrap.bundle.min.js")?>"></script>
+<script src="/be-assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
-<script src="<?= site_url("be-assets/js/adminlte.min.js")?>"></script>
+<script src="/be-assets/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="<?= site_url("be-assets/js/demo.js")?>"></script>
+<script src="/be-assets/js/demo.js"></script>
 
 <?= $this->renderSection('javascript') ?>
 </body>

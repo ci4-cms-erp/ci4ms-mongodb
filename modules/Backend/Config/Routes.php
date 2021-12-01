@@ -52,7 +52,7 @@ $routes->group('backend', ['namespace' => 'Modules\Backend\Controllers'], functi
        $routes->post('create','Pages::create_post',['filter'=>'backendAfterLoginFilter']);
        $routes->get('pageUpdate/(:any)','Pages::update/$1',['as'=>'pageUpdate','filter'=>'backendAfterLoginFilter']);
        $routes->post('pageUpdate/(:any)','Pages::update_post/$1',['filter'=>'backendAfterLoginFilter']);
-       $routes->post('pageDelete/(:any)','Pages::delete_post/$1',['filter'=>'backendAfterLoginFilter']);
+       $routes->get('pageDelete/(:any)','Pages::delete_post/$1',['as'=>'pageDelete','filter'=>'backendAfterLoginFilter']);
     });
 
     $routes->get('profile', 'UserController::profile', ['filter' => 'backendAfterLoginFilter','as'=>'profile']);
@@ -69,4 +69,5 @@ $routes->group('backend', ['namespace' => 'Modules\Backend\Controllers'], functi
     // Other Pages
     $routes->post('tagify','AJAX::limitTags_ajax',['as'=>'tagify','filter' => 'backendAfterLoginFilter']);
     $routes->post('checkSeflink','AJAX::autoLookSeflinks',['as'=>'checkSeflink','filter' => 'backendAfterLoginFilter']);
+    $routes->post('isActive','AJAX::isActive',['as'=>'isActive','filter' => 'backendAfterLoginFilter']);
 });

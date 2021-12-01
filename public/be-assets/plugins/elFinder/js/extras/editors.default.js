@@ -198,7 +198,7 @@
 			info : {
 				id: 'tuiimgedit',
 				name: 'TUI Image Editor',
-				iconImg: 'img/editor-icons.png 0 -48',
+				iconImg: '/be-assets/plugins/elFinder/img/editor-icons.png 0 -48',
 				dataScheme: true,
 				schemeContent: true,
 				openMaximized: true,
@@ -220,7 +220,7 @@
 					this.opts = Object.assign({
 						version: 'v3.14.3'
 					}, opts.extraOptions.tuiImgEditOpts || {}, {
-						iconsPath : fm.baseUrl + 'img/tui-',
+						iconsPath : '/be-assets/plugins/elFinder/img/tui-',
 						theme : {}
 					});
 					if (!fm.isSameOrigin(this.opts.iconsPath)) {
@@ -473,7 +473,7 @@
 			info : {
 				id : 'photopea',
 				name : 'Photopea',
-				iconImg : 'img/editor-icons.png 0 -160',
+				iconImg : '/be-assets/plugins/elFinder/img/editor-icons.png 0 -160',
 				single: true,
 				noContent: true,
 				arrayBufferContent: true,
@@ -691,7 +691,7 @@
 			info : {
 				id : 'pixo',
 				name : 'Pixo Editor',
-				iconImg : 'img/editor-icons.png 0 -208',
+				iconImg : '/be-assets/plugins/elFinder/img/editor-icons.png 0 -208',
 				dataScheme: true,
 				schemeContent: true,
 				single: true,
@@ -900,7 +900,7 @@
 			info : {
 				id : 'aceeditor',
 				name : 'ACE Editor',
-				iconImg : 'img/editor-icons.png 0 -96'
+				iconImg : '/be-assets/plugins/elFinder/img/editor-icons.png 0 -96'
 			},
 			load : function(textarea) {
 				var self = this,
@@ -1105,7 +1105,7 @@
 			info : {
 				id : 'codemirror',
 				name : 'CodeMirror',
-				iconImg : 'img/editor-icons.png 0 -176'
+				iconImg : '/be-assets/plugins/elFinder/img/editor-icons.png 0 -176'
 			},
 			load : function(textarea) {
 				var fm = this.fm,
@@ -1261,7 +1261,7 @@
 			info : {
 				id : 'simplemde',
 				name : 'SimpleMDE',
-				iconImg : 'img/editor-icons.png 0 -80'
+				iconImg : '/be-assets/plugins/elFinder/img/editor-icons.png 0 -80'
 			},
 			exts  : ['md'],
 			load : function(textarea) {
@@ -1357,7 +1357,7 @@
 			info : {
 				id : 'ckeditor',
 				name : 'CKEditor',
-				iconImg : 'img/editor-icons.png 0 0'
+				iconImg : '/be-assets/plugins/elFinder/img/editor-icons.png 0 0'
 			},
 			exts  : ['htm', 'html', 'xhtml'],
 			setup : function(opts, fm) {
@@ -1478,7 +1478,7 @@
 			info : {
 				id : 'ckeditor5',
 				name : 'CKEditor5',
-				iconImg : 'img/editor-icons.png 0 -16'
+				iconImg : '/be-assets/plugins/elFinder/img/editor-icons.png 0 -16'
 			},
 			exts : ['htm', 'html', 'xhtml'],
 			html : '<div class="edit-editor-ckeditor5"></div>',
@@ -1772,7 +1772,7 @@
 			info : {
 				id : 'tinymce',
 				name : 'TinyMCE',
-				iconImg : 'img/editor-icons.png 0 -64'
+				iconImg : '/be-assets/plugins/elFinder/img/editor-icons.png 0 -64'
 			},
 			exts  : ['htm', 'html', 'xhtml'],
 			setup : function(opts, fm) {
@@ -2014,7 +2014,7 @@
 			info : {
 				id : 'zohoeditor',
 				name : 'Zoho Editor',
-				iconImg : 'img/editor-icons.png 0 -32',
+				iconImg : '/be-assets/plugins/elFinder/img/editor-icons.png 0 -32',
 				cmdCheck : 'ZohoOffice',
 				preventGet: true,
 				hideButtons: true,
@@ -2144,7 +2144,7 @@
 			info : {
 				id : 'ziparchive',
 				name : 'btnMount',
-				iconImg : 'img/toolbar.png 0 -416',
+				iconImg : '/be-assets/plugins/elFinder/img/toolbar.png 0 -416',
 				cmdCheck : 'ZipArchive',
 				edit : function(file, editor) {
 					var fm = this,
@@ -2213,7 +2213,7 @@
 			info : {
 				id : 'onlineconvert',
 				name : 'Online Convert',
-				iconImg : 'img/editor-icons.png 0 -144',
+				iconImg : '/be-assets/plugins/elFinder/img/editor-icons.png 0 -144',
 				cmdCheck : 'OnlineConvert',
 				preventGet: true,
 				hideButtons: true,

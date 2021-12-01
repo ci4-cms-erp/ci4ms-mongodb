@@ -9,18 +9,18 @@
  * the LICENSE file that was distributed with this source code.
  */
 
-namespace CodeIgniter\Commands\Generators;
+namespace App\Commands;
 
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
-use CodeIgniter\CLI\GeneratorTrait;
+use App\Commands\Ci4msTrait;
 
 /**
  * Generates a skeleton controller file.
  */
 class Admincontroller extends BaseCommand
 {
-    use GeneratorTrait;
+    use Ci4msTrait;
 
     /**
      * The Command's Group
