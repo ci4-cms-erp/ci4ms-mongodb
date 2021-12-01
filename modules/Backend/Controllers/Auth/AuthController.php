@@ -39,24 +39,36 @@ class AuthController extends BaseController
         $rules = [
             'email' => 'required|valid_email',
             'password' => 'required',
-            'captcha' => 'required'
+            'captcha' =>'required'
         ];
+
+        $captcha = $this->request->getPost('captcha');
+        $cap = $this->request->getPost('cap');
+        if(ENVIRONMENT === 'development')
+        {
+            $captcha = "EEEEE";
+            $cap = "EEEEE";
+            unset($rules['captcha']);
+        }
 
         if (!$this->validate($rules))
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
 
-        if ($this->request->getPost('captcha') == $this->session->getFlashdata('cap')) {
+        if ($captcha == $cap) {
+
             $login = $this->request->getPost('email');
             $password = $this->request->getPost('password');
             $remember = (bool)$this->request->getPost('remember');
 
+            // Check is blocked ip
+            if (!$this->authLib->isBloackedIp())
+                return redirect()->back()->withInput()->with('error', $this->authLib->error() ?? lang('Auth.loginBlock'));
+
             // Try to log them in...
             if (!$this->authLib->attempt(['email' => $login, 'password' => $password], $remember))
                 return redirect()->back()->withInput()->with('error', $this->authLib->error() ?? lang('Auth.badAttempt'));
-
             $redirectURL = session('redirect_url') ?? redirect()->route('logout');
             unset($_SESSION['redirect_url']);
-
             return redirect()->route($redirectURL)->withCookies()->with('message', lang('Auth.loginSuccess'));
         }
 

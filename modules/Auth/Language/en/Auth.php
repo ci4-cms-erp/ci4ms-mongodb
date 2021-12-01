@@ -28,6 +28,7 @@ return [
 
     // Login
     'badAttempt' => 'Unable to log you in. Please check your credentials.',
+    'loginBlock' => 'Your login has been suspended. Please contact the IT department. ',
     'loginSuccess' => 'Welcome back!',
     'invalidPassword' => 'Unable to log you in. Please check your password.',
 

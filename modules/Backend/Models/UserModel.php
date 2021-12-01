@@ -82,10 +82,11 @@ class UserModel extends Model
     /**
      * @param string $email
      * @param bool $success
+     * @param int|null $falseCounter for loginAttempt false
      * @return mixed
      * @throws \Exception
      */
-    public function recordLoginAttempt(string $email, bool $success)
+    public function recordLoginAttempt(string $email, bool $success, int $falseCounter = null)
     {
         $ipAddress = Services::request()->getIPAddress();
         $user_agent = Services::request()->getUserAgent();
@@ -106,7 +107,8 @@ class UserModel extends Model
             'trydate' => $time->toDateTimeString(),
             'isSuccess' => $success,
             'user_agent' => $agent,
-            'session_id' => session_id()
+            'session_id' => session_id(),
+            'counter' => ($success === false  ) ? $falseCounter+1 : null,
         ]);
     }
 

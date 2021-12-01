@@ -1,6 +1,7 @@
 <?php namespace Modules\Backend\Libraries;
 
 use CodeIgniter\Events\Events;
+use CodeIgniter\I18n\Time;
 use Config\App;
 use ci4mongodblibrary\Models\CommonModel;
 use Config\Services;
@@ -17,6 +18,7 @@ class AuthLibrary
     protected $user;
     protected $commonModel;
 
+
     public function __construct()
     {
         $this->userModel = new UserModel();
@@ -24,6 +26,8 @@ class AuthLibrary
         $this->commonModel = new CommonModel();
         $this->user = null;
         $this->config->userTable = 'users';
+        $this->ipAddress = Services::request()->getIPAddress();
+
     }
 
     public function login(object $user = null, bool $remember = false): bool
@@ -197,10 +201,18 @@ class AuthLibrary
     public function attempt(array $credentials, bool $remember = null): bool
     {
         $this->user = $this->validate($credentials, true);
+        $falseLogin = $this->commonModel->getOne('auth_logins',['ip_address' => $this->ipAddress],['sort'=> ['_id'=>-1]]);
+
+        if ($falseLogin->isSuccess === false ){
+            if(!isset($falseLogin->counter))
+                $falseCounter = 0;
+            else $falseCounter = $falseLogin->counter;
+        } else $falseCounter = null;
+
 
         if (empty($this->user)) {
             // Always record a login attempt, whether success or not.
-            $this->userModel->recordLoginAttempt($credentials['email'], false);
+            $this->userModel->recordLoginAttempt($credentials['email'], false, (int)$falseCounter);
 
             $this->user = null;
             return false;
@@ -208,7 +220,7 @@ class AuthLibrary
 
         if ($this->isBanned($this->user->_id)) {
             // Always record a login attempt, whether success or not.
-            $this->userModel->recordLoginAttempt($credentials['email'], false);
+            $this->userModel->recordLoginAttempt($credentials['email'], false, (int)$falseCounter);
 
             $this->error = lang('Auth.userIsBanned');
 
@@ -218,7 +230,7 @@ class AuthLibrary
 
         if (!$this->isActivated($this->user->_id)) {
             // Always record a login attempt, whether success or not.
-            $this->userModel->recordLoginAttempt($credentials['email'], false);
+            $this->userModel->recordLoginAttempt($credentials['email'], false, (int)$falseCounter);
 
             $param = http_build_query([
                 'login' => urlencode($credentials['email'] ?? $credentials['username'])
@@ -415,5 +427,24 @@ class AuthLibrary
     public function generateActivateHash()
     {
         return bin2hex(random_bytes(16));
+    }
+
+    public function isBloackedIp(): bool
+    {
+        $settings = $this->commonModel->getOne('settings', [/* where */], [/* options */], ['loginBlockMin', 'loginBlockIsActive', 'loginBlockAttemptsCounter']);
+        $loginAttempts = $this->commonModel->getOne('auth_logins', ['ip_address' => $this->ipAddress, 'isSuccess' => false], ['sort' => ['_id' => -1]]);
+
+        //dd($loginAttempts);
+        if ($loginAttempts !== null && $settings->loginBlockIsActive && $settings->loginBlockAttemptsCounter < $loginAttempts->counter) {
+
+            $now = new Time('now');
+            $tryDate = new Time($loginAttempts->trydate);
+            $blockFinisTime = $tryDate->addMinutes($settings->loginBlockMin);
+
+            if ($now->isBefore($blockFinisTime))
+                return false;
+            else return true;
+
+        } else return true;
     }
 }

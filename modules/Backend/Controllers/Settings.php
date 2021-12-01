@@ -111,7 +111,8 @@ class Settings extends BaseController
 
     public function mailSettingsPost()
     {
-        $valData = ['mServer' => ['label' => 'Mail Server', 'rules' => 'required'],
+        $valData = [
+            'mServer' => ['label' => 'Mail Server', 'rules' => 'required'],
             'mPort' => ['label' => 'Mail Port', 'rules' => 'required|is_natural_no_zero'],
             'mAddress' => ['label' => 'Mail Adresi', 'rules' => 'required|valid_email'],
             'mPwd' => ['label' => 'Mail Şifresi', 'rules' => 'required']
@@ -128,6 +129,28 @@ class Settings extends BaseController
             'mailTLS' => false];
         if ($this->request->getPost('mTls'))
             $data['mailTLS'] = true;
+        $settings = $this->commonModel->getOne('settings');
+        $result = $this->commonModel->updateOne('settings', ['_id' => new ObjectId($settings->_id)], $data);
+        if ((bool)$result === false)
+            return redirect()->back()->withInput()->with('error', 'Şirket Sosyal Medya Bilgileri Güncellenemedi.');
+        else
+            return redirect()->back()->with('message', 'Şirket Sosyal Medya Bilgileri Güncellendi.');
+    }
+
+    public function loginSettingsPost(){
+        $valData = [
+            'loginBlockMin' => ['label' => 'Engellme Süresi', 'rules' => 'required|is_natural_no_zero|less_than[180]|greater_than[10]'],
+            'loginCounter' => ['label' => 'Deneme Sayısı', 'rules' => 'required|is_natural_no_zero|less_than[20]|greater_than[2]'],
+        ];
+
+        if ($this->validate($valData) == false)
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+
+        $data = [
+            'loginBlockIsActive' => ($this->request->getPost('loginIsActive') == 'on') ? true : false,
+            'loginBlockMin' => $this->request->getPost('loginBlockMin'),
+            'loginBlockAttemptsCounter' => $this->request->getPost('loginCounter'),
+        ];
         $settings = $this->commonModel->getOne('settings');
         $result = $this->commonModel->updateOne('settings', ['_id' => new ObjectId($settings->_id)], $data);
         if ((bool)$result === false)

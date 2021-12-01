@@ -64,6 +64,9 @@ $routes->group('backend', ['namespace' => 'Modules\Backend\Controllers'], functi
         $routes->post('compInfos','Settings::compInfosPost',['as'=>'compInfosPost','filter' => 'backendAfterLoginFilter']);
         $routes->post('socialMedia','Settings::socialMediaPost',['as'=>'socialMediaPost','filter' => 'backendAfterLoginFilter']);
         $routes->post('mailSettings','Settings::mailSettingsPost',['as'=>'mailSettingsPost','filter' => 'backendAfterLoginFilter']);
+        $routes->post('loginSettings','Settings::loginSettingsPost',['as'=>'loginSettingsPost','filter' => 'backendAfterLoginFilter']);
+
+
     });
 
     // Other Pages

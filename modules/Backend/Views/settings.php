@@ -49,6 +49,8 @@ Anasayfa
                            role="tab" aria-controls="vert-tabs-profile" aria-selected="false">Sosyal Medya</a>
                         <a class="nav-link" id="vert-tabs-messages-tab" data-toggle="pill" href="#vert-tabs-messages"
                            role="tab" aria-controls="vert-tabs-messages" aria-selected="false">Mail Ayarları</a>
+                        <a class="nav-link" id="vert-tabs-messages-tab" data-toggle="pill" href="#vert-tabs-login"
+                           role="tab" aria-controls="vert-tabs-messages" aria-selected="false">Giriş Ayarları</a>
                     </div>
                 </div>
                 <div class="col-7 col-sm-9">
@@ -186,6 +188,32 @@ Anasayfa
                                 </div>
                             </form>
                         </div>
+                        <div class="tab-pane fade" id="vert-tabs-login" role="tabpanel"
+                             aria-labelledby="vert-tabs-messages-tab">
+                            <form action="<?= route_to('loginSettingsPost') ?>" method="post" class="form-row">
+                                <?= csrf_field() ?>
+                                <div class="col-12 form-group">
+                                    <label for="">Giriş Ayarları Aktif mi ? </label>
+                                    <input type="checkbox" name="loginIsActive"
+                                        <?=(!empty($settings->loginBlockIsActive) && $settings->loginBlockIsActive===true) ?'checked':''?>>
+
+                                </div>
+                                <div class="col-6 form-group">
+                                    <label for="">Engellme Süresi <small>(dk)</small></label>
+                                    <input type="number" name="loginBlockMin" class="form-control"
+                                           value="<?= empty($settings->loginBlockMin) ? '' : $settings->loginBlockMin ?>" required>
+                                </div>
+                                <div class="col-6 form-group">
+                                    <label for="">Deneme Sayısı</label>
+                                    <input type="number" name="loginCounter" class="form-control"
+                                           value="<?= empty($settings->loginBlockAttemptsCounter) ? '' : $settings->loginBlockAttemptsCounter ?>" required>
+                                </div>
+                                <div class="col-12 form-group">
+                                    <button class="btn btn-success float-right">Güncelle</button>
+                                </div>
+                            </form>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -201,6 +229,9 @@ Anasayfa
 <?= $this->section('javascript') ?>
 <script src="/be-assets/plugins/sweetalert2/sweetalert2.min.js"></script>
 <script src="/be-assets/node_modules/jquery.repeater/jquery.repeater.js"></script>
+
+
+
 <script>
     $(document).ready(function () {
         'use strict';

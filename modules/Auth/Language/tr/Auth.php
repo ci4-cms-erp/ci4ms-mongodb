@@ -28,6 +28,7 @@ return [
 
     // Login
     'badAttempt' => 'Giriş yapılamıyor. Lütfen bilgilerinizi kontrol edin.',
+    'loginBlock' => 'Girişiniz askıya alınmıştır. Lütfen IT departmanına başvurun.',
     'loginSuccess' => 'Tekrar Hoşgeldiniz!',
     'invalidPassword' => 'Giriş yapılamıyor. Lütfen bilgilerinizi kontrol edin.',
 
