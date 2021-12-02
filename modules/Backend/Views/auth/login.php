@@ -33,7 +33,7 @@
                 </div>
                 <div class="input-group mb-3">
                     <img src="<?php echo $cap->inline(); ?>"/>
-                    <input type="text" name="captcha" class="form-control" required placeholder="Doğrulama kodu">
+                    <input type="text" name="captcha" class="form-control" required autocomplete="off" placeholder="Doğrulama kodu">
                 </div>
                 <div class="row">
                     <div class="col-8">
@@ -51,9 +51,7 @@
                     <!-- /.col -->
                 </div>
             </form>
-
             <hr>
-
             <p class="mb-1">
                 <a href="<?= route_to('backend/forgot') ?>"><?=lang('Auth.forgotPassword')?></a>
             </p>

@@ -125,3 +125,4 @@ nb-configuration.xml
 /phpunit*.xml
 /.phpunit.*.cache
 /app/Config/MongoConfig.php
+public/uploads/media/*

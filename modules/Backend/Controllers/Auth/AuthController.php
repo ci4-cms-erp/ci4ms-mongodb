@@ -44,6 +44,7 @@ class AuthController extends BaseController
 
         $captcha = $this->request->getPost('captcha');
         $cap = $this->request->getPost('cap');
+        //TODO: production kısmına çekerken silinecek.
         if(ENVIRONMENT === 'development')
         {
             $captcha = "EEEEE";
@@ -55,7 +56,6 @@ class AuthController extends BaseController
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
 
         if ($captcha == $cap) {
-
             $login = $this->request->getPost('email');
             $password = $this->request->getPost('password');
             $remember = (bool)$this->request->getPost('remember');

@@ -434,17 +434,12 @@ class AuthLibrary
         $settings = $this->commonModel->getOne('settings', [/* where */], [/* options */], ['loginBlockMin', 'loginBlockIsActive', 'loginBlockAttemptsCounter']);
         $loginAttempts = $this->commonModel->getOne('auth_logins', ['ip_address' => $this->ipAddress, 'isSuccess' => false], ['sort' => ['_id' => -1]]);
 
-        //dd($loginAttempts);
         if ($loginAttempts !== null && $settings->loginBlockIsActive && $settings->loginBlockAttemptsCounter <= $loginAttempts->counter) {
-
             $now = new Time('now');
             $tryDate = new Time($loginAttempts->trydate);
             $blockFinisTime = $tryDate->addMinutes($settings->loginBlockMin);
 
-            if ($now->isBefore($blockFinisTime))
-                return false;
-            else return true;
-
+            if ($now->isBefore($blockFinisTime)) return false; else return true;
         } else return true;
     }
 }
