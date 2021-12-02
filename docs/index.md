@@ -1,37 +1,73 @@
-## Welcome to GitHub Pages
+# Codeigniter For Management Systems
 
-You can use the [editor on GitHub](https://github.com/ci4-cms-erp/ci4ms-mongodb/edit/dev/docs/index.md) to maintain and preview the content for your website in Markdown files.
+## Features
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+This is meant to be a one-stop shop for 99% of your web-based authentication needs with CI4. It includes the following primary features:
 
-### Markdown
+<ul>
+<li>Password-based authentication with remember-me functionality for web apps
+Flat RBAC per NIST standards, described <a href="https://csrc.nist.gov/Projects/Role-Based-Access-Control">here</a> and <a href="https://www.semanticscholar.org/paper/A-formal-model-for-flat-role-based-access-control-Khayat-Abdallah/aeb1e9676e2d7694f268377fc22bdb510a13fab7?p2df">here</a>.</li>
+<li>All views necessary for login, registration and forgotten password flows.</li>
+<li>Publish files to the main application via a CLI command for easy customization</li>
+<li>Email-based account verification</li>
+</ul>
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## Installation
+You must have Mongo Driver and Composer. Follow these links for installation:
+<ul>
+<li><a href="https://getcomposer.org/doc/00-intro.md#installation-linux-unix-macos">Composer installation</a></li>
+<li><a href="https://www.php.net/manual/en/mongo.installation.php">Mongo driver installation</a></li>
+</ul>
 
-```markdown
-Syntax highlighted code block
+**you must do in terminal**
 
-# Header 1
-## Header 2
-### Header 3
+if you are installing to host, you must change file permissions user and group.
 
-- Bulleted
-- List
+<code>chown user:group codeigniter_project_file</code>
 
-1. Numbered
-2. List
+<hr>
 
-**Bold** and _Italic_ and `Code` text
+if do you want manual install you can follow these steps.
+```
+mongo
 
-[Link](url) and ![Image](src)
+use yourDatabase
+
+db.createUser({
+    user: "userName",
+    pwd: passwordPrompt(),      // Or  "cleartextPassword"
+    roles: [{role: "readWrite", db: "yourDatabase"}]
+});
 ```
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+Create a config file at app/Config. File name should be MongoConfig.php.
 
-### Jekyll Themes
+```
+<?php namespace Config;
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/ci4-cms-erp/ci4ms-mongodb/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+use CodeIgniter\Config\BaseConfig;
 
-### Support or Contact
+class MongoConfig extends BaseConfig
+{
+    public $db = "kun-cms"; //your database
+    public $hostname = '127.0.0.1'; //if you use remote server you should change host address
+    public $userName = "beaver";
+    public $password = "kun12345678";
+    public $prefix = "";
+    public $port = 27017; //if you use different port you should change port address
+}
+```
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+Move other files and change namespace.
+
+### <b>Congratulations!</b>
+<hr>
+
+### Automatic Installation
+After made settings. you should go link `http://site/installation` follow form attributes. Finish installation automaticly must detele installation module. If not delete installation module you must follow this steps:
+<ul>
+<li>you must delete <code>modules/installation</code> module</li>
+<li>you should update <code>app/Config/Autoload.php</code>. you will see a note for update.</li>
+</ul>
+
+# In preparation
