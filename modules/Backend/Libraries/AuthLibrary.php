@@ -435,7 +435,7 @@ class AuthLibrary
         $loginAttempts = $this->commonModel->getOne('auth_logins', ['ip_address' => $this->ipAddress, 'isSuccess' => false], ['sort' => ['_id' => -1]]);
 
         //dd($loginAttempts);
-        if ($loginAttempts !== null && $settings->loginBlockIsActive && $settings->loginBlockAttemptsCounter < $loginAttempts->counter) {
+        if ($loginAttempts !== null && $settings->loginBlockIsActive && $settings->loginBlockAttemptsCounter <= $loginAttempts->counter) {
 
             $now = new Time('now');
             $tryDate = new Time($loginAttempts->trydate);
