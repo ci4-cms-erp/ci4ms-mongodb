@@ -27,10 +27,10 @@ return [
     'errorSendingActivation' => 'Aktivasyon mesajı gönderilemedi: {0}',
 
     // Login
-    'badAttempt' => 'Giriş yapılamıyor. Lütfen bilgilerinizi kontrol edin.',
+    'badAttempt' => 'Giriş yapılamıyor. Lütfen bilgilerinizi kontrol edin. %s',
     'loginBlock' => 'Girişiniz askıya alınmıştır. Lütfen IT departmanına başvurun.',
     'loginSuccess' => 'Tekrar Hoşgeldiniz!',
-    'invalidPassword' => 'Giriş yapılamıyor. Lütfen bilgilerinizi kontrol edin.',
+    'invalidPassword' => 'Giriş yapılamıyor. Lütfen bilgilerinizi kontrol edin. %s',
 
     // Forgotten Passwords
     'forgotDisabled' => 'Resseting password option has been disabled.', // translate

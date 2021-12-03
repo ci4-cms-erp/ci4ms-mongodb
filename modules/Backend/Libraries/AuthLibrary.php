@@ -200,10 +200,11 @@ class AuthLibrary
 
     public function attempt(array $credentials, bool $remember = null): bool
     {
+        //dd($this->remainingEntry());
         $this->user = $this->validate($credentials, true);
         $falseLogin = $this->commonModel->getOne('auth_logins',['ip_address' => $this->ipAddress],['sort'=> ['_id'=>-1]]);
 
-        if ($falseLogin->isSuccess === false ){
+        if ($falseLogin && $falseLogin->isSuccess === false ){
             if(!isset($falseLogin->counter))
                 $falseCounter = 0;
             else $falseCounter = $falseLogin->counter;
@@ -269,7 +270,7 @@ class AuthLibrary
         $user = $this->userModel->findOne($credentials);
 
         if (!$user) {
-            $this->error = lang('Auth.badAttempt');
+            $this->error = sprintf(lang('Auth.badAttempt'), '<br><b>Kalan deneme hakkınız ' . $this->remainingEntry() . ' tanedir. <b></b>');
             return false;
         }
 
@@ -279,7 +280,7 @@ class AuthLibrary
         ), $user->password_hash);
 
         if (!$result) {
-            $this->error = lang('Auth.invalidPassword');
+            $this->error = sprintf(lang('Auth.invalidPassword'), '<br><b>Kalan deneme hakkınız ' . $this->remainingEntry() . ' tanedir.<b></b>');
             return false;
         }
 
@@ -434,12 +435,25 @@ class AuthLibrary
         $settings = $this->commonModel->getOne('settings', [/* where */], [/* options */], ['loginBlockMin', 'loginBlockIsActive', 'loginBlockAttemptsCounter']);
         $loginAttempts = $this->commonModel->getOne('auth_logins', ['ip_address' => $this->ipAddress, 'isSuccess' => false], ['sort' => ['_id' => -1]]);
 
-        if ($loginAttempts !== null && $settings->loginBlockIsActive && $settings->loginBlockAttemptsCounter <= $loginAttempts->counter) {
+        if ($loginAttempts !== null && $settings->loginBlockIsActive && $settings->loginBlockAttemptsCounter <= $loginAttempts->counter + 1) {
             $now = new Time('now');
             $tryDate = new Time($loginAttempts->trydate);
             $blockFinisTime = $tryDate->addMinutes($settings->loginBlockMin);
 
-            if ($now->isBefore($blockFinisTime)) return false; else return true;
-        } else return true;
+            if ($now->isBefore($blockFinisTime)) return false;
+            else return true;
+        }
+        else return true;
+    }
+
+    public function remainingEntry()
+    {
+        $settings = $this->commonModel->getOne('settings', [/* where */], [/* options */], ['loginBlockMin', 'loginBlockIsActive', 'loginBlockAttemptsCounter']);
+        $loginAttempts = $this->commonModel->getOne('auth_logins', ['ip_address' => $this->ipAddress], ['sort' => ['_id' => -1]]);
+
+        if ($loginAttempts !== null && $settings->loginBlockIsActive) {
+            return (int)$settings->loginBlockAttemptsCounter - (($loginAttempts->counter === null) ? 1 :  $loginAttempts->counter + 1 );
+        } else return (int)$settings->loginBlockAttemptsCounter - 1 ;
+
     }
 }
