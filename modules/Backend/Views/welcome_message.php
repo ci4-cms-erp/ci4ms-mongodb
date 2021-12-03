@@ -20,7 +20,24 @@
 
 <!-- Main content -->
 <section class="content">
+    <div class="row">
+        <div class="col-lg-3 col-md-3">
+            <!-- small card -->
+            <div class="small-box bg-light shadow">
+                <div class="inner">
+                    <h3><?=$dashboard->pageCount->count?></h3>
 
+                    <p>Sayfalar</p>
+                </div>
+                <div class="icon">
+                    <?=$dashboard->pageCount->icon?>
+                </div>
+                <a href="<?=route_to('pages',1)?>" class="small-box-footer">
+                    More info <i class="fas fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
 </section>
 <!-- /.content -->
 <?= $this->endSection() ?>

@@ -7,7 +7,6 @@ function pageImgelfinderDialog() {
         destroyOnClose: true,
         cssAutoLoad: [window.location.origin+'/be-assets/node_modules/elfinder-material-theme/Material/css/theme-gray.css'],
         getFileCallback: function (files, fm) {
-            console.log(files);
             $('.pageimg-input').val(files.url);
             $('.pageimg').attr('src',files.url);
             const img = new Image();
@@ -66,7 +65,6 @@ function elfinderDialog() {
         destroyOnClose: true,
         cssAutoLoad: [window.location.origin+'/be-assets/node_modules/elfinder-material-theme/Material/css/theme-gray.css'],
         getFileCallback: function (files, fm) {
-            console.log(files);
             $('.editor').summernote('editor.insertImage', files.url);
         },
         commandsOptions: {
