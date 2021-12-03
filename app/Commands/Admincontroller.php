@@ -78,7 +78,7 @@ class Admincontroller extends BaseCommand
     public function run(array $params)
     {
         $this->component = 'Controller';
-        $this->directory = '..\modules\Backend\Controller';
+        $this->directory = '..\modules\Backend\Controllers';
         $this->template  = 'controller.tpl.php';
 
         $this->classNameLang = 'CLI.generator.className.controller';

@@ -73,4 +73,5 @@ $routes->group('backend', ['namespace' => 'Modules\Backend\Controllers'], functi
     $routes->post('tagify','AJAX::limitTags_ajax',['as'=>'tagify','filter' => 'backendAfterLoginFilter']);
     $routes->post('checkSeflink','AJAX::autoLookSeflinks',['as'=>'checkSeflink','filter' => 'backendAfterLoginFilter']);
     $routes->post('isActive','AJAX::isActive',['as'=>'isActive','filter' => 'backendAfterLoginFilter']);
+    $routes->get('media','Media::index',['as'=>'media','filter' => 'backendAfterLoginFilter']);
 });

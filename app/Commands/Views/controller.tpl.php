@@ -1,6 +1,6 @@
 <@php
 
-namespace {namespace};
+namespace Modules\Backend\Controllers;
 
 class {class} extends {extends}
 {
@@ -12,7 +12,7 @@ class {class} extends {extends}
      */
     public function index()
     {
-        //
+        return view('Modules\Backend\Views\',$this->defData);
     }
 
     /**
@@ -82,7 +82,7 @@ class {class} extends {extends}
      */
     public function index()
     {
-        //
+        return view('Modules\Backend\Views\',$this->defData);
     }
 
     /**
@@ -169,7 +169,7 @@ class {class} extends {extends}
 <?php else: ?>
     public function index()
     {
-        //
+        return view('Modules\Backend\Views\',$this->defData);
     }
 <?php endif ?>
 }

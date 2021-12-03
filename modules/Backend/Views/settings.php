@@ -229,9 +229,6 @@ Anasayfa
 <?= $this->section('javascript') ?>
 <script src="/be-assets/plugins/sweetalert2/sweetalert2.min.js"></script>
 <script src="/be-assets/node_modules/jquery.repeater/jquery.repeater.js"></script>
-
-
-
 <script>
     $(document).ready(function () {
         'use strict';
