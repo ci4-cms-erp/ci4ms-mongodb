@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use ci4mongodblibrary\Models\CommonModel;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -31,6 +32,8 @@ class BaseController extends Controller
 	protected $helpers = [];
 
     protected $mongo;
+
+    public $commonModel;
 	/**
 	 * Constructor.
 	 *
@@ -48,5 +51,6 @@ class BaseController extends Controller
 		//--------------------------------------------------------------------
 		// E.g.: $this->session = \Config\Services::session();
         $this->mongo=new Mongo();
+        $this->commonModel=new CommonModel();
 	}
 }
