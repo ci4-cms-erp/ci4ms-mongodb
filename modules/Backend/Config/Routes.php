@@ -69,6 +69,15 @@ $routes->group('backend', ['namespace' => 'Modules\Backend\Controllers'], functi
 
     });
 
+    //menu module
+    $routes->group('menu',function ($routes){
+       $routes->get('/','Menu::index', ['as'=>'menu','filter' => 'backendAfterLoginFilter']);
+       $routes->post('createMenu','Menu::create', ['as'=>'createMenu','filter' => 'backendAfterLoginFilter']);
+       $routes->post('updateMenuAjax','Menu::update_ajax', ['as'=>'updateMenuAjax','filter' => 'backendAfterLoginFilter']);
+       $routes->post('deleteMenuAjax','Menu::delete_ajax', ['as'=>'deleteMenuAjax','filter' => 'backendAfterLoginFilter']);
+       $routes->post('queueMenuAjax','Menu::queue_ajax', ['as'=>'queueMenuAjax','filter' => 'backendAfterLoginFilter']);
+    });
+
     // Other Pages
     $routes->post('tagify','AJAX::limitTags_ajax',['as'=>'tagify','filter' => 'backendAfterLoginFilter']);
     $routes->post('checkSeflink','AJAX::autoLookSeflinks',['as'=>'checkSeflink','filter' => 'backendAfterLoginFilter']);
