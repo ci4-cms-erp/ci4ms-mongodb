@@ -42,76 +42,31 @@
         <div class="card-body">
             <?= view('Modules\Auth\Views\_message_block') ?>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6" id="list">
                     <h4><strong>Sayfalar</strong></h4>
                     <form class="list-group">
-                        <div class="list-group-item">
-                            <div class="row d-flex justify-content-between align-items-center">
-                                <div class="col-xs-8">
-                                    <label class="ml-3">
-                                        <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
-                                        An item
-                                    </label>
-                                </div>
-                                <div class="col-xs-4">
-                                    <button class="btn btn-success addPages" type="button" data-id="">Ekle</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="list-group-item">
-                            <div class="row d-flex justify-content-between align-items-center">
-                                <div class="col-xs-8">
-                                    <label class="ml-3">
-                                        <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
-                                        A second item
-                                    </label>
-                                </div>
-                                <div class="col-xs-4">
-                                    <button class="btn btn-success addPages" type="button" data-id="">Ekle</button>
+                        <?php foreach ($pages as $page): ?>
+                            <div class="list-group-item" id="page-<?= $page->_id ?>">
+                                <div class="row d-flex justify-content-between align-items-center">
+                                    <div class="col-xs-8">
+                                        <label class="ml-3">
+                                            <input class="form-check-input me-1" type="checkbox"
+                                                   value="<?= $page->_id ?>">
+                                            <?= $page->title ?>
+                                        </label>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <button class="btn btn-success addPages" type="button"
+                                                data-id="<?= $page->_id ?>">Ekle
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        <?php endforeach; ?>
                         <div class="list-group-item">
-                            <div class="row d-flex justify-content-between align-items-center">
-                                <div class="col-xs-8 ">
-                                    <label class="ml-3">
-                                        <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
-                                        A third item
-                                    </label>
-                                </div>
-                                <div class="col-xs-4">
-                                    <button class="btn btn-success addPages" type="button" data-id="">Ekle</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="list-group-item">
-                            <div class="row d-flex justify-content-between align-items-center">
-                                <div class="col-xs-8">
-                                    <label class="ml-3">
-                                        <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
-                                        A fourth item
-                                    </label>
-                                </div>
-                                <div class="col-xs-4">
-                                    <button class="btn btn-success addPages" type="button" data-id="">Ekle</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="list-group-item">
-                            <div class="row d-flex justify-content-between align-items-center">
-                                <div class="col-xs-8">
-                                    <label class="ml-3">
-                                        <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
-                                        And a fifth one
-                                    </label>
-                                </div>
-                                <div class="col-xs-4">
-                                    <button class="btn btn-success addPages" type="button" data-id="">Ekle</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="list-group-item">
-                            <button class="btn btn-success float-right" type="button" id="addCheckedPages">Seçilenleri ekle</button>
+                            <button class="btn btn-success float-right" type="button" id="addCheckedPages">Seçilenleri
+                                ekle
+                            </button>
                         </div>
                     </form>
                     <hr>
@@ -183,7 +138,9 @@
                             </div>
                         </div>
                         <div class="list-group-item">
-                            <button class="btn btn-success float-right" type="button" id="addCheckedBlog">Seçilenleri ekle</button>
+                            <button class="btn btn-success float-right" type="button" id="addCheckedBlog">Seçilenleri
+                                ekle
+                            </button>
                         </div>
                     </form>
 
@@ -198,46 +155,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="dd">
-                        <ol class="dd-list">
-                            <li class="dd-item" data-id="1">
-                                <div class="dd-handle">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span>teser</span>
-                                        <button class="btn btn-sm btn-danger float-right" data-id="1" type="button"><i
-                                                    class="fas fa-trash"></i></button>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="dd-item" data-id="2">
-                                <div class="dd-handle">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span>Item 2</span>
-                                        <button class="btn btn-sm btn-danger float-right" data-id="2" type="button"><i
-                                                    class="fas fa-trash"></i></button>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="dd-item" data-id="3">
-                                <div class="dd-handle">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span>Item 3</span>
-                                        <button class="btn btn-sm btn-danger float-right" data-id="3" type="button"><i
-                                                    class="fas fa-trash"></i></button>
-                                    </div>
-                                </div>
-                                <ol class="dd-list">
-                                    <li class="dd-item" data-id="4">
-                                        <div class="dd-handle">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <span>Item 4</span>
-                                                <button class="btn btn-sm btn-danger float-right" data-id="4"
-                                                        type="button"><i class="fas fa-trash"></i></button>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ol>
-                            </li>
-                        </ol>
+                        <?php if (!empty($nestable2)) menu($nestable2); ?>
                     </div>
                 </div>
             </div>
@@ -256,23 +174,60 @@
 <script>
     $('.dd').nestable().on('change', function () {
         console.log($(this).nestable('serialize'));
-        alert('burada');
+        $.post('<?=route_to('queueMenuAjax')?>',{
+            "<?=csrf_token()?>": "<?=csrf_hash()?>",
+            "queue":$(this).nestable('serialize')
+        })
     });
 
     $('.addPages').click(function () {
-
+        var id = $(this).data('id');
+        $.post('<?=route_to('createMenu')?>', {
+            "<?=csrf_token()?>": "<?=csrf_hash()?>",
+            "id": id, 'where': 'pages'
+        }).done(function (data) {
+            $('.dd').html(data);
+            $("#page-" + id + "").remove();
+        });
     });
+
     $('.addBlog').click(function () {
-
+        var id = $(this).data('id');
+        $.post('<?=route_to('createMenu')?>', {
+            "<?=csrf_token()?>": "<?=csrf_hash()?>",
+            "id": id, 'where': 'blog'
+        }).done(function (data) {
+            $('.dd').html(data);
+            $("#blog-" + id + "").remove();
+        });
     });
+
     $('#addCheckedBlog').click(function () {
 
     });
+
     $('#addCheckedPages').click(function () {
 
     });
+
     $('#addURL').click(function () {
 
     });
+
+    $('.removeFromMenu').click(function () {
+        var id = $(this).data('id');
+        console.log(id);
+        $.post('<?=route_to('deleteMenuAjax')?>', {
+            "<?=csrf_token()?>": "<?=csrf_hash()?>", "id": id
+        }).done(function (data) {
+            $('.dd').html(data);
+            $("#menu-" + id + "").remove();
+            $.post('<?=route_to('menuList')?>', {
+                "<?=csrf_token()?>": "<?=csrf_hash()?>"
+            }).done(function (data) {
+               $('#list').html(data);
+            });
+        });
+    })
 </script>
 <?= $this->endSection() ?>

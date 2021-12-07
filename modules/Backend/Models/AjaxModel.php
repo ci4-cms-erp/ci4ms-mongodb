@@ -1,10 +1,9 @@
 <?php namespace Modules\Backend\Models;
 
-use CodeIgniter\Model;
 use ci4mongodblibrary\Libraries\Mongo;
 use Config\MongoConfig;
 
-class AjaxModel extends Model
+class AjaxModel
 {
     protected $m;
     protected $mongoConfig;
@@ -12,7 +11,6 @@ class AjaxModel extends Model
 
     public function __construct()
     {
-        parent::__construct();
         $this->m = new Mongo($this->databaseGroup);
         $this->mongoConfig = new MongoConfig();
     }

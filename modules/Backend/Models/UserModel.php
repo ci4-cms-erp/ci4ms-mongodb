@@ -1,7 +1,6 @@
 <?php namespace Modules\Backend\Models;
 
 use ci4mongodblibrary\Libraries\Mongo;
-use CodeIgniter\Model;
 use Config\Services;
 use CodeIgniter\I18n\Time;
 use Modules\Backend\Config\Auth;
@@ -9,7 +8,7 @@ use Modules\Backend\Config\Auth;
 /**
  *
  */
-class UserModel extends Model
+class UserModel
 {
     /**
      * @var string
@@ -44,7 +43,6 @@ class UserModel extends Model
      */
     public function __construct()
     {
-        parent::__construct();
         $this->m = new Mongo();
         $this->table='users';
     }

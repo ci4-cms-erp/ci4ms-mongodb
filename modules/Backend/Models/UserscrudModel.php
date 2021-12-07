@@ -1,13 +1,12 @@
 <?php namespace Modules\Backend\Models;
 
 use ci4mongodblibrary\Libraries\Mongo;
-use CodeIgniter\Model;
 use Config\MongoConfig;
 
 /**
  *
  */
-class UserscrudModel extends Model
+class UserscrudModel
 {
     /**
      * @var Mongo
@@ -27,7 +26,6 @@ class UserscrudModel extends Model
      */
     public function __construct($dbInfo = 'default')
     {
-        parent::__construct();
         $this->m = new Mongo();
         $this->table = 'users';
         $this->pre = new MongoConfig();

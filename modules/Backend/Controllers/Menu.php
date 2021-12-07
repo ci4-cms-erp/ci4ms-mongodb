@@ -2,8 +2,19 @@
 
 namespace Modules\Backend\Controllers;
 
+use MongoDB\BSON\ObjectId;
+use Modules\Backend\Models\MenuModel;
+
 class Menu extends BaseController
 {
+    protected $model;
+
+    public function __construct()
+    {
+        helper('Modules\Backend\Helpers\ci4ms');
+        $this->model = new MenuModel();
+    }
+
     /**
      * Return an array of resource objects, themselves in array format
      *
@@ -11,40 +22,88 @@ class Menu extends BaseController
      */
     public function index()
     {
-        return view('Modules\Backend\Views\menu',$this->defData);
+        $this->defData['pages'] = $this->commonModel->getList('pages', ['inMenu' => false, 'isActive' => true]);
+        $this->defData['blog'] = $this->commonModel->getList('blog');
+        $this->defData['nestable2'] = $this->model->nestable2();
+        return view('Modules\Backend\Views\menu\menu', $this->defData);
     }
 
     public function create()
     {
-        //
+        if ($this->request->isAJAX()) {
+            $added = $this->commonModel->getOne($this->request->getPost('where'), ['_id' => new ObjectId($this->request->getPost('id'))]);
+            $pMax = $this->commonModel->getOne('menu', ['parent' => null], ['sort' => ['_id' => -1]]);
+            if (empty($pMax))
+                $pMax = (object)['queue' => 0];
+
+            $data = ['urlType' => $this->request->getPost('where'),
+                'pages_id' => new ObjectId($added->_id),
+                'parent' => null,
+                'queue' => $pMax->queue + 1];
+
+            if ($this->commonModel->updateOne($this->request->getPost('where'),
+                    ['_id' => new ObjectId($added->_id)],
+                    ['inMenu' => true]) && $this->commonModel->createOne('menu', $data)) {
+                $data = ['nestable2' => $this->model->nestable2()];
+                return view('Modules\Backend\Views\menu\render-nestable2', $data);
+            }
+        } else
+            return redirect()->route('403');
     }
 
-    /**
-     * Add or update a model resource, from "posted" properties
-     *
-     * @return mixed
-     */
-    public function update_ajax(string $id)
+    public function delete_ajax()
     {
-        //
+        if ($this->request->isAJAX()) {
+            d($this->request->getPost('id'));
+            dd($this->commonModel->deleteOne('menu',
+                ['pages_id' => new ObjectId($this->request->getPost('id')),
+                    'urlType' => $this->request->getPost('type')]));
+            if ($this->commonModel->updateMany('menu',
+                    ['parent' => $this->request->getPost('id')], ['parent' => null])
+                && $this->commonModel->deleteOne('menu',
+                    ['pages_id' => new ObjectId($this->request->getPost('id')),
+                        'urlType' => $this->request->getPost('type')])
+                && $this->commonModel->updateOne('pages',
+                    ['_id' => new ObjectId($this->request->getPost('id'))], ['inMenu' => false])) {
+                $data = ['nestable2' => $this->model->nestable2()];
+                return view('Modules\Backend\Views\menu\render-nestable2', $data);
+            }
+        } else return redirect()->route('403');
     }
 
-    /**
-     * Delete the designated resource object from the model
-     *
-     * @return mixed
-     */
-    public function delete_ajax(string $id)
+    private function queue($menu, $parent = null, $oldData = null)
     {
-        //
+        $i = 1;
+        foreach ($menu as $d) {
+            if (array_key_exists("children", $d)) {
+                $this->queue($d['children'], $d['id']);
+            }
+            $type = 'pages';
+            if (!empty($oldData)) {
+                foreach ($oldData as $oldDatum) {
+                    if ($oldDatum->pages_id == $d['id'])
+                        $type = $oldDatum->urlType;
+                }
+            }
+            $this->commonModel->createOne('menu', ['pages_id' => new ObjectId($d['id']), 'urlType' => $type, 'queue' => $i, 'parent' => $parent]);
+            $i++;
+        }
     }
 
     public function queue_ajax()
     {
-        if($this->request->isAJAX()){
-            echo 'burada';
-        }
-        else
+        if ($this->request->isAJAX()) {
+            $oldData = $this->commonModel->getList('menu');
+            $this->commonModel->deleteMany('menu', []);
+            $this->queue($this->request->getPost('queue'), null, $oldData);
+        } else
             redirect(route_to('403'));
+    }
+
+    public function listURLs()
+    {
+        $this->defData['pages'] = $this->commonModel->getList('pages', ['inMenu' => false, 'isActive' => true]);
+        $this->defData['blog'] = $this->commonModel->getList('blog');
+        return view('Modules\Backend\Views\menu\list', $this->defData);
     }
 }

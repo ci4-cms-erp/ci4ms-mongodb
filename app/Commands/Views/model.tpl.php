@@ -1,9 +1,8 @@
 <@?php namespace Modules\Backend\Models;
 
 use ci4mongodblibrary\Libraries\Mongo;
-use CodeIgniter\Model;
 
-class {class} extends Model
+class {class}
 {
     protected $table;
     protected $m;

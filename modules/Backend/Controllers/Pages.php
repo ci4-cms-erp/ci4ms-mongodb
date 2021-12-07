@@ -61,7 +61,8 @@ class Pages extends BaseController
         $data = ['title' => $this->request->getPost('title'),
             'content' => $this->request->getPost('content'),
             'isActive' => (bool)$this->request->getPost('isActive'),
-            'seflink' => $this->request->getPost('seflink')
+            'seflink' => $this->request->getPost('seflink'),
+            'inMenu'=>false
         ];
 
         if (!empty($this->request->getPost('pageimg'))) {

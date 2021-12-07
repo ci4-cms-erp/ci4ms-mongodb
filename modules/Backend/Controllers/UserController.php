@@ -331,7 +331,7 @@ class UserController extends BaseController
             else
                 $result = ['result' => true, 'error' => ['type' => 'danger', 'message' => 'üyelik karalisteye eklenemedi.']];
 
-            return json_encode($result);
+            return $this->response->setJSON($result);
         }
     }
 
@@ -389,7 +389,7 @@ class UserController extends BaseController
             } else
                 $result = ['result' => false, 'error' => ['type' => 'danger', 'message' => 'üyelik karalisteden çıkarılamadı.']];
 
-            return json_encode($result);
+            return $this->response->setJSON($result);
         }
     }
 
@@ -440,7 +440,7 @@ class UserController extends BaseController
             } else
                 $result = ['result' => false, 'error' => ['type' => 'danger', 'message' => 'Şifre sıfırlama isteği gerçekleştirilemedi.']];
 
-            return json_encode($result);
+            return $this->response->setJSON($result);
         }
     }
 }
