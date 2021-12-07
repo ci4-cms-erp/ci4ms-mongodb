@@ -1,102 +1,59 @@
 <h4><strong>Sayfalar</strong></h4>
-<form class="list-group">
+<form class="list-group" id="addCheckedPages">
     <?php foreach ($pages as $page): ?>
         <div class="list-group-item" id="page-<?= $page->_id ?>">
             <div class="row d-flex justify-content-between align-items-center">
                 <div class="col-xs-8">
                     <label class="ml-3">
-                        <input class="form-check-input me-1" type="checkbox"
+                        <input class="form-check-input me-1" type="checkbox" name="pageChecked[]"
                                value="<?= $page->_id ?>">
                         <?= $page->title ?>
                     </label>
                 </div>
                 <div class="col-xs-4">
-                    <button class="btn btn-success addPages" type="button"
-                            data-id="<?= $page->_id ?>">Ekle
+                    <button class="btn btn-success addPages" type="button" onclick="addPages('<?= $page->_id ?>')">
+                        Ekle
                     </button>
                 </div>
             </div>
         </div>
-    <?php endforeach; ?>
+    <?php endforeach; if(!empty($pages)): ?>
     <div class="list-group-item">
-        <button class="btn btn-success float-right" type="button" id="addCheckedPages">Seçilenleri
+        <button class="btn btn-success float-right" type="button" onclick="addCheckedPages()">Seçilenleri
             ekle
         </button>
     </div>
+    <?php endif; ?>
 </form>
 <hr>
+
 <h4><strong>Yazılar</strong></h4>
+<?= empty($blogs) ? '<strong>Menüye eklenebilecek yazı bulunamadı !</strong>':''?>
 <form class="list-group">
-    <div class="list-group-item">
-        <div class="row d-flex justify-content-between align-items-center">
-            <div class="col-xs-8">
-                <label class="ml-3">
-                    <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
-                    An item
-                </label>
-            </div>
-            <div class="col-xs-4">
-                <button class="btn btn-success addBlog" type="button" data-id="">Ekle</button>
-            </div>
-        </div>
-    </div>
-    <div class="list-group-item">
-        <div class="row d-flex justify-content-between align-items-center">
-            <div class="col-xs-8">
-                <label class="ml-3">
-                    <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
-                    A second item
-                </label>
-            </div>
-            <div class="col-xs-4">
-                <button class="btn btn-success addBlog" type="button" data-id="">Ekle</button>
+    <?php foreach ($blogs as $blog): ?>
+        <div class="list-group-item" id="page-<?= $blog->_id ?>">
+            <div class="row d-flex justify-content-between align-items-center">
+                <div class="col-xs-8">
+                    <label class="ml-3">
+                        <input class="form-check-input me-1" type="checkbox"
+                               value="<?= $blog->_id ?>">
+                        <?= $blog->title ?>
+                    </label>
+                </div>
+                <div class="col-xs-4">
+                    <button class="btn btn-success" type="button" onclick="addBlog('<?= $blog->_id ?>')">
+                        Ekle
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
+    <?php endforeach; if(!empty($blogs)): ?>
     <div class="list-group-item">
-        <div class="row d-flex justify-content-between align-items-center">
-            <div class="col-xs-8 ">
-                <label class="ml-3">
-                    <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
-                    A third item
-                </label>
-            </div>
-            <div class="col-xs-4">
-                <button class="btn btn-success addBlog" type="button" data-id="">Ekle</button>
-            </div>
-        </div>
-    </div>
-    <div class="list-group-item">
-        <div class="row d-flex justify-content-between align-items-center">
-            <div class="col-xs-8">
-                <label class="ml-3">
-                    <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
-                    A fourth item
-                </label>
-            </div>
-            <div class="col-xs-4">
-                <button class="btn btn-success addBlog" type="button" data-id="">Ekle</button>
-            </div>
-        </div>
-    </div>
-    <div class="list-group-item">
-        <div class="row d-flex justify-content-between align-items-center">
-            <div class="col-xs-8">
-                <label class="ml-3">
-                    <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
-                    And a fifth one
-                </label>
-            </div>
-            <div class="col-xs-4">
-                <button class="btn btn-success addBlog" type="button" data-id="">Ekle</button>
-            </div>
-        </div>
-    </div>
-    <div class="list-group-item">
-        <button class="btn btn-success float-right" type="button" id="addCheckedBlog">Seçilenleri
+        <button class="btn btn-success float-right" type="button" onclick="addCheckedBlog()">Seçilenleri
             ekle
         </button>
     </div>
+    <?php endif; ?>
 </form>
 
 <form action="" method="post" class="form-row mt-2">
@@ -104,6 +61,6 @@
         <input type="text" class="form-control" placeholder="URL giriniz" id="URL">
     </div>
     <div class="col-md-2 form-group">
-        <button class="btn btn-success w-100" type="button" id="addURL">URL ekle</button>
+        <button class="btn btn-success w-100" type="button" onclick="addURL()">URL ekle</button>
     </div>
 </form>

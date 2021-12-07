@@ -25,7 +25,7 @@ class MenuModel
                 'as'=>'pages'
             ]],
             ['$unwind'=>['path'=>'$pages','preserveNullAndEmptyArrays'=>true]],
-            ['$project'=>["pages.title"=>true,"parent"=>true,"pages_id"=>true]]
+            ['$project'=>["pages.title"=>true,"parent"=>true,"pages_id"=>true,"urlType"=>true]]
         ])->toArray();
     }
 }

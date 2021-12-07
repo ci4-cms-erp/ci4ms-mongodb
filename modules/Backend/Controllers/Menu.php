@@ -23,7 +23,7 @@ class Menu extends BaseController
     public function index()
     {
         $this->defData['pages'] = $this->commonModel->getList('pages', ['inMenu' => false, 'isActive' => true]);
-        $this->defData['blog'] = $this->commonModel->getList('blog');
+        $this->defData['blogs'] = $this->commonModel->getList('blog',['inMenu'=>false,'isActive'=>true]);
         $this->defData['nestable2'] = $this->model->nestable2();
         return view('Modules\Backend\Views\menu\menu', $this->defData);
     }
@@ -54,10 +54,6 @@ class Menu extends BaseController
     public function delete_ajax()
     {
         if ($this->request->isAJAX()) {
-            d($this->request->getPost('id'));
-            dd($this->commonModel->deleteOne('menu',
-                ['pages_id' => new ObjectId($this->request->getPost('id')),
-                    'urlType' => $this->request->getPost('type')]));
             if ($this->commonModel->updateMany('menu',
                     ['parent' => $this->request->getPost('id')], ['parent' => null])
                 && $this->commonModel->deleteOne('menu',
@@ -103,7 +99,7 @@ class Menu extends BaseController
     public function listURLs()
     {
         $this->defData['pages'] = $this->commonModel->getList('pages', ['inMenu' => false, 'isActive' => true]);
-        $this->defData['blog'] = $this->commonModel->getList('blog');
+        $this->defData['blogs'] = $this->commonModel->getList('blog',['inMenu'=>false,'isActive'=>true]);
         return view('Modules\Backend\Views\menu\list', $this->defData);
     }
 }
