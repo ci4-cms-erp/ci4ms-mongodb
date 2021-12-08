@@ -1,5 +1,7 @@
 <?php namespace Modules\Backend\Controllers;
 
+use Config\App;
+use Config\Paths;
 use MongoDB\BSON\ObjectId;
 
 class Settings extends BaseController
@@ -81,14 +83,14 @@ class Settings extends BaseController
         if ($this->request->getFile('cLogo')->isValid() == true) {
             if (!empty($settings->logo)) {
                 helper('filesystem');
-                if (delete_files(WRITEPATH . 'uploads/' . $settings->logo))
+                if (delete_files(APPPATH. '../public/uploads/' . $settings->logo))
                     log_message('notice', 'eski logo silindi.');
                 else
                     log_message('error', 'eski logo silinemedi.');
             }
 
             $file = $this->request->getFile('cLogo');
-            $fResult = $file->move(WRITEPATH . 'uploads');
+            $fResult = $file->move(APPPATH . '../public/uploads');
             if ($fResult === true)
                 $result = $this->commonModel->updateOne('settings', ['_id' => new ObjectId($settings->_id)], ['logo' => $file->getName()]);
             else

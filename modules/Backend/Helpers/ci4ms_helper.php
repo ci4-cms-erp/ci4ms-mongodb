@@ -21,7 +21,7 @@ if (!function_exists('menu')) {
                                     <button class="dd-expand btn btn-sm btn-light float-left" data-action="expand" type="button"><i class="fas fa-caret-right"></i></button>
                                         <span class="float-left">' . $menu->title . '</span>
                                         <div class="dd-nodrag btn-group float-right">
-                               <button class="removeFromMenu btn btn-danger btn-sm" onclick="removeFromMenu(\'';
+                               <button class="removeFromMenu btn btn-secondary btn-sm" onclick="removeFromMenu(\'';
                 echo $menu->pages_id . '\',\''.$menu->urlType;
                                echo '\')" type="button"><i class="fas fa-trash"></i></button>
                               </div>

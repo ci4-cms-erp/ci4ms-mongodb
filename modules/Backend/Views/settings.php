@@ -96,7 +96,7 @@ Anasayfa
                                     <input type="file" name="cLogo" class="form-control">
                                 </div>
                                 <div class="col-6 form-group">
-                                    <img src="<?=(!empty($settings->logo))?base_url('/imageRender/'.$settings->logo):''?>" class="img-fluid" alt="">
+                                    <img src="<?=(!empty($settings->logo))?'/uploads/'.$settings->logo:''?>" class="img-fluid" alt="">
                                 </div>
                                 <div class="col-12 form-group">
                                     <button class="btn btn-success float-right mt-5">Güncelle</button>

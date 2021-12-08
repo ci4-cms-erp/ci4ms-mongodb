@@ -186,15 +186,16 @@
     }
 
     function addURL() {
-        var formData=$('#addCheckedBlog').serializeArray();
+        var formData=$('#addUrls').serializeArray();
         formData.push({name: "<?=csrf_token()?>", value: "<?=csrf_hash()?>"});
         formData.push({name:"type",value:"url"});
-        $.post('<?=route_to('addMultipleMenu')?>', formData).done(function (data) {
+        console.log(formData);
+        $.post('<?=route_to('createMenu')?>', formData).done(function (data) {
             $('.dd').nestable('destroy');
             $('.dd').html(data);
             $('.dd').nestable();
             $.post('<?=route_to('menuList')?>', {
-                "<?=csrf_token()?>": "<?=csrf_hash()?>"
+                "<?=csrf_token()?>": "<?=csrf_hash()?>",
             }).done(function (data) {
                 $('#list').html(data);
             });
@@ -210,7 +211,7 @@
             $('.dd').nestable();
             $("#menu-" + id + "").remove();
             $.post('<?=route_to('menuList')?>', {
-                "<?=csrf_token()?>": "<?=csrf_hash()?>"
+                "<?=csrf_token()?>": "<?=csrf_hash()?>",
             }).done(function (data) {
                 $('#list').html(data);
             });
