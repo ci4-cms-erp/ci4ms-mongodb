@@ -7,6 +7,36 @@ class Settings extends BaseController
     public function index()
     {
         $this->defData['settings'] = $this->commonModel->getOne('settings');
+        $blacklists = $this->commonModel->getOne('login_rules',['type' => 'blacklist']);
+        $whitelists = $this->commonModel->getOne('login_rules',['type' => 'whitelist']);
+
+        if (!empty($blacklists)) {
+            $blacklistRange = '';
+            foreach ($blacklists->range as $item)
+                $blacklistRange .= $item . ',  ';
+
+            $blacklistLine = '';
+            foreach ($blacklists->line as $item)
+                $blacklistLine .= $item . ',  ';
+        }
+
+        if (!empty($whitelists)) {
+            $whitelistRange = '';
+            foreach ($whitelists->range as $item)
+                $whitelistRange .= $item . ',  ';
+
+            $whitelistLine = '';
+            foreach ($whitelists->line as $item)
+                $whitelistLine .= $item . ',  ';
+        }
+
+        $this->defData['blacklistRange'] = ($blacklistRange ?? '');
+        $this->defData['blacklistLine'] = ($blacklistLine ?? '');
+        $this->defData['whitelistRange'] = ($whitelistRange ?? '');
+        $this->defData['whitelistLine'] = ($whitelistLine ?? '');
+
+
+
         return view('Modules\Backend\Views\settings', $this->defData);
     }
 
@@ -139,20 +169,50 @@ class Settings extends BaseController
 
     public function loginSettingsPost(){
         $valData = [
-            'loginBlockMin' => ['label' => 'Engellme Süresi', 'rules' => 'required|is_natural_no_zero|less_than[180]|greater_than[10]'],
-            'loginCounter' => ['label' => 'Deneme Sayısı', 'rules' => 'required|is_natural_no_zero|less_than[20]|greater_than[2]'],
+            'lockedRecord' => ['label' => 'Kilitleme Sayısı', 'rules' => 'required|is_natural_no_zero|less_than[10]|greater_than[1]'],
+            'lookedMin' => ['label' => 'Engellme Süresi', 'rules' => 'required|is_natural_no_zero|less_than[180]|greater_than[10]'],
+            'lookedTry' => ['label' => 'Deneme Sayısı', 'rules' => 'required|is_natural_no_zero|less_than[20]|greater_than[2]'],
+            'blackListRange' => ['label' => 'IP Aralığını Blokla', 'rules' => 'max_length[1000]'],
+            'blacklistLine' => ['label' => 'Tekil Ip Bloklama', 'rules' => 'max_length[1000]'],
+            'whitelistRange' => ['label' => 'Güvenilir IP Aralığını', 'rules' => 'max_length[1000]'],
+            'whitelistLine' => ['label' => 'Güvenilir Tekil Ip', 'rules' => 'max_length[1000]'],
         ];
 
         if ($this->validate($valData) == false)
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
 
+        /** TODO | Data validations
+         * 1- Blacklist ve Whitelist için gelen veri formatlarının regex match kodu ile doğrulaması yapılacak.
+         * 2- Blacklist ve Whitelist bir birbirleri ile çakışırsa hata mesajı gönderilecek.
+         */
+
+        $blackListRange = clearFilter(explode(',', preg_replace('/\s+/', '', $this->request->getPost('blackListRange'))));
+        $blacklistLine = clearFilter(explode(',', preg_replace('/\s+/', '', $this->request->getPost('blacklistLine'))));
+        $whitelistRange = clearFilter(explode(',', preg_replace('/\s+/', '', $this->request->getPost('whitelistRange'))));
+        $whitelistLine = clearFilter(explode(',', preg_replace('/\s+/', '', $this->request->getPost('whitelistLine'))));
         $data = [
-            'loginBlockIsActive' => ($this->request->getPost('loginIsActive') == 'on') ? true : false,
-            'loginBlockMin' => $this->request->getPost('loginBlockMin'),
-            'loginBlockAttemptsCounter' => $this->request->getPost('loginCounter'),
+            'lockedRecord' => $this->request->getPost('lockedRecord'),
+            'lookedMin' => $this->request->getPost('lookedMin'),
+            'lookedTry' => $this->request->getPost('lookedTry'),
+            'lookedIsActive' => ($this->request->getPost('lookedIsActive') == 'on') ? true : false,
+            'lookedUserNotification' => ($this->request->getPost('lookedUserNotification') == 'on') ? true : false,
+            'lookedAdminNotification' => ($this->request->getPost('lookedAdminNotification') == 'on') ? true : false,
         ];
         $settings = $this->commonModel->getOne('settings');
         $result = $this->commonModel->updateOne('settings', ['_id' => new ObjectId($settings->_id)], $data);
+        $blacklist_data = array(
+            'range' => $blackListRange,
+            'line' => $blacklistLine,
+        );
+        $login_rules = $this->commonModel->getOne('login_rules',['type' => 'blacklist']);
+        $result = $this->commonModel->updateOne('login_rules', ['_id' => new ObjectId($login_rules->_id)], $blacklist_data);
+        $whitelist = array(
+            'range' => $whitelistRange,
+            'line' => $whitelistLine,
+        );
+        $login_rules = $this->commonModel->getOne('login_rules',['type' => 'whitelist']);
+        $result = $this->commonModel->updateOne('login_rules', ['_id' => new ObjectId($login_rules->_id)], $whitelist);
+
         if ((bool)$result === false)
             return redirect()->back()->withInput()->with('error', 'Şirket Sosyal Medya Bilgileri Güncellenemedi.');
         else
