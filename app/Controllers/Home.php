@@ -6,7 +6,7 @@ use Melbahja\Seo\MetaTags;
 
 class Home extends BaseController
 {
-    public function index($seflink = '/')
+    public function index(string $seflink = '/')
     {
         if ($this->commonModel->get_where(['seflink' => $seflink,'isActive'=>true], 'pages') === 1) {
         $this->defData['pageInfo'] = $this->commonModel->getOne('pages', ['seflink' => $seflink]);
@@ -21,7 +21,7 @@ class Home extends BaseController
         $this->defData['seo'] = $metatags;
         return view('templates/default-template/pages',$this->defData);
     }
-        return throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        return show_404();
     }
 
     public function maintenanceMode()
@@ -29,7 +29,7 @@ class Home extends BaseController
         return view('maintenance');
     }
 //TODO: In preparation
-    public function blog($seflink)
+    public function blog(string $seflink)
     {
 
     }

@@ -15,7 +15,11 @@
  */
 
 if (!function_exists('clearFilter')) {
-    function clearFilter($array)
+    /**
+     * @param array $array
+     * @return array
+     */
+    function clearFilter(array $array)
     {
         $clear = array_filter(
             $array, function ($value) {
@@ -32,6 +36,9 @@ if (!function_exists('clearFilter')) {
 }
 
 if(!function_exists('show_404')) {
+    /**
+     * @return mixed
+     */
     function show_404()
     {
         throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();

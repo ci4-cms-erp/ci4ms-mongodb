@@ -5,7 +5,7 @@
 <@?= $this->endSection() ?>
 
 <@?= $this->section('head') ?>
-<link rel="stylesheet" href="/assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+<link rel="stylesheet" href="/be-assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
 <@?= $this->endSection() ?>
 
 <@?= $this->section('content') ?>
@@ -16,12 +16,12 @@
             <div class="col-sm-6">
                 <h1><@?=lang('Backend.'.$title->pagename)?></h1>
             </div>
-            div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-                <a href="<@?= route_to('') ?>" class="btn btn-outline-info"><i
-                            class="fas fa-arrow-circle-left"></i> Listeye Dön</a>
-            </ol>
-        </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <a href="<@?= route_to('') ?>" class="btn btn-outline-info"><i
+                                class="fas fa-arrow-circle-left"></i> Listeye Dön</a>
+                </ol>
+            </div>
         </div>
     </div><!-- /.container-fluid -->
 </section>
@@ -32,7 +32,7 @@
     <!-- Default box -->
     <div class="card card-outline card-shl">
         <div class="card-header">
-            <h3 class="card-title font-weight-bold">Site Ayarlarını güncelle</h3>
+            <h3 class="card-title font-weight-bold"><@?= lang('Backend.' . $title->pagename) ?></h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -53,5 +53,5 @@
 <@?= $this->endSection() ?>
 
 <@?= $this->section('javascript') ?>
-<script src="/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
+<script src="/be-assets/plugins/sweetalert2/sweetalert2.min.js"></script>
 <@?= $this->endSection() ?>
