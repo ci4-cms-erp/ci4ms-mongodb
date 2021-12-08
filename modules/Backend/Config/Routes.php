@@ -76,6 +76,7 @@ $routes->group('backend', ['namespace' => 'Modules\Backend\Controllers'], functi
        $routes->post('deleteMenuAjax','Menu::delete_ajax', ['as'=>'deleteMenuAjax','filter' => 'backendAfterLoginFilter']);
        $routes->post('queueMenuAjax','Menu::queue_ajax', ['as'=>'queueMenuAjax','filter' => 'backendAfterLoginFilter']);
        $routes->post('menuList','Menu::listURLs', ['as'=>'menuList','filter' => 'backendAfterLoginFilter']);
+       $routes->post('addMultipleMenu','Menu::addMultipleMenu', ['as'=>'addMultipleMenu','filter' => 'backendAfterLoginFilter']);
     });
 
     // Other Pages

@@ -1,4 +1,5 @@
 <h4><strong>Sayfalar</strong></h4>
+<?= empty($pages) ? '<strong>Menüye eklenebilecek sayfa bulunamadı !</strong>':''?>
 <form class="list-group" id="addCheckedPages">
     <?php foreach ($pages as $page): ?>
         <div class="list-group-item" id="page-<?= $page->_id ?>">
@@ -26,7 +27,6 @@
     <?php endif; ?>
 </form>
 <hr>
-
 <h4><strong>Yazılar</strong></h4>
 <?= empty($blogs) ? '<strong>Menüye eklenebilecek yazı bulunamadı !</strong>':''?>
 <form class="list-group">
@@ -55,10 +55,22 @@
     </div>
     <?php endif; ?>
 </form>
-
-<form action="" method="post" class="form-row mt-2">
-    <div class="col-md-10 form-group">
-        <input type="text" class="form-control" placeholder="URL giriniz" id="URL">
+<hr>
+<form id="addUrls" method="post" class="form-row mt-2">
+    <div class="col-md-5 form-group">
+        <input type="text" class="form-control" placeholder="Başlık Giriniz" name="URLname">
+    </div>
+    <div class="col-md-5 form-group">
+        <input type="text" class="form-control" placeholder="URL giriniz" name="URL">
+    </div>
+    <div class="col-md-5 form-group">
+        <select class="form-control" name="target">
+            <option value="">lütfen link target seçin</option>
+            <option value="_blank">_blank</option>
+            <option value="_self">_self</option>
+            <option value="_parent">_parent</option>
+            <option value="_top">_top</option>
+        </select>
     </div>
     <div class="col-md-2 form-group">
         <button class="btn btn-success w-100" type="button" onclick="addURL()">URL ekle</button>
