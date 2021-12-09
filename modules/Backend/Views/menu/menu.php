@@ -103,8 +103,11 @@
                 </div>
                 <div class="col-md-6">
                     <div class="dd">
+                        <ol class="dd-list">
                         <?php if (!empty($nestable2)) menu($nestable2); ?>
+                        </ol>
                     </div>
+                    <button class="btn btn-success" onclick="saveMenu()">kaydet</button>
                 </div>
             </div>
         </div>
@@ -120,12 +123,18 @@
 <script src="/be-assets/plugins/sweetalert2/sweetalert2.min.js"></script>
 <script src="/be-assets/node_modules/nestable2/dist/jquery.nestable.min.js"></script>
 <script>
-    $('.dd').nestable().on('change', function () {
+    $('.dd').nestable();
+
+    function saveMenu() {
         $.post('<?=route_to('queueMenuAjax')?>', {
             "<?=csrf_token()?>": "<?=csrf_hash()?>",
-            "queue": $(this).nestable('serialize')
-        })
-    });
+            "queue": $('.dd').nestable('serialize')
+        }).done(function (data){
+            $('.dd').nestable('destroy');
+            $('.dd').html(data);
+            $('.dd').nestable();
+        });
+    }
 
     function addPages(id) {
         $.post('<?=route_to('createMenu')?>', {
@@ -212,6 +221,7 @@
             $("#menu-" + id + "").remove();
             $.post('<?=route_to('menuList')?>', {
                 "<?=csrf_token()?>": "<?=csrf_hash()?>",
+                "queue": $('.dd').nestable('serialize')
             }).done(function (data) {
                 $('#list').html(data);
             });
