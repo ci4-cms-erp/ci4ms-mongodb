@@ -8,7 +8,6 @@ if (!function_exists('menu')) {
      */
     function menu($menus, $parent = null)
     {
-        echo '<ol class="dd-list">';
         foreach ($menus as $menu) {
             if ($menu->parent == $parent) {
                 echo '<li class="dd-item" data-id="' . $menu->pages_id . '" id="menu-' . $menu->pages_id . '">
@@ -22,15 +21,18 @@ if (!function_exists('menu')) {
                                         <span class="float-left">' . $menu->title . '</span>
                                         <div class="dd-nodrag btn-group float-right">
                                <button class="removeFromMenu btn btn-secondary btn-sm" onclick="removeFromMenu(\'';
-                echo $menu->pages_id . '\',\''.$menu->urlType;
-                               echo '\')" type="button"><i class="fas fa-trash"></i></button>
+                echo $menu->pages_id . '\',\'' . $menu->urlType;
+                echo '\')" type="button"><i class="fas fa-trash"></i></button>
                               </div>
                                     </div>
                                 </div>';
+                if(!is_null($menu->parent))
+                    echo '<ol class="dd-list">';
                 menu($menus, $menu->pages_id);
+                if(!is_null($menu->parent))
+                    echo '</ol>';
                 echo '</li>';
             }
         }
-        echo '</ol>';
     }
 }

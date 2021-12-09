@@ -67,7 +67,7 @@ class Menu extends BaseController
 
                 $this->commonModel->updateOne($this->request->getPost('where'), ['_id' => new ObjectId($item)], ['inMenu' => true]);
                 $this->commonModel->createOne('menu', $data);
-                $data = ['nestable2' => $this->model->nestable2()];
+                $data = ['nestable2' => $this->commonModel->getList('menu')];
             }
             return view('Modules\Backend\Views\menu\render-nestable2', $data);
         } else return redirect()->route('403');
@@ -86,29 +86,15 @@ class Menu extends BaseController
         } else return redirect()->route('403');
     }
 
-    private function queue($menu, $parent = null, $oldData = null)
+    private function queue($menu, $parent = null)
     {
         $i = 1;
         foreach ($menu as $d) {
             if (array_key_exists("children", $d))
-                $this->queue($d['children'], $d['id'], $oldData);
+                $this->queue($d['children'], $d['id']);
 
-            $type = 'pages';
-            if (!empty($oldData)) {
-                foreach ($oldData as $oldDatum) {
-                    if ($oldDatum->pages_id == $d['id']) {
-                        $type = $oldDatum->urlType;
-                        $seflink = $oldDatum->seflink;
-                        $target = $oldDatum->target;
-                        $title = $oldDatum->title;
-                    }
-                }
-            }
-
-            $this->commonModel->createOne('menu', ['queue' => $i,
-                'urlType' => $type, 'pages_id' => new ObjectId($d['id']),
-                'parent' => $parent, 'seflink' => $seflink,
-                'title' => $title, 'target' => $target]);
+            $data=['queue' => $i, 'parent' => $parent];
+            $this->commonModel->updateOne('menu',['pages_id'=>new ObjectId($d['id'])], $data);
             $i++;
         }
     }
@@ -116,9 +102,7 @@ class Menu extends BaseController
     public function queue_ajax()
     {
         if ($this->request->isAJAX()) {
-            $oldData = $this->commonModel->getList('menu');
-            $this->commonModel->deleteMany('menu', []);
-            $this->queue($this->request->getPost('queue'), null, $oldData);
+            $this->queue($this->request->getPost('queue'), null);
         } else return redirect()->route('403');
     }
 
