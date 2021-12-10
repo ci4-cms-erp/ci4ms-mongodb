@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "jquery": "^3.6.0",
     "startbootstrap-modern-business": "^5.0.5"
   }
 }

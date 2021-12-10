@@ -46,6 +46,11 @@ if(!function_exists('show_404')) {
 }
 
 if(!function_exists('seflink')) {
+    /**
+     * @param $str
+     * @param $options
+     * @return string
+     */
     function seflink($str, $options = array())
     {
         $str = mb_convert_encoding((string)$str, 'UTF-8', mb_list_encodings());
@@ -168,5 +173,39 @@ if(!function_exists('seflink')) {
         $str = mb_substr($str, 0, ($options['limit'] ? $options['limit'] : mb_strlen($str, 'UTF-8')), 'UTF-8');
         $str = trim($str, $options['delimiter']);
         return $options['lowercase'] ? mb_strtolower($str, 'UTF-8') : $str;
+    }
+}
+
+if (!function_exists('navigationWidget')) {
+    /**
+     * Bootstrap 5 dropdown used.
+     * @param array $menus
+     * @param $parent
+     * @param string $class
+     * @return void
+     */
+    function navigationWidget(array $menus, $parent = null, string $class='nav-link')
+    {
+        foreach ($menus as $menu) {
+            if ($menu->parent == $parent) {
+                echo '<li class="nav-item ';
+                if (isset($menu->hasChildren) && $menu->hasChildren === true) {
+                    echo "dropdown";
+                    $class.=' dropdown-toggle';
+                }
+                echo '"><a class="'.$class.'" href="'.site_url($menu->seflink).'"';
+                if (isset($menu->hasChildren) && $menu->hasChildren === true)
+                    echo ' role="button" data-bs-toggle="dropdown" aria-expanded="false"';
+                echo '>'.$menu->title.'</a>';
+                if (isset($menu->hasChildren) && $menu->hasChildren === true) {
+                    echo '<ul class="dropdown-menu">';
+                    $class='dropdown-item';
+                }
+                navigationWidget($menus, $menu->pages_id,$class);
+                if (isset($menu->hasChildren) && $menu->hasChildren === true)
+                    echo '</ul>';
+                echo '</li>';
+            }
+        }
     }
 }

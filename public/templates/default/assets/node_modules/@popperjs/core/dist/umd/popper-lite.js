@@ -1,5 +1,5 @@
 /**
- * @popperjs/core v2.10.2 - MIT License
+ * @popperjs/core v2.11.0 - MIT License
  */
 
 (function (global, factory) {
@@ -7,42 +7,6 @@
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
   (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.Popper = {}));
 }(this, (function (exports) { 'use strict';
-
-  // import { isHTMLElement } from './instanceOf';
-  function getBoundingClientRect(element, // eslint-disable-next-line unused-imports/no-unused-vars
-  includeScale) {
-
-    var rect = element.getBoundingClientRect();
-    var scaleX = 1;
-    var scaleY = 1; // FIXME:
-    // `offsetWidth` returns an integer while `getBoundingClientRect`
-    // returns a float. This results in `scaleX` or `scaleY` being
-    // non-1 when it should be for elements that aren't a full pixel in
-    // width or height.
-    // if (isHTMLElement(element) && includeScale) {
-    //   const offsetHeight = element.offsetHeight;
-    //   const offsetWidth = element.offsetWidth;
-    //   // Do not attempt to divide by 0, otherwise we get `Infinity` as scale
-    //   // Fallback to 1 in case both values are `0`
-    //   if (offsetWidth > 0) {
-    //     scaleX = rect.width / offsetWidth || 1;
-    //   }
-    //   if (offsetHeight > 0) {
-    //     scaleY = rect.height / offsetHeight || 1;
-    //   }
-    // }
-
-    return {
-      width: rect.width / scaleX,
-      height: rect.height / scaleY,
-      top: rect.top / scaleY,
-      right: rect.right / scaleX,
-      bottom: rect.bottom / scaleY,
-      left: rect.left / scaleX,
-      x: rect.left / scaleX,
-      y: rect.top / scaleY
-    };
-  }
 
   function getWindow(node) {
     if (node == null) {
@@ -55,16 +19,6 @@
     }
 
     return node;
-  }
-
-  function getWindowScroll(node) {
-    var win = getWindow(node);
-    var scrollLeft = win.pageXOffset;
-    var scrollTop = win.pageYOffset;
-    return {
-      scrollLeft: scrollLeft,
-      scrollTop: scrollTop
-    };
   }
 
   function isElement(node) {
@@ -85,6 +39,55 @@
 
     var OwnElement = getWindow(node).ShadowRoot;
     return node instanceof OwnElement || node instanceof ShadowRoot;
+  }
+
+  var max = Math.max;
+  var min = Math.min;
+  var round = Math.round;
+
+  function getBoundingClientRect(element, includeScale) {
+    if (includeScale === void 0) {
+      includeScale = false;
+    }
+
+    var rect = element.getBoundingClientRect();
+    var scaleX = 1;
+    var scaleY = 1;
+
+    if (isHTMLElement(element) && includeScale) {
+      var offsetHeight = element.offsetHeight;
+      var offsetWidth = element.offsetWidth; // Do not attempt to divide by 0, otherwise we get `Infinity` as scale
+      // Fallback to 1 in case both values are `0`
+
+      if (offsetWidth > 0) {
+        scaleX = round(rect.width) / offsetWidth || 1;
+      }
+
+      if (offsetHeight > 0) {
+        scaleY = round(rect.height) / offsetHeight || 1;
+      }
+    }
+
+    return {
+      width: rect.width / scaleX,
+      height: rect.height / scaleY,
+      top: rect.top / scaleY,
+      right: rect.right / scaleX,
+      bottom: rect.bottom / scaleY,
+      left: rect.left / scaleX,
+      x: rect.left / scaleX,
+      y: rect.top / scaleY
+    };
+  }
+
+  function getWindowScroll(node) {
+    var win = getWindow(node);
+    var scrollLeft = win.pageXOffset;
+    var scrollTop = win.pageYOffset;
+    return {
+      scrollLeft: scrollLeft,
+      scrollTop: scrollTop
+    };
   }
 
   function getHTMLElementScroll(element) {
@@ -139,8 +142,8 @@
 
   function isElementScaled(element) {
     var rect = element.getBoundingClientRect();
-    var scaleX = rect.width / element.offsetWidth || 1;
-    var scaleY = rect.height / element.offsetHeight || 1;
+    var scaleX = round(rect.width) / element.offsetWidth || 1;
+    var scaleY = round(rect.height) / element.offsetHeight || 1;
     return scaleX !== 1 || scaleY !== 1;
   } // Returns the composite rect of an element relative to its offsetParent.
   // Composite means it takes into account transforms as well as layout.
@@ -152,9 +155,9 @@
     }
 
     var isOffsetParentAnElement = isHTMLElement(offsetParent);
-    isHTMLElement(offsetParent) && isElementScaled(offsetParent);
+    var offsetParentIsScaled = isHTMLElement(offsetParent) && isElementScaled(offsetParent);
     var documentElement = getDocumentElement(offsetParent);
-    var rect = getBoundingClientRect(elementOrVirtualElement);
+    var rect = getBoundingClientRect(elementOrVirtualElement, offsetParentIsScaled);
     var scroll = {
       scrollLeft: 0,
       scrollTop: 0
@@ -171,7 +174,7 @@
       }
 
       if (isHTMLElement(offsetParent)) {
-        offsets = getBoundingClientRect(offsetParent);
+        offsets = getBoundingClientRect(offsetParent, true);
         offsets.x += offsetParent.clientLeft;
         offsets.y += offsetParent.clientTop;
       } else if (documentElement) {
@@ -571,10 +574,6 @@
     };
   }
 
-  var max = Math.max;
-  var min = Math.min;
-  var round = Math.round;
-
   // of the `<html>` and `<body>` rect bounds if horizontally scrollable
 
   function getDocumentRect(element) {
@@ -646,7 +645,7 @@
   }
 
   function getClientRectFromMixedType(element, clippingParent) {
-    return clippingParent === viewport ? rectToClientRect(getViewportRect(element)) : isHTMLElement(clippingParent) ? getInnerBoundingClientRect(clippingParent) : rectToClientRect(getDocumentRect(getDocumentElement(element)));
+    return clippingParent === viewport ? rectToClientRect(getViewportRect(element)) : isElement(clippingParent) ? getInnerBoundingClientRect(clippingParent) : rectToClientRect(getDocumentRect(getDocumentElement(element)));
   } // A "clipping parent" is an overflowable container with the characteristic of
   // clipping (or hiding) overflowing elements with a position different from
   // `initial`
@@ -663,7 +662,7 @@
 
 
     return clippingParents.filter(function (clippingParent) {
-      return isElement(clippingParent) && contains(clippingParent, clipperElement) && getNodeName(clippingParent) !== 'body';
+      return isElement(clippingParent) && contains(clippingParent, clipperElement) && getNodeName(clippingParent) !== 'body' && (canEscapeClipping ? getComputedStyle(clippingParent).position !== 'static' : true);
     });
   } // Gets the maximum area that the element is visible in due to any number of
   // clipping parents
@@ -1165,8 +1164,8 @@
     var win = window;
     var dpr = win.devicePixelRatio || 1;
     return {
-      x: round(round(x * dpr) / dpr) || 0,
-      y: round(round(y * dpr) / dpr) || 0
+      x: round(x * dpr) / dpr || 0,
+      y: round(y * dpr) / dpr || 0
     };
   }
 
@@ -1181,7 +1180,8 @@
         position = _ref2.position,
         gpuAcceleration = _ref2.gpuAcceleration,
         adaptive = _ref2.adaptive,
-        roundOffsets = _ref2.roundOffsets;
+        roundOffsets = _ref2.roundOffsets,
+        isFixed = _ref2.isFixed;
 
     var _ref3 = roundOffsets === true ? roundOffsetsByDPR(offsets) : typeof roundOffsets === 'function' ? roundOffsets(offsets) : offsets,
         _ref3$x = _ref3.x,
@@ -1213,16 +1213,18 @@
       offsetParent = offsetParent;
 
       if (placement === top || (placement === left || placement === right) && variation === end) {
-        sideY = bottom; // $FlowFixMe[prop-missing]
-
-        y -= offsetParent[heightProp] - popperRect.height;
+        sideY = bottom;
+        var offsetY = isFixed && win.visualViewport ? win.visualViewport.height : // $FlowFixMe[prop-missing]
+        offsetParent[heightProp];
+        y -= offsetY - popperRect.height;
         y *= gpuAcceleration ? 1 : -1;
       }
 
       if (placement === left || (placement === top || placement === bottom) && variation === end) {
-        sideX = right; // $FlowFixMe[prop-missing]
-
-        x -= offsetParent[widthProp] - popperRect.width;
+        sideX = right;
+        var offsetX = isFixed && win.visualViewport ? win.visualViewport.width : // $FlowFixMe[prop-missing]
+        offsetParent[widthProp];
+        x -= offsetX - popperRect.width;
         x *= gpuAcceleration ? 1 : -1;
       }
     }
@@ -1265,7 +1267,8 @@
       variation: getVariation(state.placement),
       popper: state.elements.popper,
       popperRect: state.rects.popper,
-      gpuAcceleration: gpuAcceleration
+      gpuAcceleration: gpuAcceleration,
+      isFixed: state.options.strategy === 'fixed'
     };
 
     if (state.modifiersData.popperOffsets != null) {

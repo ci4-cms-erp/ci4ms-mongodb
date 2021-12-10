@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <?= $this->renderSection('metatags') ?>
     <!-- Favicon-->
-    <link rel="icon" type="image/x-icon" href="/templates/default/assets/favicon.ico"/>
+    <link rel="icon" type="image/x-icon" href="/templates/default/assets/node_modules/startbootstrap-modern-business/dist/assets/favicon.ico"/>
     <!-- Bootstrap icons-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet"/>
     <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="<?= site_url('templates/default/assets/node_modules/startbootstrap-modern-business/dist/css/styles.css') ?>"
-          rel="stylesheet"/>
+    <link href="/templates/default/assets/node_modules/startbootstrap-modern-business/dist/css/styles.css" rel="stylesheet"/>
+    <link href="/templates/default/assets/ci4ms.css" rel="stylesheet"/>
     <?= $this->renderSection('head') ?>
 </head>
 <body class="d-flex flex-column h-100">
@@ -29,29 +29,9 @@
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-                    <li class="nav-item"><a class="nav-link" href="pricing.html">Pricing</a></li>
-                    <li class="nav-item"><a class="nav-link" href="faq.html">FAQ</a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">Blog</a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
-                            <li><a class="dropdown-item" href="blog-home.html">Blog Home</a></li>
-                            <li><a class="dropdown-item" href="blog-post.html">Blog Post</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdownPortfolio" href="#" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">Portfolio</a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownPortfolio">
-                            <li><a class="dropdown-item" href="portfolio-overview.html">Portfolio Overview</a></li>
-                            <li><a class="dropdown-item" href="portfolio-item.html">Portfolio Item</a></li>
-                        </ul>
-                    </li>
+                    <?php navigationWidget($menus); ?>
                 </ul>
             </div>
         </div>
@@ -63,7 +43,7 @@
     <div class="container px-5">
         <div class="row align-items-center justify-content-between flex-column flex-sm-row">
             <div class="col-auto">
-                <div class="small m-0 text-white">Copyright &copy; Your Website 2021</div>
+                <div class="small m-0 text-white">Copyright &copy; <?=$logo->siteName.' '. date('Y')?> </div>
             </div>
             <div class="col-auto">
                 <a class="link-light small" href="#!">Privacy</a>
@@ -76,9 +56,11 @@
     </div>
 </footer>
 <!-- Bootstrap core JS-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/templates/default/assets/node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
+<script src="/templates/default/assets/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Core theme JS-->
-<script src="<?= base_url("templates/default/assets/node_modules/startbootstrap-modern-business/dist/js/scripts.js") ?>"></script>
+<script src="<?= base_url("templates/default/assets/node_modules/jquery/dist/jquery.js")?>"></script>
+<script src="<?= base_url("templates/default/assets/ci4ms.js")?>"></script>
 <?= $this->renderSection('javascript') ?>
 </body>
 </html>

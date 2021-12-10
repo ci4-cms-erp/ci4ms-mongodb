@@ -52,6 +52,7 @@ class BaseController extends Controller
         // E.g.: $this->session = \Config\Services::session();
         $this->mongo = new Mongo();
         $this->commonModel = new CommonModel();
-        $this->defData = ['logo' => $this->commonModel->getOne('settings', [],[],['logo','siteName','commpanyAddtess','companyEMail','slogan','companyPhone','socialNetwork'])];
+        $this->defData = ['logo' => $this->commonModel->getOne('settings', [],[],['logo','siteName','commpanyAddtess','companyEMail','slogan','companyPhone','socialNetwork']),
+            'menus' =>$this->commonModel->getList('menu',[],['sort' =>['queue'=>1]])];
     }
 }
