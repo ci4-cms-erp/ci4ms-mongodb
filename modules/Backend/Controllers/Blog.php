@@ -56,7 +56,7 @@ class Blog extends BaseController
         if ($this->validate($valData) == false) return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         if ($this->commonModel->get_where(['seflink' => $this->request->getPost('seflink')], 'blog') === 1) return redirect()->back()->withInput()->with('error', 'Blog seflink adresi daha önce kullanılmış. lütfen kontrol ederek bir daha oluşturmayı deneyeyiniz.');
 
-        $data = ['title' => $this->request->getPost('title'), 'content' => $this->request->getPost('content'), 'isActive' => (bool)$this->request->getPost('isActive'), 'seflink' => $this->request->getPost('seflink'), 'inMenu' => false,'categories'=>$this->request->getPost('categories')];
+        $data = ['title' => $this->request->getPost('title'), 'content' => $this->request->getPost('content'), 'isActive' => (bool)$this->request->getPost('isActive'), 'seflink' => $this->request->getPost('seflink'), 'inMenu' => false, 'categories' => $this->request->getPost('categories')];
 
         if (!empty($this->request->getPost('pageimg'))) {
             $data['seo']['coverImage'] = $this->request->getPost('pageimg');
@@ -68,7 +68,6 @@ class Blog extends BaseController
         $insertID = $this->commonModel->createOne('blog', $data);
         if ($insertID) {
             if (!empty($this->request->getPost('keywords'))) $this->commonTagsLib->checkTags($this->request->getPost('keywords'), 'blogs', (string)$insertID, 'tags');
-
             return redirect()->route('blogs', [1])->with('message', '<b>' . $this->request->getPost('title') . '</b> adlı blog oluşturuldu.');
         } else return redirect()->back()->withInput()->with('error', 'Blog oluşturulamadı.');
     }
@@ -77,7 +76,9 @@ class Blog extends BaseController
     {
         $this->defData['tags'] = $this->model->limitTags_ajax(['pivot.tagType' => 'blogs', 'pivot.piv_id' => new ObjectId($id)], []);
         $t = [];
-        foreach ($this->defData['tags'] as $tag) {$t[] = ['id' => (string)$tag->_id->id, 'value' => $tag->_id->value];}
+        foreach ($this->defData['tags'] as $tag) {
+            $t[] = ['id' => (string)$tag->_id->id, 'value' => $tag->_id->value];
+        }
         $this->defData['categories'] = $this->commonModel->getList('categories');
         $this->defData['infos'] = $this->commonModel->getOne('blog', ['_id' => new ObjectId($id)]);
         $this->defData['tags'] = json_encode($t);
@@ -104,7 +105,7 @@ class Blog extends BaseController
         if ($this->validate($valData) == false) return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         $info = $this->commonModel->getOne('blog', ['_id' => new ObjectId($id)]);
         if ($info->seflink != $this->request->getPost('seflink') && $this->commonModel->get_where(['seflink' => $this->request->getPost('seflink')], 'categories') === 1) return redirect()->back()->withInput()->with('error', 'Blog seflink adresi daha önce kullanılmış. lütfen kontrol ederek bir daha oluşturmayı deneyeyiniz.');
-        $data = ['title' => $this->request->getPost('title'), 'content' => $this->request->getPost('content'), 'isActive' => (bool)$this->request->getPost('isActive'), 'seflink' => $this->request->getPost('seflink'),'categories'=>$this->request->getPost('categories')];
+        $data = ['title' => $this->request->getPost('title'), 'content' => $this->request->getPost('content'), 'isActive' => (bool)$this->request->getPost('isActive'), 'seflink' => $this->request->getPost('seflink'), 'categories' => $this->request->getPost('categories')];
 
         if (!empty($this->request->getPost('pageimg'))) {
             $data['seo']['coverImage'] = $this->request->getPost('pageimg');
@@ -115,7 +116,6 @@ class Blog extends BaseController
 
         if ($this->commonModel->updateOne('blog', ['_id' => new ObjectId($id)], $data)) {
             if (!empty($this->request->getPost('keywords'))) $this->commonTagsLib->checkTags($this->request->getPost('keywords'), 'blogs', $id, 'tags');
-
             return redirect()->route('blogs', [1])->with('message', '<b>' . $this->request->getPost('title') . '</b> adlı blog oluşturuldu.');
         } else return redirect()->back()->withInput()->with('error', 'Blog oluşturulamadı.');
     }

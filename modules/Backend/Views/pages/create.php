@@ -54,7 +54,7 @@
                     </div>
                     <div class="form-group col-md-12">
                         <label for="">Sayfa URL</label>
-                        <input type="text" class="form-control seflink" name="seflink" required">
+                        <input type="text" class="form-control seflink" name="seflink" required>
                     </div>
                     <div class="form-group col-md-12">
                         <label for="">İçerik</label>
@@ -104,7 +104,7 @@
                     </div>
                     <div class="form-group col-md-12">
                         <label for="">Seo Anahtar Kelimeleri</label>
-                        <textarea name="keywords" class="keywords" placeholder="write some tags"></textarea>
+                        <textarea name="keywords" class="keywords" placeholder="write some keywords"></textarea>
                     </div>
                 </div>
                 <div class="form-group col-md-12">
@@ -128,18 +128,13 @@
 <script src="/be-assets/plugins/summernote/plugin/elfinder/summernote-ext-elfinder.js"></script>
 <script src="/be-assets/js/ci4ms.js"></script>
 <script>
-    $.post('<?=route_to('tagify')?>', {
-        "<?=csrf_token()?>": "<?=csrf_hash()?>",
-        "type": "page"
-    }, 'json').done(function (data) {
-        tags(data);
-    });
+    tags([]);
 
     $('.ptitle').on('change', function () {
         $.post('<?=route_to('checkSeflink')?>', {
             "<?=csrf_token()?>": "<?=csrf_hash()?>",
             'makeSeflink': $(this).val(),
-            'where': 'page'
+            'where': 'pages'
         }, 'json').done(function (data) {
             $('.seflink').val(data.seflink);
         });
@@ -149,7 +144,7 @@
         $.post('<?=route_to('checkSeflink')?>', {
             "<?=csrf_token()?>": "<?=csrf_hash()?>",
             'makeSeflink': $(this).val(),
-            'where': 'page'
+            'where': 'pages'
         }, 'json').done(function (data) {
             $('.seflink').val(data.seflink);
         });

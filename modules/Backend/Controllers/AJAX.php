@@ -20,31 +20,32 @@ class AJAX extends BaseController
     public function limitTags_ajax()
     {
         if ($this->request->isAJAX()) {
-            $valData = ([
-                'type' => ['label' => 'type', 'rules' => 'required']
-            ]);
-
-            if ($this->validate($valData) == false)
-                return redirect('403');
-            if ($this->commonModel->get_where([], 'tags') === 1) {
-                $data = ['pivot.tagType' => $this->request->getPost('type')];
-                if (!empty($this->request->getPost('piv_id')))
-                    $data['pivot.piv_id'] = new ObjectId($this->request->getPost('piv_id'));
-                $result = $this->model->limitTags_ajax($data);
-                if (empty($result)) {
-                    $result=null;
-                    foreach ($this->commonModel->getList('tags',[],['limit'=>10,'sort'=>['_id'=>-1]]) as $item) {
-                        $result[]=['id'=>(string)$item->_id,'value'=>$item->tag];
+            if (!empty($this->request->getPost('type'))) {
+                if ($this->commonModel->get_where([], 'tags') === 1) {
+                    $data = ['pivot.tagType' => $this->request->getPost('type')];
+                    if (!empty($this->request->getPost('piv_id')))
+                        $data['pivot.piv_id'] = new ObjectId($this->request->getPost('piv_id'));
+                    $result = $this->model->limitTags_ajax($data);
+                    if (empty($result)) {
+                        $result = null;
+                        foreach ($this->commonModel->getList('tags', [], ['limit' => 10, 'sort' => ['_id' => -1]]) as $item) {
+                            $result[] = ['id' => (string)$item->_id, 'value' => $item->tag];
+                        }
+                        return $this->response->setJSON($result);
                     }
-                    return $this->response->setJSON($result);
-                }
-                $edited = [];
-                foreach ($result as $item) {
-                    $edited[] = ['id' => (string)$item->_id->id, 'value' => $item->_id->value];
-                }
-                unset($result);
-                return $this->response->setJSON($edited);
-            } else return $this->response->setJSON([]);
+                    $edited = [];
+                    foreach ($result as $item) {
+                        $edited[] = ['id' => (string)$item->_id->id, 'value' => $item->_id->value];
+                    }
+                    unset($result);
+                    return $this->response->setJSON($edited);
+                } else return $this->response->setJSON([]);
+            }
+            $result = null;
+            foreach ($this->commonModel->getList('tags', [], ['limit' => 10, 'sort' => ['_id' => -1]]) as $item) {
+                $result[] = ['id' => (string)$item->_id, 'value' => $item->tag];
+            }
+            return $this->response->setJSON($result);
         } else return redirect('403');
     }
 
@@ -63,11 +64,12 @@ class AJAX extends BaseController
 
             $max_url_increment = 10000;
             if ($this->commonModel->get_where(['seflink' => seflink($this->request->getPost('makeSeflink'))], $this->request->getPost('where')) === 0) return $this->response->setJSON(['seflink' => seflink($this->request->getPost('makeSeflink'))]);
-            else
+            else {
                 for ($i = 1; $i <= $max_url_increment; $i++) {
                     $new_link = seflink($this->request->getPost('makeSeflink')) . '-' . $i;
                     if ($this->commonModel->get_where(['seflink' => $new_link], $this->request->getPost('where')) === 0) return $this->response->setJSON(['seflink' => $new_link]);
                 }
+            }
         } else return redirect('403');
     }
 

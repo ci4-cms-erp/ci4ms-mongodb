@@ -72,7 +72,7 @@
                         <select name="parent" id="" class="form-control select2bs4" data-placeholder="Select a Category">
                             <option value="">Select a Category</option>
                             <?php foreach ($categories as $category) :?>
-                                <option value="<?=$category->_id?>" <?=($infos->parent==$category->_id)?'selected':''?>><?=$category->title?></option>
+                                <option value="<?=$category->_id?>" <?=(!empty($infos->parent) && $infos->parent==$category->_id)?'selected':''?>><?=$category->title?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -102,7 +102,7 @@
                     </div>
                     <div class="col-md-12 form-group">
                         <label for="">Seo Anahtar Kelimeleri</label>
-                        <textarea name="keywords" class="keywords" placeholder="write some tags"><?=json_encode($infos->seo->keywords)?></textarea>
+                        <textarea name="keywords" class="keywords" placeholder="write some tags"><?=!empty($infos->seo->keywords)?json_encode($infos->seo->keywords):''?></textarea>
                     </div>
                 </div>
                 <div class="form-group col-md-12">

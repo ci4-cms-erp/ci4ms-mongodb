@@ -28,7 +28,6 @@
 
 <!-- Main content -->
 <section class="content">
-
     <!-- Default box -->
     <div class="card card-outline card-shl">
         <div class="card-header">
@@ -42,16 +41,49 @@
         </div>
         <div class="card-body">
             <?= view('Modules\Auth\Views\_message_block') ?>
-
+            <form action="<?= route_to('tagUpdate') ?>" method="post" class="form-row">
+                <div class="form-group col-md-12">
+                    <label for="">Etiket Başlığı</label>
+                    <input type="text" name="title" class="form-control ptitle" placeholder="Etiket Başlığı"
+                           required value="<?=$infos->tag?>">
+                </div>
+                <div class="form-group col-md-12">
+                    <label for="">Etiket URL</label>
+                    <input type="text" class="form-control seflink" name="seflink" required value="<?=$infos->seflink?>">
+                </div>
+                <div class="form-group col-md-12">
+                    <button type="button" class="btn btn-success float-right">Güncelle</button>
+                </div>
+            </form>
         </div>
         <!-- /.card-body -->
     </div>
     <!-- /.card -->
-
 </section>
 <!-- /.content -->
 <?= $this->endSection() ?>
 
 <?= $this->section('javascript') ?>
 <script src="/be-assets/plugins/sweetalert2/sweetalert2.min.js"></script>
+<script>
+    $('.ptitle').on('change', function () {
+        $.post('<?=route_to('checkSeflink')?>', {
+            "<?=csrf_token()?>": "<?=csrf_hash()?>",
+            'makeSeflink': $(this).val(),
+            'where': 'tags'
+        }, 'json').done(function (data) {
+            $('.seflink').val(data.seflink);
+        });
+    });
+
+    $('.seflink').on('change', function () {
+        $.post('<?=route_to('checkSeflink')?>', {
+            "<?=csrf_token()?>": "<?=csrf_hash()?>",
+            'makeSeflink': $(this).val(),
+            'where': 'tags'
+        }, 'json').done(function (data) {
+            $('.seflink').val(data.seflink);
+        });
+    });
+</script>
 <?= $this->endSection() ?>

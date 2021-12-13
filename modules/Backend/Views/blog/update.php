@@ -37,7 +37,6 @@
 
 <!-- Main content -->
 <section class="content">
-
     <!-- Default box -->
     <div class="card card-outline card-shl">
         <div class="card-header">
@@ -61,7 +60,7 @@
                     </div>
                     <div class="form-group col-md-12">
                         <label for="">Blog URL</label>
-                        <input type="text" class="form-control seflink" name="seflink" required"
+                        <input type="text" class="form-control seflink" name="seflink" required
                         value="<?= $infos->seflink ?>">
                     </div>
                     <div class="form-group col-md-12">
@@ -151,7 +150,6 @@
         <!-- /.card-body -->
     </div>
     <!-- /.card -->
-
 </section>
 <!-- /.content -->
 <?= $this->endSection() ?>
@@ -167,21 +165,14 @@
 <script src="/be-assets/plugins/select2/js/select2.full.min.js"></script>
 <script src="/be-assets/js/ci4ms.js"></script>
 <script>
-    $.post('<?=route_to('tagify')?>', {
-        "<?=csrf_token()?>": "<?=csrf_hash()?>",
-        "type": "blogs"
-    }, 'json').done(function (data) {
-        tags(data);
-    });
+    $.post('<?=route_to('tagify')?>', {"<?=csrf_token()?>": "<?=csrf_hash()?>"}, 'json').done(function (data) {tags(data);});
 
     $('.ptitle').on('change', function () {
         $.post('<?=route_to('checkSeflink')?>', {
             "<?=csrf_token()?>": "<?=csrf_hash()?>",
             'makeSeflink': $(this).val(),
             'where': 'blog'
-        }, 'json').done(function (data) {
-            $('.seflink').val(data.seflink);
-        });
+        }, 'json').done(function (data) {$('.seflink').val(data.seflink);});
     });
 
     $('.seflink').on('change', function () {
@@ -189,9 +180,7 @@
             "<?=csrf_token()?>": "<?=csrf_hash()?>",
             'makeSeflink': $(this).val(),
             'where': 'blog'
-        }, 'json').done(function (data) {
-            $('.seflink').val(data.seflink);
-        });
+        }, 'json').done(function (data) {$('.seflink').val(data.seflink);});
     });
 
     //Initialize Select2 Elements

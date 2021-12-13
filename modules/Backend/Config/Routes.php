@@ -101,7 +101,6 @@ $routes->group('backend', ['namespace' => 'Modules\Backend\Controllers'], functi
         //tags
         $routes->group('tags', function ($routes) {
             $routes->get('(:num)', 'Tags::index/$1', ['as' => 'tags', 'filter' => 'backendAfterLoginFilter']);
-            $routes->get('create', 'Tags::new', ['as' => 'tagCreate', 'filter' => 'backendAfterLoginFilter']);
             $routes->post('create', 'Tags::create', ['as' => 'tagCreate', 'filter' => 'backendAfterLoginFilter']);
             $routes->get('update/(:any)', 'Tags::edit/$1', ['as' => 'tagUpdate', 'filter' => 'backendAfterLoginFilter']);
             $routes->post('update/(:any)', 'Tags::update/$1', ['as' => 'tagUpdate', 'filter' => 'backendAfterLoginFilter']);

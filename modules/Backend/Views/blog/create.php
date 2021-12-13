@@ -61,7 +61,7 @@
                     </div>
                     <div class="form-group col-md-12">
                         <label for="">Blog URL</label>
-                        <input type="text" class="form-control seflink" name="seflink" required">
+                        <input type="text" class="form-control seflink" name="seflink" required>
                     </div>
                     <div class="form-group col-md-12">
                         <label for="">İçerik</label>
@@ -148,7 +148,7 @@
 <script>
     $.post('<?=route_to('tagify')?>', {
         "<?=csrf_token()?>": "<?=csrf_hash()?>",
-        "type": "blogs"
+        "type": 'blogs'
     }, 'json').done(function (data) {
         tags(data);
     });
