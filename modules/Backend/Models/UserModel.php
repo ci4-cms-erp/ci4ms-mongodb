@@ -14,25 +14,12 @@ class UserModel
      * @var string
      */
     protected $table;
-    /**
-     * @var string
-     */
-    protected $primaryKey = '_id';
-    /**
-     * @var string
-     */
-    protected $returnType = 'Modules\Auth\Entities\UserEntity';
+
     /**
      * @var bool
      */
     protected $useTimestamps = true;
-    /**
-     * @var string[]
-     */
-    protected $allowedFields = [
-        '_id', 'email', 'firstname', 'sirname', 'username', 'activate_hash', 'password_hash', 'reset_hash', 'reset_at', 'reset_expires',
-        'status', 'status_message', 'force_pass_reset', 'create_at', 'updated_at', 'deleted_at', 'groups_id'
-    ];
+
     /**
      * @var Mongo
      */

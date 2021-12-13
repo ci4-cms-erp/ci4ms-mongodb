@@ -15,5 +15,17 @@ return [
     'officeUsers'=>'Ofis Kullanıcıları',
     'candidateUsers'=>'Aday Kullanıcılar',
     'pages'=>'Sayfalar',
-    'pageAdd'=>'Sayfa Oluşturma'
+    'pageAdd'=>'Sayfa Oluşturma',
+    'media' => 'Medya',
+    'menu' => 'Menüler',
+    'blogs' => 'Yazılar',
+    'blogCreate' => 'Blog Oluşturma',
+    'blogUpdate' => 'Blog Güncelleme',
+    'categories' => 'Kategoriler',
+    'categoryCreate' => 'Kategori Oluştur',
+    'categoryUpdate' => 'Kategori Güncelleme',
+    'tags' => 'Etiketler',
+    'tagCreate' => 'Etiket Oluştur',
+    'tagUpdate' => 'Etiket Güncelleme',
+    'blog' => 'Blog Modülü'
 ];

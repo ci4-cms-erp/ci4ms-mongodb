@@ -74,7 +74,7 @@
                     </div>
                     <div class="form-group col-md-12 row">
                         <div class="col-12 form-group">
-                            <label for="">Sayfa Görseli</label>
+                            <label for="">Kapak Görseli</label>
                             <img src="" alt="" class="pageimg img-fluid">
                         </div>
                         <div class="col-12 form-group">

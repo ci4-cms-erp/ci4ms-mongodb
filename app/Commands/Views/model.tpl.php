@@ -10,7 +10,6 @@ class {class}
 
     public function __construct()
     {
-        parent::__construct();
         $this->m = new Mongo($this->databaseGroup);
         $this->table='{table}';
     }

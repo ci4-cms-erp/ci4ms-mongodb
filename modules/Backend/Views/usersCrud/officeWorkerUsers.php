@@ -66,7 +66,6 @@
                                 <button class="btn btn-outline-dark btn-sm <?php
                                 if(!empty($userList->reset_expires)) {
                                     $time = $timeClass::parse($userList->reset_expires);
-                                    echo var_dump(time() > $time->getTimestamp());
                                     if (time() < $time->getTimestamp())
                                         echo 'disabled';
                                     }?>" id="fpwd" data-uid="<?= $userList->_id ?>"><i class="fas fa-key"></i> Şifre Sıfırla</button>

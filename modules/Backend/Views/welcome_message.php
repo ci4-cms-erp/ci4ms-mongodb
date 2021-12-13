@@ -27,13 +27,13 @@
                 <div class="inner">
                     <h3><?=$dashboard->pageCount->count?></h3>
 
-                    <p>Sayfalar</p>
+                    <p><?php echo lang('sayfalar'); ?></p>
                 </div>
                 <div class="icon">
                     <?=$dashboard->pageCount->icon?>
                 </div>
                 <a href="<?=route_to('pages',1)?>" class="small-box-footer">
-                    More info <i class="fas fa-arrow-circle-right"></i>
+                    <?php echo lang('more_info'); ?>
                 </a>
             </div>
         </div>

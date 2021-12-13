@@ -45,8 +45,7 @@ class AJAX extends BaseController
                 unset($result);
                 return $this->response->setJSON($edited);
             } else return $this->response->setJSON([]);
-        } else
-            return redirect('403');
+        } else return redirect('403');
     }
 
     /**
@@ -60,20 +59,16 @@ class AJAX extends BaseController
                 'where' => ['label' => 'where', 'rules' => 'required']
             ]);
 
-            if ($this->validate($valData) == false)
-                return redirect('403');
+            if ($this->validate($valData) == false) return redirect('403');
 
             $max_url_increment = 10000;
-            if ($this->commonModel->get_where(['seflink' => seflink($this->request->getPost('makeSeflink'))], $this->request->getPost('where')) === 0)
-                return $this->response->setJSON(['seflink' => seflink($this->request->getPost('makeSeflink'))]);
+            if ($this->commonModel->get_where(['seflink' => seflink($this->request->getPost('makeSeflink'))], $this->request->getPost('where')) === 0) return $this->response->setJSON(['seflink' => seflink($this->request->getPost('makeSeflink'))]);
             else
                 for ($i = 1; $i <= $max_url_increment; $i++) {
                     $new_link = seflink($this->request->getPost('makeSeflink')) . '-' . $i;
-                    if ($this->commonModel->get_where(['seflink' => $new_link], $this->request->getPost('where')) === 0)
-                        return $this->response->setJSON(['seflink' => $new_link]);
+                    if ($this->commonModel->get_where(['seflink' => $new_link], $this->request->getPost('where')) === 0) return $this->response->setJSON(['seflink' => $new_link]);
                 }
-        } else
-            return redirect('403');
+        } else return redirect('403');
     }
 
     /**
@@ -88,13 +83,9 @@ class AJAX extends BaseController
                 'where' => ['label' => 'where', 'rules' => 'required']
             ]);
 
-            if ($this->validate($valData) == false)
-                return redirect('403');
+            if ($this->validate($valData) == false) return redirect('403');
 
-            $this->commonModel->updateOne($this->request->getPost('where'),
-                ['_id' => new ObjectId($this->request->getPost('id'))],
-                ['isActive' => (bool)$this->request->getPost('isActive')]);
-        } else
-            redirect('403');
+            $this->commonModel->updateOne($this->request->getPost('where'), ['_id' => new ObjectId($this->request->getPost('id'))], ['isActive' => (bool)$this->request->getPost('isActive')]);
+        } else redirect('403');
     }
 }

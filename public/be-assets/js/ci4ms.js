@@ -39,23 +39,6 @@ $('.pageimg-input').change(function () {
     img.src = $(this).val();
 });
 
-$('.editor').summernote({
-    height: 300,
-    toolbar: [
-        ['style', ['style']],
-        ['style', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
-        ['fontname', ['fontname']],
-        ['fontsize', ['fontsize']],
-        ['color', ['color']],
-        ['para', ['ul', 'ol', 'paragraph']],
-        ['height', ['height']],
-        ['table', ['table']],
-        ['insert', ['link', 'picture', 'video', 'hr', 'readmore']],
-        ['media', ['elfinder']],
-        ['view', ['fullscreen', 'codeview']]
-    ]
-});
-
 function elfinderDialog() {
     var fm = $('<div/>').dialogelfinder({
         url: '/be-assets/plugins/elFinder/php/connector.minimal.php', // change with the url of your connector
@@ -89,3 +72,20 @@ function tags(data) {
         }
     });
 }
+
+$('.editor').summernote({
+    height: 300,
+    toolbar: [
+        ['style', ['style']],
+        ['style', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
+        ['fontname', ['fontname']],
+        ['fontsize', ['fontsize']],
+        ['color', ['color']],
+        ['para', ['ul', 'ol', 'paragraph']],
+        ['height', ['height']],
+        ['table', ['table']],
+        ['insert', ['link', 'picture', 'video', 'hr', 'readmore']],
+        ['media', ['elfinder']],
+        ['view', ['fullscreen', 'codeview']]
+    ]
+});
