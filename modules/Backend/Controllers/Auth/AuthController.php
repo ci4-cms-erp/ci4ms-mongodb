@@ -115,14 +115,14 @@ class AuthController extends BaseController
         if ($this->config->activeResetter === false)
             return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
 
-        $user = $this->userModel->findOne(['email' => $this->request->getPost('email')]);
+        $user = $this->commonModel->getOne('users',['email' => $this->request->getPost('email')]);
 
         if (is_null($user))
             return redirect()->back()->with('error', lang('Auth.forgotNoUser'));
 
         // Save the reset hash /
         $this->commonModel->updateOne('users', ['_id' => new ObjectId($user->_id)], ['reset_hash' => $this->authLib->generateActivateHash(), 'reset_expires' => date('Y-m-d H:i:s', time() + $this->config->resetTime)]);
-        $user = $this->userModel->findOne(['_id' => new ObjectId($user->_id)]);
+        $user = $this->commonModel->getOne('users',['_id' => new ObjectId($user->_id)]);
         $mail = new PHPMailer(true);
 
         try {
@@ -183,11 +183,13 @@ class AuthController extends BaseController
         }
 
         // First things first - log the reset attempt.
-        $this->userModel->logResetAttempt(
-            $this->request->getPost('email'),
-            $token,
-            $this->request->getIPAddress(),
-            (string)$this->request->getUserAgent()
+        $this->commonModel->createOne('auth_reset_password_attempts',[
+            'email' => $this->request->getPost('email'),
+            'ip_address' => $this->request->getIPAddress(),
+            'user_agent' => (string)$this->request->getUserAgent(),
+            'token' => $token,
+            'created_at' => date('Y-m-d H:i:s')
+        ]
         );
 
         $rules = [
@@ -199,7 +201,7 @@ class AuthController extends BaseController
         if (!$this->validate($rules))
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
 
-        $user = $this->userModel->findOne(['email' => $this->request->getPost('email'), 'reset_hash' => $token]);
+        $user = $this->commonModel->getOne('users',['email' => $this->request->getPost('email'), 'reset_hash' => $token]);
 
         if (is_null($user)) {
             return redirect()->back()->with('error', lang('Auth.forgotNoUser'));
@@ -229,10 +231,13 @@ class AuthController extends BaseController
     public function activateAccount($token)
     {
         // First things first - log the activation attempt.
-        $this->userModel->logActivationAttempt(
-            $token,
-            $this->request->getIPAddress(),
-            (string)$this->request->getUserAgent()
+        $this->commonModel->createOne('auth_email_activation_attempts',
+            [
+                'ip_address' => $this->request->getIPAddress(),
+                'user_agent' => (string)$this->request->getUserAgent(),
+                'token' => $token,
+                'created_at' => date('Y-m-d H:i:s')
+            ]
         );
 
         $throttler = service('throttler');
@@ -240,7 +245,7 @@ class AuthController extends BaseController
         if ($throttler->check($this->request->getIPAddress(), 2, MINUTE) === false)
             return $this->response->setStatusCode(429)->setBody(lang('Auth.tooManyRequests', [$throttler->getTokentime()]));
 
-        $user = $this->userModel->findOne(['activate_hash' => $token, 'status' => 'deactive']);
+        $user = $this->commonModel->getOne('users',['activate_hash' => $token, 'status' => 'deactive']);
 
         if (is_null($user))
             return redirect()->route('login')->with('error', lang('Auth.activationNoUser'));
@@ -253,10 +258,12 @@ class AuthController extends BaseController
     public function activateEmail($token)
     {
         // First things first - log the activation attempt.
-        $this->userModel->logEmailActivationAttempt(
-            $token,
-            $this->request->getIPAddress(),
-            (string)$this->request->getUserAgent()
+        $this->commonModel->createOne('auth_email_activation_attempts', [
+            'ip_address' => $this->request->getIPAddress(),
+            'user_agent' => (string)$this->request->getUserAgent(),
+            'token' => $token,
+            'created_at' => date('Y-m-d H:i:s')
+        ]
         );
 
         $throttler = service('throttler');
@@ -264,7 +271,7 @@ class AuthController extends BaseController
         if ($throttler->check($this->request->getIPAddress(), 2, MINUTE) === false)
             return $this->response->setStatusCode(429)->setBody(lang('Auth.tooManyRequests', [$throttler->getTokentime()]));
 
-        $user = $this->userModel->findOne(['activate_hash' => $token, 'status' => 'deactive']);
+        $user = $this->commonModel->getOne('users',['activate_hash' => $token, 'status' => 'deactive']);
 
         if (is_null($user))
             return redirect()->route('login')->with('error', lang('Auth.activationNoUser'));

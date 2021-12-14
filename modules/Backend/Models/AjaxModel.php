@@ -32,7 +32,7 @@ class AjaxModel
         ];
         if (!empty($credentials))
             $query[] = ['$match' => $credentials];
-        $query[]=['$group'=>['_id'=>['id'=>'$_id','value'=>'$tag']]];
+        $query[]=['$group'=>['_id'=>['id'=>'$_id','value'=>'$tag','seflink'=>'$seflink']]];
         return $this->m->options($options)->aggregate('tags', $query)->toArray();
     }
 }

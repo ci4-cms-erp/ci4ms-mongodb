@@ -99,8 +99,8 @@ class AuthLibrary
     {
         if ($userID = session($this->config->logged_in)) {
             // Store our current user object
-            $this->user = $this->userModel->findOne(['_id' => new ObjectId($userID)]);
-            $groupSefLink = $this->userModel->getGroupInfos(['_id' => new ObjectId($this->user->group_id)], ['seflink']);
+            $this->user = $this->commonModel->getOne($this->config->userTable,['_id' => new ObjectId($userID)]);
+            $groupSefLink = $this->commonModel->getOne('auth_groups',['_id' => new ObjectId($this->user->group_id)], ['seflink']);
             session()->set('redirect_url', $groupSefLink->seflink);
             return true;
         }
@@ -113,7 +113,7 @@ class AuthLibrary
         helper('cookie');
         $oid = new ObjectId(session($this->config->logged_in));
         if ($userID = $oid) {
-            $this->user = $this->userModel->findOne(['_id' => (object)$userID]);
+            $this->user = $this->commonModel->getOne($this->config->userTable,['_id' => (object)$userID]);
         }
 
         $user = $this->user;
@@ -131,7 +131,7 @@ class AuthLibrary
         session()->regenerate(true);
 
         // Take care of any remember me functionality
-        $this->userModel->purgeRememberTokens($user->_id);
+        $this->commonModel->deleteOne('auth_tokens',['user_id'=>$user->_id]);
 
         // trigger logout event
         Events::trigger('logout', $user);
@@ -254,7 +254,7 @@ class AuthLibrary
 
     public function validate(array $credentials, bool $returnUser = false)
     {
-
+        d($credentials);
         // Can't validate without a password.
         if (empty($credentials['password']) || count($credentials) < 2) {
             return false;
@@ -275,8 +275,7 @@ class AuthLibrary
         }
 
         // Can we find a user with those credentials?
-        $user = $this->userModel->findOne($credentials);
-
+        $user = $this->commonModel->getOne($this->config->userTable,$credentials);
 
         if (!$user) {
             $this->error = lang('Auth.badAttempt');
@@ -309,13 +308,13 @@ class AuthLibrary
 
     public function isBanned($pk): bool
     {
-        $userStatus = $this->userModel->findOne(['_id' => $pk], ['status']);
+        $userStatus = $this->commonModel->getOne($this->config->userTable,['_id' => $pk], ['status']);
         return isset($userStatus->status) && $userStatus->status === 'banned';
     }
 
     public function isActivated($pk): bool
     {
-        $userStatus = $this->userModel->findOne(['_id' => $pk], ['status']);
+        $userStatus = $this->commonModel->getOne($this->config->userTable,['_id' => $pk], ['status']);
         return isset($userStatus->status) && $userStatus->status == 'active';
     }
 
@@ -341,7 +340,7 @@ class AuthLibrary
         [$selector, $validator] = explode(':', $remember);
         $validator = hash('sha256', $validator);
 
-        $token = $this->userModel->getRememberToken($selector);
+        $token = $this->commonModel->getOne('auth_tokens',['selector' => $selector]);
 
         if (empty($token)) {
             return false;
@@ -369,7 +368,7 @@ class AuthLibrary
 
     public function refreshRemember(string $userID, string $selector)
     {
-        $existing = $this->userModel->getRememberToken($selector);
+        $existing = $this->commonModel->getOne('auth_tokens',['selector'=>$selector]);
 
         // No matching record? Shouldn't happen, but remember the user now.
         if (empty($existing)) {

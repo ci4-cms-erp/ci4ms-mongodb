@@ -5,9 +5,6 @@ use Config\Services;
 use CodeIgniter\I18n\Time;
 use Modules\Backend\Config\Auth;
 
-/**
- *
- */
 class UserModel
 {
     /**
@@ -25,33 +22,10 @@ class UserModel
      */
     protected $m;
 
-    /**
-     *
-     */
     public function __construct()
     {
         $this->m = new Mongo();
         $this->table='users';
-    }
-
-    /**
-     * @param array $credentials
-     * @param array $select
-     * @return array|object|null
-     */
-    public function findOne(array $credentials, array $select = [])
-    {
-        return $this->m->select($select)->where($credentials)->findOne($this->table);
-    }
-
-    /**
-     * @param array $credentials
-     * @param array $select
-     * @return array|object|null
-     */
-    public function getGroupInfos(array $credentials, array $select = [])
-    {
-        return $this->m->select($select)->where($credentials)->findOne('auth_groups');
     }
 
     /**
@@ -139,29 +113,8 @@ class UserModel
     public function purgeOldRememberTokens()
     {
         $config = new Auth();
-
-        if (!$config->allowRemembering) {
-            return;
-        }
+        if (!$config->allowRemembering) return;
         $this->m->deleteOne('auth_tokens', ['expires <=' => date('Y-m-d H:i:s')]);
-    }
-
-    /**
-     * @param string $id
-     * @return bool
-     */
-    public function purgeRememberTokens(string $id)
-    {
-        return $this->m->deleteOne('auth_tokens', ['user_id' => $id]);
-    }
-
-    /**
-     * @param string $selector
-     * @return array|object|null
-     */
-    public function getRememberToken(string $selector)
-    {
-        return $this->m->where(['selector' => $selector])->findOne('auth_tokens');
     }
 
     /**
@@ -171,58 +124,7 @@ class UserModel
      */
     public function updateRememberValidator(string $selector, string $validator)
     {
-        return $this->m->where(['selector' => $selector])
-            ->findOneAndUpdate('auth_tokens', ['hashedValidator' => hash('sha256', $validator)]);
-    }
-
-    /**
-     * @param string|null $token
-     * @param string|null $ipAddress
-     * @param string|null $userAgent
-     * @return mixed
-     */
-    public function logActivationAttempt(string $token = null, string $ipAddress = null, string $userAgent = null)
-    {
-        return $this->m->insertOne('auth_activation_attempts', [
-            'ip_address' => $ipAddress,
-            'user_agent' => $userAgent,
-            'token' => $token,
-            'created_at' => date('Y-m-d H:i:s')
-        ]);
-    }
-
-    /**
-     * @param string|null $token
-     * @param string|null $ipAddress
-     * @param string|null $userAgent
-     * @return mixed
-     */
-    public function logEmailActivationAttempt(string $token = null, string $ipAddress = null, string $userAgent = null)
-    {
-        return $this->m->insertOne('auth_email_activation_attempts', [
-            'ip_address' => $ipAddress,
-            'user_agent' => $userAgent,
-            'token' => $token,
-            'created_at' => date('Y-m-d H:i:s')
-        ]);
-    }
-
-    /**
-     * @param string $email
-     * @param string|null $token
-     * @param string|null $ipAddress
-     * @param string|null $userAgent
-     * @return mixed
-     */
-    public function logResetAttempt(string $email, string $token = null, string $ipAddress = null, string $userAgent = null)
-    {
-        return $this->m->insertOne('auth_reset_password_attempts',[
-            'email' => $email,
-            'ip_address' => $ipAddress,
-            'user_agent' => $userAgent,
-            'token' => $token,
-            'created_at' => date('Y-m-d H:i:s')
-        ]);
+        return $this->m->where(['selector' => $selector])->findOneAndUpdate('auth_tokens', ['hashedValidator' => hash('sha256', $validator)]);
     }
 
     /**
@@ -267,6 +169,4 @@ class UserModel
     {
         return $this->m->options($options)->select($select)->where($where)->where_or($or)->findOne($collection);
     }
-
-
 }

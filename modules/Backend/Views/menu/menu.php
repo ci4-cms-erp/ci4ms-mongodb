@@ -107,7 +107,7 @@
                         <?php if (!empty($nestable2)) menu($nestable2); ?>
                         </ol>
                     </div>
-                    <button class="btn btn-success" onclick="saveMenu()">kaydet</button>
+                    <button class="btn btn-success float-right" onclick="saveMenu()">Menüyü kaydet</button>
                 </div>
             </div>
         </div>
@@ -145,6 +145,11 @@
             $('.dd').html(data);
             $('.dd').nestable();
             $("#page-" + id + "").remove();
+            $.post('<?=route_to('menuList')?>', {
+                "<?=csrf_token()?>": "<?=csrf_hash()?>"
+            }).done(function (data) {
+                $('#list').html(data);
+            });
         });
     }
 
@@ -174,6 +179,11 @@
             $('.dd').html(data);
             $('.dd').nestable();
             $("#blog-" + id + "").remove();
+            $.post('<?=route_to('menuList')?>', {
+                "<?=csrf_token()?>": "<?=csrf_hash()?>"
+            }).done(function (data) {
+                $('#list').html(data);
+            });
         });
     }
 

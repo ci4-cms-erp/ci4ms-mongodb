@@ -44,7 +44,9 @@ class Blog extends BaseController
             'seflink' => ['label' => 'Sayfa URL', 'rules' => 'required'],
             'content' => ['label' => 'İçerik', 'rules' => 'required'],
             'isActive' => ['label' => 'Yayın veya taslak', 'rules' => 'required'],
-            'categories' => ['label' => 'Kategoriler', 'rules' => 'required']
+            'categories' => ['label' => 'Kategoriler', 'rules' => 'required'],
+            'author' => ['label' => 'Yazar', 'rules' => 'required'],
+            'created_at' => ['label' => 'Oluşturulma Tarihi', 'rules' => 'required|valid_date[Y-m-d H:i:s]']
         ]);
         if (!empty($this->request->getPost('pageimg'))) {
             $valData['pageimg'] = ['label' => 'Görsel URL', 'rules' => 'required|valid_url'];
@@ -93,7 +95,9 @@ class Blog extends BaseController
             'seflink' => ['label' => 'Sayfa URL', 'rules' => 'required'],
             'content' => ['label' => 'İçerik', 'rules' => 'required'],
             'isActive' => ['label' => 'Yayın veya taslak', 'rules' => 'required'],
-            'categories' => ['label' => 'Kategoriler', 'rules' => 'required']
+            'categories' => ['label' => 'Kategoriler', 'rules' => 'required'],
+            'author' => ['label' => 'Yazar', 'rules' => 'required'],
+            'created_at' => ['label' => 'Oluşturulma Tarihi', 'rules' => 'required|valid_date[Y-m-d H:i:s]']
         ]);
         if (!empty($this->request->getPost('pageimg'))) {
             $valData['pageimg'] = ['label' => 'Görsel URL', 'rules' => 'required|valid_url'];

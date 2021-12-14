@@ -29,17 +29,25 @@ class Menu extends BaseController
         if ($this->request->isAJAX()) {
             $pMax = $this->commonModel->getOne('menu', ['parent' => null], ['sort' => ['_id' => -1]]);
             if ($this->request->getPost('type') == 'url') {
-                $data = ['queue'=>$pMax->queue+1,'urlType' => $this->request->getPost('type'), 'pages_id'=>new ObjectId(null), 'seflink' => $this->request->getPost('URL'), 'parent'=>null, 'title' => $this->request->getPost('URLname'), 'target' => $this->request->getPost('target')];
+                $data = ['queue'=>$pMax->queue+1,'urlType' => $this->request->getPost('type'),
+                    'pages_id'=>new ObjectId(null), 'seflink' => $this->request->getPost('URL'),
+                    'parent'=>null, 'title' => $this->request->getPost('URLname'),
+                    'target' => $this->request->getPost('target')];
             } else {
-                $added = $this->commonModel->getOne($this->request->getPost('where'), ['_id' => new ObjectId($this->request->getPost('id'))]);
+                $added = $this->commonModel->getOne($this->request->getPost('where'),
+                    ['_id' => new ObjectId($this->request->getPost('id'))]);
                 if (empty($pMax))
                     $pMax = (object)['queue' => 0];
 
                 if ($this->request->getPost('where') == 'pages') $seflink = $added->seflink;
-                if ($this->request->getPost('where') == 'blogs') $seflink = 'blog/' . $added->seflink;
+                if ($this->request->getPost('where') == 'blog') $seflink = 'blog/' . $added->seflink;
 
-                $data = ['pages_id' => new ObjectId($added->_id), 'parent' => null, 'queue' => $pMax->queue + 1, 'urlType' => $this->request->getPost('where'), 'title' => $added->title, 'seflink' => $seflink, 'target' => null];
-                $this->commonModel->updateOne($this->request->getPost('where'), ['_id' => new ObjectId($added->_id)], ['inMenu' => true]);
+                $data = ['pages_id' => new ObjectId($added->_id),
+                    'parent' => null, 'queue' => $pMax->queue + 1,
+                    'urlType' => $this->request->getPost('where'),
+                    'title' => $added->title, 'seflink' => $seflink, 'target' => null];
+                $this->commonModel->updateOne($this->request->getPost('where'),
+                    ['_id' => new ObjectId($added->_id)], ['inMenu' => true]);
             }
             if ($this->commonModel->createOne('menu', $data)) {
                 return view('Modules\Backend\Views\menu\render-nestable2', ['nestable2' => $this->commonModel->getList('menu',[],['sort'=>['queue'=>1]])]);
@@ -55,7 +63,7 @@ class Menu extends BaseController
                 if (empty($pMax))
                     $pMax = (object)['queue' => 0];
 
-                $d = $this->commonModel->getOne($this->request->getPost('type'), ['_id' => new ObjectId($item)]);
+                $d = $this->commonModel->getOne($this->request->getPost('where'), ['_id' => new ObjectId($item)]);
 
                 if ($this->request->getPost('type') == 'pages') $seflink = $d->seflink;
                 if ($this->request->getPost('type') == 'blogs') $seflink = 'blog/' . $d->seflink;
@@ -80,7 +88,7 @@ class Menu extends BaseController
             if ($this->commonModel->updateMany('menu', ['parent' => $this->request->getPost('id')], ['parent' => null]) && $this->commonModel->deleteOne('menu', ['pages_id' => new ObjectId($this->request->getPost('id')), 'urlType' => $this->request->getPost('type')])) {
                 if ($this->request->getPost('type') == 'pages')
                     $this->commonModel->updateOne('pages', ['_id' => new ObjectId($this->request->getPost('id'))], ['inMenu' => false]);
-                if ($this->request->getPost('type') == 'blogs')
+                if ($this->request->getPost('type') == 'blog')
                     $this->commonModel->updateOne('blog', ['_id' => new ObjectId($this->request->getPost('id'))], ['inMenu' => false]);
                 return view('Modules\Backend\Views\menu\render-nestable2', ['nestable2' => $this->commonModel->getList('menu',[],['sort'=>['queue'=>1]])]);
             }

@@ -80,6 +80,24 @@
                         </div>
                     </div>
                     <div class="col-md-12 form-group">
+                        <label for="">Yazar</label>
+                        <select name="author" id="" class="form-control" required>
+                            <option value="">Seçiniz</option>
+                            <?php foreach($authors as $author): ?>
+                            <option value="<?=$author->_id?>"><?=$author->firstname.' '.$author->sirname?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="col-md-12 form-group">
+                        <label for="">Oluşturulma Tarihi</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                            </div>
+                            <input type="text" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy H:i:s" data-mask name="created_at" value="<?=date('d/m/Y H:i:s')?>">
+                        </div>
+                    </div>
+                    <div class="col-md-12 form-group">
                         <label for="">Kategoriler</label>
                         <select name="categories[]" id="" class="form-control select2bs4" multiple="multiple" data-placeholder="Select categories">
                             <?php foreach($categories as $category): ?>
@@ -145,6 +163,9 @@
 <script src="/be-assets/plugins/summernote/plugin/elfinder/summernote-ext-elfinder.js"></script>
 <script src="/be-assets/plugins/select2/js/select2.full.min.js"></script>
 <script src="/be-assets/js/ci4ms.js"></script>
+<!-- InputMask -->
+<script src="/be-assets/plugins/moment/moment.min.js"></script>
+<script src="/be-assets/plugins/inputmask/jquery.inputmask.min.js"></script>
 <script>
     $.post('<?=route_to('tagify')?>', {
         "<?=csrf_token()?>": "<?=csrf_hash()?>",
@@ -174,8 +195,9 @@
     });
 
     //Initialize Select2 Elements
-    $('.select2bs4').select2({
-        theme: 'bootstrap4'
-    });
+    $('.select2bs4').select2({theme: 'bootstrap4'});
+
+    //Datemask dd/mm/yyyy
+    $('#datemask').inputmask('dd/mm/yyyy H:i:s', { 'placeholder': 'dd/mm/yyyy H:i:s' })
 </script>
 <?= $this->endSection() ?>

@@ -15,10 +15,7 @@
 		"jasongrimes/paginator": "~1.0",
 		"bertugfahriozer/ci4mongodblibrary": "^1.0",
 		"dg/rss-php": "^1.5",
-		"melbahja/seo": "^2.0",
-      "ext-gmp": "*",
-		"ext-bcmath": "*",
-		"ext-mongodb": "*"
+		"melbahja/seo": "^2.0"
 	},
 	"require-dev": {
 		"fakerphp/faker": "^1.9",

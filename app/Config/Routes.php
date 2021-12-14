@@ -38,7 +38,7 @@ $routes->get('maintenance-mode','Home::maintenanceMode');
 $routes->get('blog','Home::blog');
 $routes->get('blog/(:any)','Home::blogDetail/$1');
 $routes->get('category/(:any)','Home::blogDetail/$1');
-$routes->get('tag/(:any)','Home::blogDetail/$1');
+$routes->get('tag/(:any)','Home::tagList/$1');
 $routes->match(['get', 'post'], 'imageRender/(:segment)', 'RenderImage::index/$1');
 /*$routes->add('feed', function () {
     $rss = new RSSFeeder();
