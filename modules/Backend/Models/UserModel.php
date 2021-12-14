@@ -224,4 +224,49 @@ class UserModel
             'created_at' => date('Y-m-d H:i:s')
         ]);
     }
+
+    /**
+     * used for list data with where and  where_or
+     * @param string $collection
+     * @param array $where
+     * @param array $or
+     * @param array $options
+     * @param array $select
+     * @return mixed
+     * @throws \Exception
+     *
+     */
+    public function getListOr(string $collection, array $where = [], array $options = [], array $select = [], array $or = [])
+    {
+        return $this->m->options($options)->select($select)->where($where)->where_or($or)->find($collection)->toArray();
+    }
+
+    /**
+     * @param string $collection
+     * @param array $where
+     * @param array $options
+     * @param array $or
+     * @return mixed
+     * @throws \Exception
+     */
+    public function countOr(string $collection, array $where, array $options = [], array $or = [])
+    {
+        return $this->m->options($options)->where($where)->where_or($or)->count($collection);
+    }
+
+    /**
+     * @param string $collection
+     * @param array $where
+     * @param array $options
+     * @param array $select
+     * @param array $or
+     * @return mixed
+     * @throws \Exception
+     */
+    public function getOneOr(string $collection, array $where = [], array $options = [], array $select = [],array $or = [])
+    {
+        return $this->m->options($options)->select($select)->where($where)->where_or($or)->findOne($collection);
+    }
+
+
 }

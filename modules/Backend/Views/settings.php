@@ -109,22 +109,22 @@ Anasayfa
                                 <?= csrf_field() ?>
                                 <div data-repeater-list="socialNetwork" class="col-12">
                                     <?php if(!empty($settings->socialNetwork)):
-                                    foreach ($settings->socialNetwork as $socialNetwork) : ?>
-                                    <div class="row border-bottom" data-repeater-item>
-                                        <div class="col-6 form-group">
-                                            <label for="">Sosyal Medya Adı</label>
-                                            <input type="text" class="form-control" name="smName" value="<?=$socialNetwork->smName?>" placeholder="facebook" required>
-                                        </div>
-                                        <div class="col-5 form-group">
-                                            <label for="">Sosyal Medya Linki</label>
-                                            <input type="text" class="form-control" name="link" value="<?=$socialNetwork->link?>" required>
-                                        </div>
-                                        <div class="col-1 form-group">
-                                            <input data-repeater-delete type="button"
-                                                   class="btn btn-danger w-100" value="Sil"/>
-                                        </div>
-                                    </div>
-                                    <?php endforeach;
+                                        foreach ($settings->socialNetwork as $socialNetwork) : ?>
+                                            <div class="row border-bottom" data-repeater-item>
+                                                <div class="col-6 form-group">
+                                                    <label for="">Sosyal Medya Adı</label>
+                                                    <input type="text" class="form-control" name="smName" value="<?=$socialNetwork->smName?>" placeholder="facebook" required>
+                                                </div>
+                                                <div class="col-5 form-group">
+                                                    <label for="">Sosyal Medya Linki</label>
+                                                    <input type="text" class="form-control" name="link" value="<?=$socialNetwork->link?>" required>
+                                                </div>
+                                                <div class="col-1 form-group">
+                                                    <input data-repeater-delete type="button"
+                                                           class="btn btn-danger w-100" value="Sil"/>
+                                                </div>
+                                            </div>
+                                        <?php endforeach;
                                     endif; ?>
                                     <div class="row border-bottom" data-repeater-item>
                                         <div class="col-6 form-group">
@@ -236,32 +236,38 @@ Anasayfa
                                 </div>
 
 
-                                <div class="col-6 form-group">
-                                    <label>IP Aralığını Blokla <small> Her satıra 1 aralık olacak şekilde giriniz
-                                            (1.2.3.4 - 5.6.7.8)</small> </label>
+                                <div class="col-4 form-group">
+                                    <label>IP Aralığını Blokla <small> Virgül ile ayırın</small> </label>
                                     <textarea class="form-control border-danger" rows="5" name="blackListRange"
                                               placeholder="Ör : 222.175.223.123 - 222.175.223.123"><?= $blacklistRange ?? '' ?></textarea>
 
                                 </div>
-                                <div class="col-6 form-group">
-                                    <label>Tekil Ip Bloklama <small>Her satıra 1 ip gelecek şekilde giriniz
-                                            (1.2.3.4)</small></label>
+                                <div class="col-4 form-group">
+                                    <label>Tekil Ip Bloklama <small>Virgül ile ayırın </small></label>
                                     <textarea class="form-control border-danger" rows="5" name="blacklistLine"
                                               placeholder="Ör : 255.255.255.255"><?= $blacklistLine ?? '' ?></textarea>
                                 </div>
+                                <div class="col-4 form-group">
+                                    <label>Kullanıcı Adı Bloklama <small>Virgül ile ayırın </small></label>
+                                    <textarea class="form-control border-danger" rows="5" name="blacklistUsername"
+                                              placeholder="Ör : qwe@asd.com"><?= $blacklistUsername ?? '' ?></textarea>
+                                </div>
 
-                                <div class="col-6 form-group">
-                                    <label>Güvenilir IP Aralığını<small> Her satıra 1 aralık olacak şekilde giriniz
-                                            (1.2.3.4 - 5.6.7.8)</small> </label>
+                                <div class="col-4 form-group">
+                                    <label>Güvenilir IP Aralığını<small>Virgül ile ayırın </small> </label>
                                     <textarea class="form-control border-success" rows="5" name="whitelistRange"
                                               placeholder="Ör : 222.175.223.123 - 222.175.223.123"><?= $whitelistRange ?? '' ?></textarea>
 
                                 </div>
-                                <div class="col-6 form-group">
-                                    <label>Güvenilir Tekil Ip<small>Her satıra 1 ip gelecek şekilde giriniz
-                                            (1.2.3.4)</small></label>
+                                <div class="col-4 form-group">
+                                    <label>Güvenilir Tekil Ip<small>Virgül ile ayırın</small></label>
                                     <textarea class="form-control  border-success" rows="5" name="whitelistLine"
                                               placeholder="Ör : 8.8.8.8"><?= $whitelistLine ?? '' ?></textarea>
+                                </div>
+                                <div class="col-4 form-group">
+                                    <label>Güvenilir Kullanıcı Adı<small>Virgül ile ayırın</small></label>
+                                    <textarea class="form-control  border-success" rows="5" name="whitelistUsername"
+                                              placeholder="Ör : qwe@asd.com"><?= $whitelistUsername ?? '' ?></textarea>
                                 </div>
 
                                 <div class="col-12 form-group">

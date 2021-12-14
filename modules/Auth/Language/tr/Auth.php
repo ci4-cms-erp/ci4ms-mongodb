@@ -27,7 +27,7 @@ return [
     'errorSendingActivation' => 'Aktivasyon mesajı gönderilemedi: {0}',
 
     // Login
-    'badAttempt' => 'Giriş yapılamıyor. Lütfen bilgilerinizi kontrol edin. %s',
+    'badAttempt' => 'Giriş yapılamıyor. Lütfen bilgilerinizi kontrol edin.',
     'loginBlock' => '<b>Girişiniz askıya alınmıştır</b>. <br>Lütfen IT departmanına başvurun.',
     'loginSuccess' => 'Tekrar Hoşgeldiniz!',
     'invalidPassword' => 'Giriş yapılamıyor. Lütfen bilgilerinizi kontrol edin. %s',

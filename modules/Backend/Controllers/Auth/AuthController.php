@@ -61,8 +61,9 @@ class AuthController extends BaseController
             $remember = (bool)$this->request->getPost('remember');
 
             // Check is blocked ip
-            /*if (!$this->authLib->isBloackedIp())
-                return redirect()->back()->withInput()->with('error', $this->authLib->error() ?? lang('Auth.loginBlock'));*/
+            if ($this->authLib->isBloackedIp($login))
+                return redirect()->back()->withInput()->with('error', $this->authLib->error() ?? lang('Auth.loginBlock'));
+
 
             // Try to log them in...
             if (!$this->authLib->attempt(['email' => $login, 'password' => $password], $remember))

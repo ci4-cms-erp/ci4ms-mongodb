@@ -20,6 +20,10 @@ class Settings extends BaseController
             $blacklistLine = '';
             foreach ($blacklists->line as $item)
                 $blacklistLine .= $item . ',  ';
+
+            $blacklistUsername = '';
+            foreach ($blacklists->username as $item)
+                $blacklistUsername .= $item . ',  ';
         }
 
         if (!empty($whitelists)) {
@@ -30,14 +34,17 @@ class Settings extends BaseController
             $whitelistLine = '';
             foreach ($whitelists->line as $item)
                 $whitelistLine .= $item . ',  ';
+
+            $whitelistUsername = '';
+            foreach ($whitelists->username as $item)
+                $whitelistUsername .= $item . ',  ';
         }
 
         $this->defData['blacklistRange'] = ($blacklistRange ?? '');
         $this->defData['blacklistLine'] = ($blacklistLine ?? '');
+        $this->defData['blacklistUsername'] = ($blacklistUsername ?? '');
         $this->defData['whitelistRange'] = ($whitelistRange ?? '');
-        $this->defData['whitelistLine'] = ($whitelistLine ?? '');
-
-
+        $this->defData['whitelistUsername'] = ($whitelistUsername ?? '');
 
         return view('Modules\Backend\Views\settings', $this->defData);
     }
@@ -180,9 +187,6 @@ class Settings extends BaseController
             'whitelistLine' => ['label' => 'Güvenilir Tekil Ip', 'rules' => 'max_length[1000]'],
         ];
 
-        if ($this->validate($valData) == false)
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
-
         /** TODO | Data validations
          * 1- Blacklist ve Whitelist için gelen veri formatlarının regex match kodu ile doğrulaması yapılacak.
          * 2- Blacklist ve Whitelist bir birbirleri ile çakışırsa hata mesajı gönderilecek.
@@ -190,8 +194,14 @@ class Settings extends BaseController
 
         $blackListRange = clearFilter(explode(',', preg_replace('/\s+/', '', $this->request->getPost('blackListRange'))));
         $blacklistLine = clearFilter(explode(',', preg_replace('/\s+/', '', $this->request->getPost('blacklistLine'))));
+        $blacklistUsername = clearFilter(explode(',', preg_replace('/\s+/', '', $this->request->getPost('blacklistUsername'))));
         $whitelistRange = clearFilter(explode(',', preg_replace('/\s+/', '', $this->request->getPost('whitelistRange'))));
         $whitelistLine = clearFilter(explode(',', preg_replace('/\s+/', '', $this->request->getPost('whitelistLine'))));
+        $whitelistUsername = clearFilter(explode(',', preg_replace('/\s+/', '', $this->request->getPost('whitelistUsername'))));
+
+        if ($this->validate($valData) == false)
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+
         $data = [
             'lockedRecord' => $this->request->getPost('lockedRecord'),
             'lookedMin' => $this->request->getPost('lookedMin'),
@@ -203,12 +213,14 @@ class Settings extends BaseController
         $settings = $this->commonModel->getOne('settings');
         $result = $this->commonModel->updateOne('settings', ['_id' => new ObjectId($settings->_id)], $data);
         $blacklist_data = array(
+            'username' => $blacklistUsername,
             'range' => $blackListRange,
             'line' => $blacklistLine,
         );
         $login_rules = $this->commonModel->getOne('login_rules',['type' => 'blacklist']);
         $result = $this->commonModel->updateOne('login_rules', ['_id' => new ObjectId($login_rules->_id)], $blacklist_data);
         $whitelist = array(
+            'username' => $whitelistUsername,
             'range' => $whitelistRange,
             'line' => $whitelistLine,
         );
