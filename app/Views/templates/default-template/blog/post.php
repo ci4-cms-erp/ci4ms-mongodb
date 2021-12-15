@@ -46,7 +46,9 @@
                             <?= $infos->content ?>
                         </section>
                     </article>
-                    <!-- Comments section-->
+                    <!-- Comments section
+                    TODO: kodlanacak.
+                    -->
                     <section>
                         <div class="card bg-light">
                             <div class="card-body">

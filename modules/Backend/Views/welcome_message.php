@@ -21,22 +21,24 @@
 <!-- Main content -->
 <section class="content">
     <div class="row">
+        <?php foreach ($dashboard as $item) : ?>
         <div class="col-lg-3 col-md-3">
             <!-- small card -->
             <div class="small-box bg-light shadow">
                 <div class="inner">
-                    <h3><?=$dashboard->pageCount->count?></h3>
+                    <h3><?=$item->count?></h3>
 
-                    <p><?php echo lang('sayfalar'); ?></p>
+                    <p><?= lang('Backend.'.$item->lang); ?></p>
                 </div>
                 <div class="icon">
-                    <?=$dashboard->pageCount->icon?>
+                    <?=$item->icon?>
                 </div>
-                <a href="<?=route_to('pages',1)?>" class="small-box-footer">
+                <a href="<?=route_to($item->lang,1)?>" class="small-box-footer">
                     <?php echo lang('more_info'); ?>
                 </a>
             </div>
         </div>
+        <?php endforeach; ?>
     </div>
 </section>
 <!-- /.content -->
