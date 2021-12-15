@@ -34,6 +34,7 @@ class Blog extends BaseController
     public function new()
     {
         $this->defData['categories'] = $this->commonModel->getList('categories');
+        $this->defData['authors']=$this->commonModel->getList('users',['status'=>'active']);
         return view('Modules\Backend\Views\blog\create', $this->defData);
     }
 
@@ -46,7 +47,7 @@ class Blog extends BaseController
             'isActive' => ['label' => 'Yayın veya taslak', 'rules' => 'required'],
             'categories' => ['label' => 'Kategoriler', 'rules' => 'required'],
             'author' => ['label' => 'Yazar', 'rules' => 'required'],
-            'created_at' => ['label' => 'Oluşturulma Tarihi', 'rules' => 'required|valid_date[Y-m-d H:i:s]']
+            'created_at' => ['label' => 'Oluşturulma Tarihi', 'rules' => 'required|valid_date[d.m.Y H:i:s]']
         ]);
         if (!empty($this->request->getPost('pageimg'))) {
             $valData['pageimg'] = ['label' => 'Görsel URL', 'rules' => 'required|valid_url'];
@@ -58,7 +59,7 @@ class Blog extends BaseController
         if ($this->validate($valData) == false) return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         if ($this->commonModel->get_where(['seflink' => $this->request->getPost('seflink')], 'blog') === 1) return redirect()->back()->withInput()->with('error', 'Blog seflink adresi daha önce kullanılmış. lütfen kontrol ederek bir daha oluşturmayı deneyeyiniz.');
 
-        $data = ['title' => $this->request->getPost('title'), 'content' => $this->request->getPost('content'), 'isActive' => (bool)$this->request->getPost('isActive'), 'seflink' => $this->request->getPost('seflink'), 'inMenu' => false, 'categories' => $this->request->getPost('categories')];
+        $data = ['title' => $this->request->getPost('title'), 'content' => $this->request->getPost('content'), 'isActive' => (bool)$this->request->getPost('isActive'), 'seflink' => $this->request->getPost('seflink'), 'inMenu' => false, 'categories' => $this->request->getPost('categories'),'author' => $this->request->getPost('author'),'created_at' => $this->request->getPost('created_at')];
 
         if (!empty($this->request->getPost('pageimg'))) {
             $data['seo']['coverImage'] = $this->request->getPost('pageimg');
@@ -84,6 +85,7 @@ class Blog extends BaseController
         $this->defData['categories'] = $this->commonModel->getList('categories');
         $this->defData['infos'] = $this->commonModel->getOne('blog', ['_id' => new ObjectId($id)]);
         $this->defData['tags'] = json_encode($t);
+        $this->defData['authors']=$this->commonModel->getList('users',['status'=>'active']);
         unset($t);
         return view('Modules\Backend\Views\blog\update', $this->defData);
     }
@@ -97,7 +99,7 @@ class Blog extends BaseController
             'isActive' => ['label' => 'Yayın veya taslak', 'rules' => 'required'],
             'categories' => ['label' => 'Kategoriler', 'rules' => 'required'],
             'author' => ['label' => 'Yazar', 'rules' => 'required'],
-            'created_at' => ['label' => 'Oluşturulma Tarihi', 'rules' => 'required|valid_date[Y-m-d H:i:s]']
+            'created_at' => ['label' => 'Oluşturulma Tarihi', 'rules' => 'required|valid_date[d.m.Y H:i:s]']
         ]);
         if (!empty($this->request->getPost('pageimg'))) {
             $valData['pageimg'] = ['label' => 'Görsel URL', 'rules' => 'required|valid_url'];
@@ -109,7 +111,7 @@ class Blog extends BaseController
         if ($this->validate($valData) == false) return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         $info = $this->commonModel->getOne('blog', ['_id' => new ObjectId($id)]);
         if ($info->seflink != $this->request->getPost('seflink') && $this->commonModel->get_where(['seflink' => $this->request->getPost('seflink')], 'categories') === 1) return redirect()->back()->withInput()->with('error', 'Blog seflink adresi daha önce kullanılmış. lütfen kontrol ederek bir daha oluşturmayı deneyeyiniz.');
-        $data = ['title' => $this->request->getPost('title'), 'content' => $this->request->getPost('content'), 'isActive' => (bool)$this->request->getPost('isActive'), 'seflink' => $this->request->getPost('seflink'), 'categories' => $this->request->getPost('categories')];
+        $data = ['title' => $this->request->getPost('title'), 'content' => $this->request->getPost('content'), 'isActive' => (bool)$this->request->getPost('isActive'), 'seflink' => $this->request->getPost('seflink'), 'categories' => $this->request->getPost('categories'),'author' => $this->request->getPost('author'),'created_at' => $this->request->getPost('created_at')];
 
         if (!empty($this->request->getPost('pageimg'))) {
             $data['seo']['coverImage'] = $this->request->getPost('pageimg');
