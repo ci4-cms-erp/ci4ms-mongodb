@@ -81,10 +81,10 @@
                     </div>
                     <div class="col-md-12 form-group">
                         <label for="">Yazar</label>
-                        <select name="author" id="" class="form-control" required>
+                        <select name="author" class="form-control" required>
                             <option value="">Seçiniz</option>
                             <?php foreach($authors as $author): ?>
-                            <option value="<?=$author->_id?>"><?=$author->firstname.' '.$author->sirname?></option>
+                            <option value="<?=$author->_id?>" <?=$author->_id==$logged_in_user->_id?'selected':''?>><?=$author->firstname.' '.$author->sirname?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -94,7 +94,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
                             </div>
-                            <input type="text" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy H:i:s" data-mask name="created_at" value="<?=date('d/m/Y H:i:s')?>">
+                            <input type="text" class="form-control" id="datemask" name="created_at" value="<?=date('d.m.Y H:i:s')?>" required>
                         </div>
                     </div>
                     <div class="col-md-12 form-group">
@@ -197,7 +197,6 @@
     //Initialize Select2 Elements
     $('.select2bs4').select2({theme: 'bootstrap4'});
 
-    //Datemask dd/mm/yyyy
-    $('#datemask').inputmask('dd/mm/yyyy H:i:s', { 'placeholder': 'dd/mm/yyyy H:i:s' })
+    $('#datemask').inputmask("datetime",{inputFormat:'dd.mm.yyyy HH:MM:ss'});
 </script>
 <?= $this->endSection() ?>

@@ -2,8 +2,10 @@
 
 namespace App\Controllers;
 
+use CodeIgniter\I18n\Time;
 use Melbahja\Seo\MetaTags;
 use Modules\Backend\Models\AjaxModel;
+use Modules\Backend\Models\UserscrudModel;
 use MongoDB\BSON\ObjectId;
 
 class Home extends BaseController
@@ -40,6 +42,10 @@ class Home extends BaseController
         if ($this->commonModel->get_where(['seflink' => $seflink, 'isActive' => true], 'blog') === 1) {
             $metatags = new MetaTags();
             $this->defData['infos'] = $this->commonModel->getOne('blog', ['seflink' => $seflink]);
+            $userModel = new UserscrudModel();
+            $this->defData['authorInfo'] = $userModel->loggedUser(0, [], ['_id' => new ObjectId($this->defData['infos']->author)]);
+            $this->defData['authorInfo']=$this->defData['authorInfo'][0];
+            $this->defData['dateI18n']=new Time();
             $metatags->title($this->defData['infos']->title);
             if (!empty($this->defData['infos']->seo->description)) $metatags->description($this->defData['infos']->seo->description);
             if (!empty($this->defData['infos']->seo->coverImage)) $metatags->image($this->defData['infos']->seo->coverImage);
@@ -52,7 +58,7 @@ class Home extends BaseController
                 }
                 $metatags->meta('keywords', $keywords);
             }
-            $metatags->meta('author', $this->defData['infos']->author);
+            $metatags->meta('author', $this->defData['authorInfo']->firstname.' '.$this->defData['authorInfo']->sirname);
             $metatags->canonical(site_url($seflink));
             $this->defData['seo'] = $metatags;
             return view('templates/default-template/blog/post', $this->defData);

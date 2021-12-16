@@ -8,11 +8,16 @@
             <div class="row gx-5">
                 <div class="col-lg-3">
                     <div class="d-flex align-items-center mt-lg-5 mb-4">
-                        <img class="img-fluid rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg"
-                             alt="..."/>
+                        <?php if (empty($authorInfo->profileIMG)): ?>
+                            <img class="img-fluid rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg"
+                                 alt="<?= $authorInfo->firstname . ' ' . $authorInfo->sirname ?>"/>
+                        <?php else: ?>
+                            <img class="img-fluid rounded-circle" src="<?= $authorInfo->profileIMG ?>"
+                                 alt="<?= $authorInfo->firstname . ' ' . $authorInfo->sirname ?>"/>
+                        <?php endif; ?>
                         <div class="ms-3">
-                            <div class="fw-bold">Valerie Luna</div>
-                            <div class="text-muted">News, Business</div>
+                            <div class="fw-bold"><?= $authorInfo->firstname . ' ' . $authorInfo->sirname ?></div>
+                            <div class="text-muted"><?= $authorInfo->groupInfo[0]->name ?></div>
                         </div>
                     </div>
                 </div>
@@ -24,10 +29,11 @@
                             <!-- Post title-->
                             <h1 class="fw-bolder mb-1"><?= $infos->title ?></h1>
                             <!-- Post meta content-->
-                            <div class="text-muted fst-italic mb-2">January 1, 2021</div>
+                            <div class="text-muted fst-italic mb-2"><?= $dateI18n->createFromTimestamp(strtotime($infos->created_at),app_timezone(),'tr_TR')->toFormattedDateString(); ?></div>
                             <!-- Post categories-->
                             <?php foreach ($tags as $tag): ?>
-                                <a class="badge bg-secondary text-decoration-none link-light" href="<?=route_to('tag',$tag->_id->seflink)?>"><?=$tag->_id->value?></a>
+                                <a class="badge bg-secondary text-decoration-none link-light"
+                                   href="<?= route_to('tag', $tag->_id->seflink) ?>"><?= $tag->_id->value ?></a>
                             <?php endforeach; ?>
                         </header>
                         <!-- Preview image figure-->
@@ -40,7 +46,9 @@
                             <?= $infos->content ?>
                         </section>
                     </article>
-                    <!-- Comments section-->
+                    <!-- Comments section
+                    TODO: kodlanacak.
+                    -->
                     <section>
                         <div class="card bg-light">
                             <div class="card-body">
