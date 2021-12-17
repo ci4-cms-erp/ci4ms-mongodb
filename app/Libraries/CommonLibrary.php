@@ -1,8 +1,7 @@
-<?php
-
-namespace App\Libraries;
+<?php namespace App\Libraries;
 
 use ci4mongodblibrary\Models\CommonModel;
+use Melbahja\Seo\MetaTags;
 use Modules\Backend\Config\Auth;
 use PHPMailer\PHPMailer\PHPMailer;
 
@@ -88,5 +87,64 @@ class CommonLibrary
         } catch (Exception $e) {
             return $mail->ErrorInfo;
         }
+    }
+
+    /**
+     * @param $title
+     * @param $description
+     * @param string $url
+     * @param array $metatags
+     * @param string $coverImage
+     * @return MetaTags
+     */
+    public function seo($title, $description, string $url, array $metatagsArray=[], string $coverImage='')
+    {
+        $metatags = new MetaTags();
+        $metatags->title($title);
+        $metatags->description($description);
+        if (!empty($coverImage)) $metatags->image($coverImage);
+        if (is_array($metatagsArray['keywords']) && !empty($metatagsArray['keywords'])) {
+            $keywords='';
+            foreach ($metatagsArray['keywords'] as $tag) {
+                $keywords.=$tag.', ';
+            }
+            $metatags->meta('keywords', substr($keywords,0,-2));
+        }
+        if(!empty($metatagsArray['author'])) $metatags->meta('author', $metatagsArray['author']);
+        $metatags->canonical(site_url($url));
+        return $metatags;
+    }
+
+    private function findFunction($string, $start, $end) {
+        $part = explode ($start,$string);
+        $d=[];
+        foreach ($part as $item) {
+            if(strpos($item,'/}')) $d[]=explode ($end,$item);
+        }
+        $part=null;
+        foreach ($d as $item) {
+            $part[$start.$item[0].$end]=$item[0];
+        }
+        return $part;
+    }
+
+    public function parseInTextFunctions(string $string)
+    {
+        $functions=$this->findFunction($string,'{','/}');
+        foreach ($functions as $function) {
+            $f=explode('|',$function);
+            $data[$function] = call_user_func([$f[0], $f[1]]);
+        }
+        return str_replace(array_keys($functions), $data, $string);
+    }
+
+    public function contactFrom()
+    {
+        return 'burada';
+    }
+
+    public function test()
+    {
+        return 'burada test';
     }
 }
