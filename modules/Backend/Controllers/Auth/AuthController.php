@@ -68,7 +68,6 @@ class AuthController extends BaseController
             unset($_SESSION['redirect_url']);
             return redirect()->route($redirectURL)->withCookies()->with('message', lang('Auth.loginSuccess'));
         }
-
         return redirect()->route('login')->withInput()->with('error', $this->authLib->error() ?? lang('Auth.badCaptcha'));
     }
 
