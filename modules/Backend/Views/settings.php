@@ -202,14 +202,14 @@ Anasayfa
                                     </div>
                                     <div class="col-12 form-group">
                                         <label for="">Engellme Süresi <small>(dk)</small></label>
-                                        <input type="number" name="lookedMin" class="form-control"
-                                               value="<?= empty($settings->lookedMin) ? '' : $settings->lookedMin ?>"
+                                        <input type="number" name="lockedMin" class="form-control"
+                                               value="<?= empty($settings->lockedMin) ? '' : $settings->lockedMin ?>"
                                                required>
                                     </div>
                                     <div class="col-12 form-group">
                                         <label for="">Deneme Sayısı</label>
-                                        <input type="number" name="lookedTry" class="form-control"
-                                               value="<?= empty($settings->lookedTry) ? '' : $settings->lookedTry ?>"
+                                        <input type="number" name="lockedTry" class="form-control"
+                                               value="<?= empty($settings->lockedTry) ? '' : $settings->lockedTry ?>"
                                                required>
                                     </div>
                                 </div>
@@ -217,20 +217,20 @@ Anasayfa
                                 <div class="col-6">
                                     <div class="col-12 form-group">
                                         <label for="">Giriş Ayarları</label>
-                                        <input type="checkbox" name="lookedIsActive"
-                                            <?= (!empty($settings->lookedIsActive) && $settings->lookedIsActive === true) ? 'checked' : '' ?>>
+                                        <input type="checkbox" name="lockedIsActive"
+                                            <?= (!empty($settings->lockedIsActive) && $settings->lockedIsActive === true) ? 'checked' : '' ?>>
                                     </div>
 
                                     <div class="col-12 form-group">
                                         <label for="">Kullanıcı Bilgilendirme </label>
-                                        <input type="checkbox" name="lookedUserNotification"
-                                            <?= (!empty($settings->lookedUserNotification) && $settings->lookedUserNotification === true) ? 'checked' : '' ?>>
+                                        <input type="checkbox" name="lockedUserNotification"
+                                            <?= (!empty($settings->lockedUserNotification) && $settings->lockedUserNotification === true) ? 'checked' : '' ?>>
 
                                     </div>
                                     <div class="col-12 form-group">
                                         <label for="">Admin Bilgilendirme </label>
-                                        <input type="checkbox" name="lookedAdminNotification"
-                                            <?= (!empty($settings->lookedAdminNotification) && $settings->lookedAdminNotification === true) ? 'checked' : '' ?>>
+                                        <input type="checkbox" name="lockedAdminNotification"
+                                            <?= (!empty($settings->lockedAdminNotification) && $settings->lockedAdminNotification === true) ? 'checked' : '' ?>>
 
                                     </div>
                                 </div>

@@ -28,5 +28,5 @@ return [
     'tagCreate' => 'Etiket Oluştur',
     'tagUpdate' => 'Etiket Güncelleme',
     'blog' => 'Blog Modülü',
-    'logs'=>'Logs'
+    'logs' => 'Logs',
 ];

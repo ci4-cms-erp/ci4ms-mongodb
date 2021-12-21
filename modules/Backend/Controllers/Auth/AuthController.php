@@ -5,6 +5,7 @@ use CodeIgniter\I18n\Time;
 use Gregwar\Captcha\CaptchaBuilder;
 use Modules\Backend\Models\UserModel;
 use MongoDB\BSON\ObjectId;
+use PHPMailer\PHPMailer\PHPMailer;
 
 class AuthController extends BaseController
 {
@@ -59,8 +60,7 @@ class AuthController extends BaseController
             $remember = (bool)$this->request->getPost('remember');
 
             // Check is blocked ip
-            if ($this->authLib->isBloackedIp($login)) return redirect()->back()->withInput()->with('error', $this->authLib->error() ?? lang('Auth.loginBlock'));
-
+            if ($this->authLib->isBlockedAttempt($login)) return redirect()->back()->withInput()->with('error', $this->authLib->error() ?? lang('Auth.loginBlock'));
 
             // Try to log them in...
             if (!$this->authLib->attempt(['email' => $login, 'password' => $password], $remember)) return redirect()->back()->withInput()->with('error', $this->authLib->error() ?? lang('Auth.badAttempt'));
@@ -68,7 +68,6 @@ class AuthController extends BaseController
             unset($_SESSION['redirect_url']);
             return redirect()->route($redirectURL)->withCookies()->with('message', lang('Auth.loginSuccess'));
         }
-
         return redirect()->route('login')->withInput()->with('error', $this->authLib->error() ?? lang('Auth.badCaptcha'));
     }
 
@@ -89,7 +88,8 @@ class AuthController extends BaseController
      */
     public function forgotPassword()
     {
-        if ($this->config->activeResetter === false) return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
+        if ($this->config->activeResetter === false)
+            return redirect()->route('login')->with('error', lang('Auth.forgotDisabled'));
 
         return view($this->config->views['forgot'], ['config' => $this->config]);
     }

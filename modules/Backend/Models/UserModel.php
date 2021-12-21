@@ -169,4 +169,19 @@ class UserModel
     {
         return $this->m->options($options)->select($select)->where($where)->where_or($or)->findOne($collection);
     }
+
+    /**
+     * @param string $collection
+     * @param array $where
+     * @param array $set
+     * @param array $options
+     * @return mixed
+     * @throws \Exception
+     */
+
+    public function updateManyOr(string $collection, array $where, array $set, array $options = [], array $or =[])
+    {
+        return $this->m->options($options)->where($where)->where_or($or)->set($set)->updateMany($collection);
+    }
+
 }

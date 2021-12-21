@@ -41,6 +41,11 @@ class AuthLibrary
         $this->user = $user;
         $groupSefLink = $this->commonModel->getOne('auth_groups', ['_id' => new ObjectId($this->user->group_id)], ['seflink' => true]);
 
+
+        $where_or = ['username' => $user->email , 'ip_address' => $this->ipAddress];
+        $set_data = ['islocked' => false] ;
+        $this->userModel->updateManyOr('locked',['islocked' => true],$set_data,[],$where_or);
+
         session()->set('redirect_url', $groupSefLink->seflink);
 
         $this->userModel->recordLoginAttempt($this->user->email, true);
@@ -202,25 +207,21 @@ class AuthLibrary
 
     public function attempt(array $credentials, bool $remember = null): bool
     {
+
         $this->user = $this->validate($credentials, true);
         $falseLogin = $this->commonModel->getOne('auth_logins',['ip_address' => $this->ipAddress],['sort'=> ['_id'=>-1]]);
-        $settings = $this->commonModel->getOne('settings', [/* where */], [/* options */], ['loginBlockMin', 'loginBlockIsActive', 'lookedTry']);
+        $settings = $this->commonModel->getOne('settings', [/* where */], [/* options */], ['loginBlockMin', 'loginBlockIsActive', 'lockedTry']);
 
+        // Kalan deneme hakkı hesaplanıyor.
         if ($falseLogin && $falseLogin->isSuccess === false ){
-
-            if ($falseLogin->counter &&  ((int)$falseLogin->counter + 1 )  >= (int)$settings->lookedTry )
-                $falseCounter = -1;
-
+            if ($falseLogin->counter &&  ((int)$falseLogin->counter + 1 )  >= (int)$settings->lockedTry ) $falseCounter = -1;
             else $falseCounter = $falseLogin->counter;
-
-            $this->error = (int)$settings->lookedTry - $falseCounter . "deneme hakkınız kaldı";
-
         } else $falseCounter = null;
+
 
         if (empty($this->user)) {
             // Always record a login attempt, whether success or not.
             $this->userModel->recordLoginAttempt($credentials['email'], false, (int)$falseCounter);
-
             $this->user = null;
             return false;
         }
@@ -254,12 +255,10 @@ class AuthLibrary
 
     public function validate(array $credentials, bool $returnUser = false)
     {
-        d($credentials);
         // Can't validate without a password.
         if (empty($credentials['password']) || count($credentials) < 2) {
             return false;
         }
-
 
         // Only allowed 1 additional credential other than password
         $password = $credentials['password'];
@@ -289,8 +288,8 @@ class AuthLibrary
         ), $user->password_hash);
 
         if (!$result) {
-            $this->error = lang('Auth.invalidPassword');
-            //$this->error = sprintf(lang('Auth.invalidPassword'), $this->remainingEntry());
+            $this->error = sprintf(lang('Auth.invalidPassword'), '<br><b>Kalan deneme hakkınız ' . $this->remainingEntryCalculation() . ' tanedir.<b></b>');
+            //$this->error = lang('Auth.invalidPassword');
             return false;
         }
 
@@ -441,13 +440,13 @@ class AuthLibrary
     }
 
     /* if return is true user blocked else login active */
-    public function isBloackedIp ($username) : bool {
+    public function isBlockedAttempt ($username) : bool {
         $settings = $this->commonModel->getOne('settings', [/* where */], [/* options */]);
-        if($settings->lookedIsActive){
+        if($settings->lockedIsActive){
 
             $whitlist = $this->commonModel->getOne('login_rules', ['type' => 'whitelist']);
-            foreach ($whitlist->username as $looked_username)
-                if ($looked_username === $username) return false;
+            foreach ($whitlist->username as $locked_username)
+                if ($locked_username === $username) return false;
 
             foreach ($whitlist->line as $line)
                 if ($line === $this->ipAddress) return false;
@@ -455,10 +454,9 @@ class AuthLibrary
             foreach ($whitlist->range as $range)
                 if ($this->ipRangeControl($range,$this->ipAddress))  return false;
 
-
             $blacklist = $this->commonModel->getOne('login_rules', ['type' => 'blacklist']);
-            foreach ($blacklist->username as $looked_username)
-                if ($looked_username === $username) return true;
+            foreach ($blacklist->username as $locked_username)
+                if ($locked_username === $username) return true;
 
             foreach ($blacklist->username as $line)
                 if ($line === $this->ipAddress) return true;
@@ -467,44 +465,43 @@ class AuthLibrary
                 if ($this->ipRangeControl($range,$this->ipAddress))  return true;
 
 
-            $where = ['isLooked' => true];
+            $where = ['islocked' => true];
             $where_or = ['username' => $username, 'ip_address' => $this->ipAddress];
-            $countLooked = $this->userModel->getOneOr('looked', $where, ['sort' => ['_id' => -1]], ['id','counter','expiry_date'], $where_or);
+            $countLocked = $this->userModel->getOneOr('locked', $where, ['sort' => ['_id' => -1]], ['_id','counter','expiry_date'], $where_or);
 
-            if (!$countLooked) $countLookedValue = 0;
-            else $countLookedValue = $countLooked->counter;
+            if (!$countLocked) $countLockedValue = 0;
+            else $countLockedValue = $countLocked->counter;
 
-            if ((int)$settings->lockedRecord <= $countLookedValue){
-                $this->commonModel->updateOne('looked', ['_id' => $countLooked->_id],['counter' => 0]);
+            if ((int)$settings->lockedRecord <= $countLockedValue){
+                $this->commonModel->updateOne('locked', ['_id' => $countLocked->_id],['counter' => 0]);
                 return false;
             }
 
-            $where = ['isLooked' => true,'expiry_date' => ['$gte' => $this->now->toDateTimeString()]];
+            $where = ['islocked' => true,'expiry_date' => ['$gte' => $this->now->toDateTimeString()]];
             $where_or = ['username' => $username, 'ip_address' => $this->ipAddress];
-            $lookedNow= $this->userModel->countOr('looked',$where,[/*option*/],$where_or);
-            if ($lookedNow !== 0){
-                $this->error = "Hesabınız saat :".$countLooked->expiry_date."'e kadar bloklanmıştır." ;
+            $lockedNow = $this->userModel->countOr('locked',$where,[/*option*/],$where_or);
+            if ($lockedNow !== 0){
+                $this->error = "Hesabınız saat : <b>".Time::createFromFormat('Y-m-d H:i:s', new Time($countLocked->expiry_date),'Europe/Istanbul')->toLocalizedString('d-MMMM hh:mm z')."</b> tariğine kadar bloklanmıştır.";
                 return true;
             }
 
             $loginAttempts = $this->userModel->getOneOr('auth_logins', ['isSuccess' => false], ['sort' => ['_id' => -1]],['id','counter'],$where_or);
-            if( $loginAttempts && ($loginAttempts->counter+1)  >= $settings->lookedTry ){
 
-                if (( $countLookedValue + 1 ) < ((int)$settings->lockedRecord))
-                    $expiry_date = Time::createFromFormat('Y-m-d H:i:s', $this->now->addMinutes((int)$settings->lookedMin));
+            if( $loginAttempts && ($loginAttempts->counter+1)  >= (int)$settings->lockedTry ){
+                if (( $countLockedValue + 1 ) < ((int)$settings->lockedRecord))
+                    $expiry_date = Time::createFromFormat('Y-m-d H:i:s', $this->now->addMinutes((int)$settings->lockedMin));
                 else {
-                    $countLookedValue = - 1 ;
+                    $countLockedValue = - 1 ;
                     $expiry_date = Time::createFromFormat('Y-m-d H:i:s',$this->now->addMinutes(1440)); // 24 hours ago
-                    $this->error = "Hesabınız 24 saat kilitlenmiştir.";
                 }
 
-                $this->commonModel->createOne('looked',[
+                $this->commonModel->createOne('locked',[
                     'type' => null,
                     'ip_address' => $this->ipAddress,
                     'username' => $username,
-                    'isLooked' => true,
-                    'counter' => ($countLookedValue+1),
-                    'looked_at' => $this->now->toDateTimeString(),
+                    'isLocked' => true,
+                    'counter' => ($countLockedValue+1),
+                    'locked_at' => $this->now->toDateTimeString(),
                     'expiry_date' => $expiry_date->toDateTimeString(),
                 ]);
 
@@ -516,14 +513,15 @@ class AuthLibrary
     public function ipRangeControl($range, $ipAddress) :bool {
         $parseRange = explode('-',$range);
         if( $this->ipFormatContol($ipAddress, $parseRange[0],$parseRange[1]) && // ipler aynı formattalar mı ?
-            $this->ip2long_v6($ipAddress) >= $this->ip2long_v6($parseRange[0]) &&
-            $this->ip2long_v6($ipAddress) <= $this->ip2long_v6($parseRange[1]))
+            $this->ip2long_vX($ipAddress) >= $this->ip2long_vX($parseRange[0]) &&
+            $this->ip2long_vX($ipAddress) <= $this->ip2long_vX($parseRange[1]))
             return true;
 
         else return false;
     }
 
     /* if all ip's same format is true else false */
+    /** TODO range iplerdein sadece birinin formatına bakılması yeterli */
     public function ipFormatContol($ipAddress, $rangeStart, $rangeEnd) : bool
     {
         $ips = array ('ipAddress' => $ipAddress,'rangeStart' => $rangeStart,'rangeEnd' => $rangeEnd);
@@ -538,7 +536,7 @@ class AuthLibrary
     }
 
     /* ip address type convert to integer. */
-    public function ip2long_v6($ip) {
+    public function ip2long_vX($ip) {
         $ip_n = inet_pton($ip);
         $bin = '';
         for ($bit = strlen($ip_n) - 1; $bit >= 0; $bit--) {
@@ -558,36 +556,10 @@ class AuthLibrary
         }
     }
 
-
-
-
-//    public function isBloackedIp(): bool
-//    {
-//        $settings = $this->commonModel->getOne('settings', [/* where */], [/* options */]);
-//        $loginAttempts = $this->commonModel->getOne('auth_logins', ['ip_address' => $this->ipAddress, 'isSuccess' => false], ['sort' => ['_id' => -1]]);
-//
-//        if ($loginAttempts !== null && isset($settings->loginBlockIsActive) && $settings->loginBlockIsActive && $settings->loginBlockAttemptsCounter <= $loginAttempts->counter + 1) {
-//            $now = new Time('now');
-//            $tryDate = new Time($loginAttempts->trydate);
-//            $blockFinisTime = $tryDate->addMinutes($settings->loginBlockMin);
-//
-//            if ($now->isBefore($blockFinisTime)) return false;
-//            else return true;
-//        }
-//        else return true;
-//    }
-//
-//    public function remainingEntry()
-//    {
-//        $settings = $this->commonModel->getOne('settings', [/* where */], [/* options */], ['loginBlockMin', 'loginBlockIsActive', 'loginBlockAttemptsCounter']);
-//        $loginAttempts = $this->commonModel->getOne('auth_logins', ['ip_address' => $this->ipAddress], ['sort' => ['_id' => -1]]);
-//
-//        if ($settings->loginBlockIsActive) {
-//            if ($loginAttempts !== null && $settings->loginBlockIsActive) {
-//                return '<br><b>Kalan deneme hakkınız ' . (int)$settings->loginBlockAttemptsCounter - (($loginAttempts->counter === null) ? 1 : $loginAttempts->counter + 1) . ' tanedir. <b></b> ';
-//            } else return '<br><b>Kalan deneme hakkınız ' . (int)$settings->loginBlockAttemptsCounter - 1 . ' tanedir. <b></b>';
-//        } else return null;
-//    }
-
-
+    public function remainingEntryCalculation() {
+        $falseLogin = $this->commonModel->getOne('auth_logins',['ip_address' => $this->ipAddress],['sort'=> ['_id'=>-1]]);
+        $settings = $this->commonModel->getOne('settings', [/* where */], [/* options */], ['loginBlockMin', 'loginBlockIsActive', 'lockedTry']);
+        if ($falseLogin) return (int)$settings->lockedTry - (int)$falseLogin->counter - 1 ;
+        else return (int)$settings->lockedTry - 1 ;
+    }
 }

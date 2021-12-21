@@ -179,8 +179,8 @@ class Settings extends BaseController
     public function loginSettingsPost(){
         $valData = [
             'lockedRecord' => ['label' => 'Kilitleme Sayısı', 'rules' => 'required|is_natural_no_zero|less_than[10]|greater_than[1]'],
-            'lookedMin' => ['label' => 'Engellme Süresi', 'rules' => 'required|is_natural_no_zero|less_than[180]|greater_than[10]'],
-            'lookedTry' => ['label' => 'Deneme Sayısı', 'rules' => 'required|is_natural_no_zero|less_than[20]|greater_than[2]'],
+            'lockedMin' => ['label' => 'Engellme Süresi', 'rules' => 'required|is_natural_no_zero|less_than[180]|greater_than[10]'],
+            'lockedTry' => ['label' => 'Deneme Sayısı', 'rules' => 'required|is_natural_no_zero|less_than[20]|greater_than[2]'],
             'blackListRange' => ['label' => 'IP Aralığını Blokla', 'rules' => 'max_length[1000]'],
             'blacklistLine' => ['label' => 'Tekil Ip Bloklama', 'rules' => 'max_length[1000]'],
             'whitelistRange' => ['label' => 'Güvenilir IP Aralığını', 'rules' => 'max_length[1000]'],
@@ -204,11 +204,11 @@ class Settings extends BaseController
 
         $data = [
             'lockedRecord' => $this->request->getPost('lockedRecord'),
-            'lookedMin' => $this->request->getPost('lookedMin'),
-            'lookedTry' => $this->request->getPost('lookedTry'),
-            'lookedIsActive' => ($this->request->getPost('lookedIsActive') == 'on') ? true : false,
-            'lookedUserNotification' => ($this->request->getPost('lookedUserNotification') == 'on') ? true : false,
-            'lookedAdminNotification' => ($this->request->getPost('lookedAdminNotification') == 'on') ? true : false,
+            'lockedMin' => $this->request->getPost('lockedMin'),
+            'lockedTry' => $this->request->getPost('lockedTry'),
+            'lockedIsActive' => ($this->request->getPost('lockedIsActive') == 'on') ? true : false,
+            'lockedUserNotification' => ($this->request->getPost('lockedUserNotification') == 'on') ? true : false,
+            'lockedAdminNotification' => ($this->request->getPost('lockedAdminNotification') == 'on') ? true : false,
         ];
         $settings = $this->commonModel->getOne('settings');
         $result = $this->commonModel->updateOne('settings', ['_id' => new ObjectId($settings->_id)], $data);
@@ -228,8 +228,8 @@ class Settings extends BaseController
         $result = $this->commonModel->updateOne('login_rules', ['_id' => new ObjectId($login_rules->_id)], $whitelist);
 
         if ((bool)$result === false)
-            return redirect()->back()->withInput()->with('error', 'Şirket Sosyal Medya Bilgileri Güncellenemedi.');
+            return redirect()->back()->withInput()->with('error', 'Giriş Ayarları Bilgileri Güncellenemedi.');
         else
-            return redirect()->back()->with('message', 'Şirket Sosyal Medya Bilgileri Güncellendi.');
+            return redirect()->back()->with('message', 'Giriş Ayarları Bilgileri Güncellenemedi.');
     }
 }
