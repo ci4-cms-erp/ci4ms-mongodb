@@ -44,11 +44,8 @@ class CommonLibrary
             'wordWrap' => 'true',
             'TLS'=>$settings->mailTLS,
             'newline' => "\r\n"];
-        if($settings->mailProtocol==='smtp')
-            $this->config->mailConfig['SMTPCrypto']='PHPMailer::ENCRYPTION_STARTTLS';
-
+        if($settings->mailProtocol==='smtp') $this->config->mailConfig['SMTPCrypto']='PHPMailer::ENCRYPTION_STARTTLS';
         $mail = new PHPMailer(true);
-
         try {
             //Server settings
             $mail->Host = $this->config->mailConfig['SMTPHost'];        // Set the SMTP server to send through
@@ -131,20 +128,12 @@ class CommonLibrary
     public function parseInTextFunctions(string $string)
     {
         $functions=$this->findFunction($string,'{','/}');
+        if(empty($functions))
+            return $string;
         foreach ($functions as $function) {
             $f=explode('|',$function);
             $data[$function] = call_user_func([$f[0], $f[1]]);
         }
         return str_replace(array_keys($functions), $data, $string);
-    }
-
-    public function contactFrom()
-    {
-        return 'burada';
-    }
-
-    public function test()
-    {
-        return 'burada test';
     }
 }

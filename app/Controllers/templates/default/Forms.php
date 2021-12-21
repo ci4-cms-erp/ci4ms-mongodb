@@ -1,16 +1,15 @@
-<?php namespace App\Libraries\templates\default;
+<?php
+
+namespace App\Controllers\templates\default;
 
 use App\Libraries\CommonLibrary;
 
-class TestLib
+class Forms extends \App\Controllers\BaseController
 {
-    public static function contactForm()
+    //TODO: php maili kısmı yazılacak.
+    public function contactForm_post()
     {
-        return view('templates/default-template/contactForm');
-    }
-//TODO: php maili kısmı yazılacak.
-    public function contactForm_post($fullname,$email,$phone,$message,$redirect)
-    {
+        dd($_POST);
         $commonLibrary = new CommonLibrary();
         $mailResult = $commonLibrary->phpMailer($email, $fullname,
             [['mail' => 'bertugozer1994@gmail.com']],

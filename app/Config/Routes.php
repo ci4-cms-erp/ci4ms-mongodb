@@ -59,6 +59,25 @@ if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) require APPP
 
 /**
  * --------------------------------------------------------------------
+ * Include Templates Routes Files TODO: kütüphaneye fonksiyon olarak eklesek ve aktif temanın adını koyarak çağırsak
+ * --------------------------------------------------------------------
+ */
+if (file_exists(APPPATH.'Config')) {
+    $modulesPath = APPPATH.'Config';
+    $modules = scandir($modulesPath.'/templates');
+
+    foreach ($modules as $module) {
+        if ($module === '.' || $module === '..') continue;
+        if (is_dir($modulesPath) . '/' . $module) {
+            $routesPath = $modulesPath . '/templates/default/Routes.php';
+            if (file_exists($routesPath)) require($routesPath);
+            else continue;
+        }
+    }
+}
+
+/**
+ * --------------------------------------------------------------------
  * Include Modules Routes Files
  * --------------------------------------------------------------------
  */
