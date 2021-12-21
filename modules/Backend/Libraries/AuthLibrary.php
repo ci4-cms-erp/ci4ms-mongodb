@@ -488,13 +488,11 @@ class AuthLibrary
             $loginAttempts = $this->userModel->getOneOr('auth_logins', ['isSuccess' => false], ['sort' => ['_id' => -1]],['id','counter'],$where_or);
 
             if( $loginAttempts && ($loginAttempts->counter+1)  >= (int)$settings->lockedTry ){
-
                 if (( $countLockedValue + 1 ) < ((int)$settings->lockedRecord))
                     $expiry_date = Time::createFromFormat('Y-m-d H:i:s', $this->now->addMinutes((int)$settings->lockedMin));
                 else {
                     $countLockedValue = - 1 ;
                     $expiry_date = Time::createFromFormat('Y-m-d H:i:s',$this->now->addMinutes(1440)); // 24 hours ago
-                    // $this->error = "Hesabınız 24 saat kilitlenmiştir.";
                 }
 
                 $this->commonModel->createOne('locked',[
@@ -561,7 +559,6 @@ class AuthLibrary
     public function remainingEntryCalculation() {
         $falseLogin = $this->commonModel->getOne('auth_logins',['ip_address' => $this->ipAddress],['sort'=> ['_id'=>-1]]);
         $settings = $this->commonModel->getOne('settings', [/* where */], [/* options */], ['loginBlockMin', 'loginBlockIsActive', 'lockedTry']);
-
         if ($falseLogin) return (int)$settings->lockedTry - (int)$falseLogin->counter - 1 ;
         else return (int)$settings->lockedTry - 1 ;
     }
