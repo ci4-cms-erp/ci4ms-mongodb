@@ -9,10 +9,15 @@ class CustomRules
     public function ipRangeControl(string $range, string &$error = null): bool
     {
 
-        //dd($range);
         $range = clearFilter(explode(',', preg_replace('/\s+/', '', $range)));
         foreach ($range as $item) {
+
+
             $item_exp = explode('-', $item);
+            if (!isset($item_exp[1])) {
+                $error = "Bu değer içerisinde ( - ) ayırma işareti belirtilmemiştir. <b>" . $item . "</b>";
+                return false;
+            }
 
             $ipsFormat = [];
             foreach ($item_exp as $ip) {
@@ -22,13 +27,12 @@ class CustomRules
                 }
                 if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) $ipsFormat [] = 'ip4';
                 if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) $ipsFormat [] = 'ip6';
-
             }
             if (count(array_unique($ipsFormat)) !== 1) {
                 $error = "IP formatları aynı değil. <b>" . $item . "<b>";
                 return false;
             }
-            if ($this->ip2long_vX($item_exp[0]) >= $this->ip2long_vX($item_exp[1])){
+            if ($this->ip2long_vX($item_exp[0]) >= $this->ip2long_vX($item_exp[1])) {
                 $error = "Soldaki değer sağdakinden büyük yada eşit olamaz. <b>" . $item . "<b>";
                 return false;
             }
