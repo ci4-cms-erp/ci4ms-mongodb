@@ -30,18 +30,22 @@ class Home extends BaseController
                 }
             }
             $this->defData['seo'] = $this->commonLibrary->seo($this->defData['pageInfo']->title, $this->defData['pageInfo']->seo->description, $seflink, $metatags = ['keywords' => $keywords], !empty($this->defData['pageInfo']->seo->coverImage)?$this->defData['pageInfo']->seo->coverImage:'');
-            return view('templates/default-template/pages', $this->defData);
+            return view('templates/'.$this->defData['settings']->templateInfos->path.'/pages', $this->defData);
         } else return show_404();
     }
 
     public function maintenanceMode()
     {
-        return view('maintenance');
+        $this->defData['settings']=$this->commonModel->getOne('settings');
+        if($this->defData['settings']->maintenanceMode===false)
+            return redirect()->route('/');
+        return view('maintenance',$this->defData);
     }
 
     public function blog()
     {
         $totalItems = $this->commonModel->count('blog', ['isActive' => true]);
+        $this->defData['seo'] = $this->commonLibrary->seo('Blog', 'blog listesi', 'blog', ['keywords' => ["value"=> "blog listesi"]]);
         $itemsPerPage = 12;
         $currentPage = $this->request->uri->getSegment(2, 1);
         $urlPattern = '/blog/(:num)';
@@ -57,7 +61,7 @@ class Home extends BaseController
             $this->defData['blogs'][$key]['author'] = $this->commonModel->getOne('users', ['_id' => new ObjectId($blog->author)], ['firstname', 'sirname']);
         }
         $this->defData['categories'] = $this->commonModel->getList('categories');
-        return view('templates/default-template/blog/list', $this->defData);
+        return view('templates/'.$this->defData['settings']->templateInfos->path.'/blog/list', $this->defData);
     }
 
     public function blogDetail(string $seflink)
@@ -78,14 +82,62 @@ class Home extends BaseController
             }
             $this->defData['seo'] = $this->commonLibrary->seo($this->defData['infos']->title, $this->defData['infos']->seo->description, 'blog/' . $seflink, $metatags = ['keywords' => $keywords, 'author' => $this->defData['authorInfo']->firstname . ' ' . $this->defData['authorInfo']->sirname], $this->defData['infos']->seo->coverImage);
             $this->defData['categories'] = $this->commonModel->getList('categories');
-            return view('templates/default-template/blog/post', $this->defData);
+            return view('templates/'.$this->defData['settings']->templateInfos->path.'/blog/post', $this->defData);
         } else return show_404();
     }
 
     public function tagList(string $seflink)
     {
         if ($this->commonModel->get_where(['seflink' => $seflink], 'tags') === 1) {
-
+            $totalItems = $this->commonModel->count('blog', ['isActive' => true]);
+            $itemsPerPage = 12;
+            $currentPage = $this->request->uri->getSegment(3, 1);
+            $urlPattern = '/tag/'.$seflink.'/(:num)';
+            $paginator = new Paginator($totalItems, $itemsPerPage, $currentPage, $urlPattern);
+            $paginator->setMaxPagesToShow(5);
+            $this->defData['paginator'] = $paginator;
+            $bpk = ($this->request->uri->getSegment(3, 1) - 1) * $itemsPerPage;
+            $this->defData['dateI18n'] = new Time();
+            $this->defData['blogs'] = $this->ci4msModel->taglist(['pivot.seflink'=>$seflink,'blogs.isActive' => true], [],$itemsPerPage, $bpk);
+            $modelTag = new AjaxModel();
+            $blogs=[];
+            foreach ($this->defData['blogs'] as $key => $blog) {
+                $blogs[$key]=$blog->_id->blogs;
+                $blogs[$key]['tags'] = $modelTag->limitTags_ajax(['pivot.piv_id' => $blog->_id->blogs->_id]);
+                $blogs[$key]['author'] = $this->commonModel->getOne('users', ['_id' => new ObjectId($blog->_id->blogs->author)],[], ['firstname', 'sirname']);
+            }
+            $this->defData['categories'] = $this->commonModel->getList('categories');
+            $this->defData['tagInfo']=$this->commonModel->getOne('tags',['seflink'=>$seflink]);
+            return view('templates/'.$this->defData['settings']->templateInfos->path.'/blog/tags', $this->defData);
         } else return show_404();
+    }
+
+    public function category($seflink)
+    {
+        $this->defData['category'] = $this->commonModel->getOne('categories',['seflink' => $seflink]);
+        $keywords = [];
+        if (!empty($this->defData['category']->seo->keywords)) {
+            foreach ($this->defData['category']->seo->keywords as $keyword) {
+                $keywords[] = $keyword->value;
+            }
+        }
+        $this->defData['seo'] = $this->commonLibrary->seo($this->defData['category']->title, $this->defData['category']->seo->description, $seflink, $metatags = ['keywords' => $keywords], !empty($this->defData['category']->seo->coverImage)?$this->defData['category']->seo->coverImage:'');
+        $totalItems = $this->commonModel->count('blog', ['isActive' => true]);
+        $itemsPerPage = 12;
+        $currentPage = $this->request->uri->getSegment(3, 1);
+        $urlPattern = '/category/'.$seflink.'(:num)';
+        $paginator = new Paginator($totalItems, $itemsPerPage, $currentPage, $urlPattern);
+        $paginator->setMaxPagesToShow(5);
+        $this->defData['paginator'] = $paginator;
+        $bpk = ($this->request->uri->getSegment(3, 1) - 1) * $itemsPerPage;
+        $this->defData['dateI18n'] = new Time();
+        $this->defData['blogs'] = $this->ci4msModel->categoryList('categories',[(string)$this->defData['category']->_id],['isActive'=>true], ['$limit' => $itemsPerPage, '$skip' => $bpk]);
+        $modelTag = new AjaxModel();
+        foreach ($this->defData['blogs'] as $key => $blog) {
+            $this->defData['blogs'][$key]['tags'] = $modelTag->limitTags_ajax(['pivot.piv_id' => $blog->_id]);
+            $this->defData['blogs'][$key]['author'] = $this->commonModel->getOne('users', ['_id' => new ObjectId($blog->author)], ['firstname', 'sirname']);
+        }
+        $this->defData['categories'] = $this->commonModel->getList('categories');
+        return view('templates/'.$this->defData['settings']->templateInfos->path.'/blog/list', $this->defData);
     }
 }

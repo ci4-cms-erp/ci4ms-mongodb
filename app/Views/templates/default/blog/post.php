@@ -1,4 +1,4 @@
-<?= $this->extend('Views/templates/default-template/base') ?>
+<?= $this->extend('Views/templates/default/base') ?>
 <?= $this->section('metatags') ?>
 <?= $seo ?>
 <?= $this->endSection() ?>

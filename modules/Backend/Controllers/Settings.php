@@ -1,6 +1,7 @@
 <?php namespace Modules\Backend\Controllers;
 
 use Config\App;
+use Config\Mimes;
 use Config\Paths;
 use MongoDB\BSON\ObjectId;
 
@@ -8,44 +9,29 @@ class Settings extends BaseController
 {
     public function index()
     {
-        $this->defData['settings'] = $this->commonModel->getOne('settings');
-        $blacklists = $this->commonModel->getOne('login_rules',['type' => 'blacklist']);
-        $whitelists = $this->commonModel->getOne('login_rules',['type' => 'whitelist']);
+        $this->defData['request'] = $this->request;
+        $blacklists = $this->commonModel->getOne('login_rules', ['type' => 'blacklist']);
+        $whitelists = $this->commonModel->getOne('login_rules', ['type' => 'whitelist']);
 
         if (!empty($blacklists)) {
-            $blacklistRange = '';
-            foreach ($blacklists->range as $item)
-                $blacklistRange .= $item . ',  ';
-
-            $blacklistLine = '';
-            foreach ($blacklists->line as $item)
-                $blacklistLine .= $item . ',  ';
-
-            $blacklistUsername = '';
-            foreach ($blacklists->username as $item)
-                $blacklistUsername .= $item . ',  ';
+            $blacklistRange = implode(', ',(array)$blacklists->range);
+            $blacklistLine =  implode(', ',(array)$blacklists->line);
+            $blacklistUsername = implode(', ',(array)$blacklists->username);
         }
 
         if (!empty($whitelists)) {
-            $whitelistRange = '';
-            foreach ($whitelists->range as $item)
-                $whitelistRange .= $item . ',  ';
-
-            $whitelistLine = '';
-            foreach ($whitelists->line as $item)
-                $whitelistLine .= $item . ',  ';
-
-            $whitelistUsername = '';
-            foreach ($whitelists->username as $item)
-                $whitelistUsername .= $item . ',  ';
+            $whitelistRange = implode(', ',(array)$whitelists->range);
+            $whitelistLine = implode(', ',(array)$whitelists->line);
+            $whitelistUsername = implode(', ',(array)$whitelists->username);
         }
 
         $this->defData['blacklistRange'] = ($blacklistRange ?? '');
         $this->defData['blacklistLine'] = ($blacklistLine ?? '');
         $this->defData['blacklistUsername'] = ($blacklistUsername ?? '');
         $this->defData['whitelistRange'] = ($whitelistRange ?? '');
+        $this->defData['whitelistLine'] = ($whitelistLine ?? '');
         $this->defData['whitelistUsername'] = ($whitelistUsername ?? '');
-
+        $this->defData['mimes'] = Mimes::$mimes;
         return view('Modules\Backend\Views\settings', $this->defData);
     }
 
@@ -90,7 +76,7 @@ class Settings extends BaseController
         if ($this->request->getFile('cLogo')->isValid() == true) {
             if (!empty($settings->logo)) {
                 helper('filesystem');
-                if (delete_files(APPPATH. '../public/uploads/' . $settings->logo))
+                if (delete_files(APPPATH . '../public/uploads/' . $settings->logo))
                     log_message('notice', 'eski logo silindi.');
                 else
                     log_message('error', 'eski logo silinemedi.');
@@ -122,8 +108,7 @@ class Settings extends BaseController
                 $error['link'] = 'Sosyal Medya Linki URL olmalıdır !';
                 unset($socialNetwork[$key]);
             }
-            if (!empty($error))
-                return redirect()->back()->withInput()->with('errors', $error);
+            if (!empty($error)) return redirect()->back()->withInput()->with('errors', $error);
             if (!is_string($item['smName'])) {
                 $error['snName'] = 'Sosyal Medya Adı yazı değeri olmalıdır !';
                 unset($socialNetwork[$key]);
@@ -134,18 +119,14 @@ class Settings extends BaseController
             }
         }
 
-        if (!empty($error))
-            return redirect()->back()->withInput()->with('errors', $error);
-        if ($this->validate($valData) == false)
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        if (!empty($error)) return redirect()->back()->withInput()->with('errors', $error);
+        if ($this->validate($valData) == false) return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
 
         $settings = $this->commonModel->getOne('settings');
         $result = $this->commonModel->updateOne('settings', ['_id' => new ObjectId($settings->_id)], ['socialNetwork' => $socialNetwork]);
 
-        if ((bool)$result === false)
-            return redirect()->back()->withInput()->with('error', 'Şirket Sosyal Medya Bilgileri Güncellenemedi.');
-        else
-            return redirect()->back()->with('message', 'Şirket Sosyal Medya Bilgileri Güncellendi.');
+        if ((bool)$result === false) return redirect()->back()->withInput()->with('error', 'Şirket Sosyal Medya Bilgileri Güncellenemedi.');
+        else return redirect()->back()->with('message', 'Şirket Sosyal Medya Bilgileri Güncellendi.');
     }
 
     public function mailSettingsPost()
@@ -164,7 +145,7 @@ class Settings extends BaseController
             'mailPort' => $this->request->getPost('mPort'),
             'mailAddress' => $this->request->getPost('mAddress'),
             'mailPassword' => $this->request->getPost('mPwd'),
-            'mailProtocol'=>$this->request->getPost('mProtocol'),
+            'mailProtocol' => $this->request->getPost('mProtocol'),
             'mailTLS' => false];
         if ($this->request->getPost('mTls'))
             $data['mailTLS'] = true;
@@ -176,7 +157,8 @@ class Settings extends BaseController
             return redirect()->back()->with('message', 'Şirket Sosyal Medya Bilgileri Güncellendi.');
     }
 
-    public function loginSettingsPost(){
+    public function loginSettingsPost()
+    {
         $valData = [
             'lockedRecord' => ['label' => 'Kilitleme Sayısı', 'rules' => 'required|is_natural_no_zero|less_than[10]|greater_than[1]'],
             'lockedMin' => ['label' => 'Engellme Süresi', 'rules' => 'required|is_natural_no_zero|less_than[180]|greater_than[10]'],
@@ -217,19 +199,43 @@ class Settings extends BaseController
             'range' => $blackListRange,
             'line' => $blacklistLine,
         );
-        $login_rules = $this->commonModel->getOne('login_rules',['type' => 'blacklist']);
+        $login_rules = $this->commonModel->getOne('login_rules', ['type' => 'blacklist']);
         $result = $this->commonModel->updateOne('login_rules', ['_id' => new ObjectId($login_rules->_id)], $blacklist_data);
         $whitelist = array(
             'username' => $whitelistUsername,
             'range' => $whitelistRange,
             'line' => $whitelistLine,
         );
-        $login_rules = $this->commonModel->getOne('login_rules',['type' => 'whitelist']);
+        $login_rules = $this->commonModel->getOne('login_rules', ['type' => 'whitelist']);
         $result = $this->commonModel->updateOne('login_rules', ['_id' => new ObjectId($login_rules->_id)], $whitelist);
 
         if ((bool)$result === false)
             return redirect()->back()->withInput()->with('error', 'Giriş Ayarları Bilgileri Güncellenemedi.');
         else
-            return redirect()->back()->with('message', 'Giriş Ayarları Bilgileri Güncellenemedi.');
+            return redirect()->back()->with('message', 'Giriş Ayarları Bilgileri Güncellendi.');
+    }
+
+    public function templateSelectPost()
+    {
+        if ($this->request->isAJAX()) {
+            $valData = ([
+                'path' => ['label' => 'path', 'rules' => 'required'],
+                'tName' => ['label' => 'tName', 'rules' => 'required'],
+            ]);
+            if ($this->validate($valData) == false) return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+            if ($this->commonModel->updateOne('settings', ['_id' => $this->defData['settings']->_id], ['templateInfos' => ['path' => $this->request->getPost('path'), 'name' => $this->request->getPost('name')]])) return $this->response->setJSON(['result' => true]);
+            else return $this->response->setJSON(['result' => false]);
+        } else redirect()->route('403');
+    }
+
+    public function saveAllowedFiles()
+    {
+        $valData = ([
+            'allowedFiles' => ['label' => 'Dosya Türleri', 'rules' => 'required'],
+        ]);
+        if ($this->validate($valData) == false) return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        $data=explode(',',$this->request->getPost('allowedFiles'));
+        if ($this->commonModel->updateOne('settings', [], ['allowedFiles' => $data])) return redirect()->back()->with('message', 'Dosya Türleri Güncellendi.');
+        else return redirect()->back()->withInput()->with('error', 'Dosya Türleri Güncellenemedi.');
     }
 }

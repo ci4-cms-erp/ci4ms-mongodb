@@ -65,8 +65,8 @@ $routes->group('backend', ['namespace' => 'Modules\Backend\Controllers'], functi
         $routes->post('socialMedia', 'Settings::socialMediaPost', ['as' => 'socialMediaPost', 'filter' => 'backendAfterLoginFilter']);
         $routes->post('mailSettings', 'Settings::mailSettingsPost', ['as' => 'mailSettingsPost', 'filter' => 'backendAfterLoginFilter']);
         $routes->post('loginSettings', 'Settings::loginSettingsPost', ['as' => 'loginSettingsPost', 'filter' => 'backendAfterLoginFilter']);
-
-
+        $routes->post('setTemplate', 'Settings::templateSelectPost', ['as' => 'setTemplate', 'filter' => 'backendAfterLoginFilter']);
+        $routes->post('saveAllowedFiles', 'Settings::saveAllowedFiles', ['as' => 'saveAllowedFiles', 'filter' => 'backendAfterLoginFilter']);
     });
 
     //menu module
@@ -112,5 +112,6 @@ $routes->group('backend', ['namespace' => 'Modules\Backend\Controllers'], functi
     $routes->post('tagify', 'AJAX::limitTags_ajax', ['as' => 'tagify', 'filter' => 'backendAfterLoginFilter']);
     $routes->post('checkSeflink', 'AJAX::autoLookSeflinks', ['as' => 'checkSeflink', 'filter' => 'backendAfterLoginFilter']);
     $routes->post('isActive', 'AJAX::isActive', ['as' => 'isActive', 'filter' => 'backendAfterLoginFilter']);
+    $routes->post('maintenance', 'AJAX::maintenance', ['as' => 'maintenance', 'filter' => 'backendAfterLoginFilter']);
     $routes->get('media', 'Media::index', ['as' => 'media', 'filter' => 'backendAfterLoginFilter']);
 });

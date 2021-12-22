@@ -1,12 +1,18 @@
-<?= $this->extend('Views/templates/default-template/base') ?>
+<?= $this->extend('Views/templates/default/base') ?>
 <?= $this->section('metatags') ?>
-<? /*= $seo */ ?>
+<?= $seo ?>
 <?= $this->endSection() ?>
 <?= $this->section('content') ?>
 <header class="py-5 bg-light border-bottom mb-4">
     <div class="container">
         <div class="text-center my-5">
-            <h1 class="fw-bolder">Blog</h1>
+            <h1 class="fw-bolder">
+                <?php if (isset($category)):
+                    echo $category->title;
+                else:
+                    echo 'Blog';
+                endif; ?>
+            </h1>
         </div>
     </div>
 </header>
@@ -21,7 +27,7 @@
                                 <div class="card h-100 shadow border-0">
                                     <img class="card-img-top"
                                          src="<?= (!empty($blog->seo->coverImage)) ? $blog->seo->coverImage : 'https://dummyimage.com/600x350/ced4da/6c757d' ?>"
-                                         alt="..."/>
+                                         alt="<?= $blog->title ?>"/>
                                     <div class="card-body p-4">
                                         <?php foreach ($blog->tags as $tag): ?>
                                             <div class="badge bg-primary bg-gradient rounded-pill mb-2"><?= $tag->_id->value ?></div>
@@ -109,8 +115,9 @@
                                 <?php if ($c == 0): ?>
                                 </ul>
                                 </div>
-                            <?php endif; $c++;
-                            if($c==3) $c=0;
+                            <?php endif;
+                                $c++;
+                                if ($c == 3) $c = 0;
                             endforeach; ?>
                         </div>
                     </div>

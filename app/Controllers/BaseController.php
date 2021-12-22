@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\Ci4ms;
 use ci4mongodblibrary\Models\CommonModel;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\RequestInterface;
@@ -33,6 +34,7 @@ class BaseController extends Controller
     protected $mongo;
     public $defData;
     public $commonModel;
+    public $ci4msModel;
 
     /**
      * Constructor.
@@ -52,7 +54,9 @@ class BaseController extends Controller
         // E.g.: $this->session = \Config\Services::session();
         $this->mongo = new Mongo();
         $this->commonModel = new CommonModel();
+        $this->ci4msModel=new Ci4ms();
         $this->defData = ['logo' => $this->commonModel->getOne('settings', [],[],['logo','siteName','commpanyAddtess','companyEMail','slogan','companyPhone','socialNetwork']),
-            'menus' =>$this->commonModel->getList('menu',[],['sort' =>['queue'=>1]])];
+            'menus' =>$this->commonModel->getList('menu',[],['sort' =>['queue'=>1]]),
+            'settings'=>$this->commonModel->getOne('settings')];
     }
 }

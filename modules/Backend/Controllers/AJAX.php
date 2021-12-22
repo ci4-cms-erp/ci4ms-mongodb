@@ -87,7 +87,26 @@ class AJAX extends BaseController
 
             if ($this->validate($valData) == false) return redirect('403');
 
-            $this->commonModel->updateOne($this->request->getPost('where'), ['_id' => new ObjectId($this->request->getPost('id'))], ['isActive' => (bool)$this->request->getPost('isActive')]);
+            if($this->commonModel->updateOne($this->request->getPost('where'), ['_id' => new ObjectId($this->request->getPost('id'))], ['isActive' => (bool)$this->request->getPost('isActive')]))
+                return $this->response->setJSON(['result'=>true]);
+            else
+                return $this->response->setJSON(['result'=>false]);
+        } else redirect('403');
+    }
+
+    public function maintenance()
+    {
+        if ($this->request->isAJAX()) {
+            $valData = ([
+                'id' => ['label' => 'id', 'rules' => 'required'],
+                'isActive' => ['label' => 'isActive', 'rules' => 'required']
+            ]);
+
+            if ($this->validate($valData) == false) return redirect('403');
+            if($this->commonModel->updateOne('settings', ['_id' => new ObjectId($this->request->getPost('id'))], ['maintenanceMode' => (bool)$this->request->getPost('isActive')]))
+                return $this->response->setJSON(['result'=>true]);
+            else
+                return $this->response->setJSON(['result'=>false]);
         } else redirect('403');
     }
 }

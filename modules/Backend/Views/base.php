@@ -148,7 +148,6 @@
 <script src="/be-assets/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="/be-assets/js/demo.js"></script>
-
 <?= $this->renderSection('javascript') ?>
 </body>
 </html>

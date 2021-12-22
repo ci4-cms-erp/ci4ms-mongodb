@@ -1,6 +1,8 @@
 <?php namespace Config;
 
 // Create a new instance of our RouteCollection class.
+use ci4mongodblibrary\Models\CommonModel;
+
 $routes = Services::routes();
 
 // Load the system's routing file first, so that the app and ENVIRONMENT
@@ -27,15 +29,14 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Home::index');
-$routes->add('/(:any)', 'Home::index/$1');
-$routes->get('maintenance-mode','Home::maintenanceMode');
-$routes->get('blog','Home::blog');
-$routes->get('blog/(:num)','Home::blog/$1');
-$routes->get('blog/(:any)','Home::blogDetail/$1');
-$routes->get('category/(:any)','Home::blogDetail/$1');
-$routes->get('tag/(:any)','Home::tagList/$1');
-$routes->match(['get', 'post'], 'imageRender/(:segment)', 'RenderImage::index/$1');
+$routes->get('/', 'Home::index',['filter'=>'ci4ms']);
+$routes->add('/(:any)', 'Home::index/$1',['filter'=>'ci4ms']);
+$routes->get('maintenance-mode','Home::maintenanceMode',['as'=>'maintenance-mode']);
+$routes->get('blog','Home::blog',['filter'=>'ci4ms']);
+$routes->get('blog/(:num)','Home::blog/$1',['filter'=>'ci4ms']);
+$routes->get('blog/(:any)','Home::blogDetail/$1',['filter'=>'ci4ms']);
+$routes->get('category/(:any)','Home::category/$1',['filter'=>'ci4ms']);
+$routes->get('tag/(:any)','Home::tagList/$1',['filter'=>'ci4ms','as'=>'tag']);
 /*$routes->add('feed', function () {
     $rss = new RSSFeeder();
 
@@ -65,11 +66,12 @@ if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) require APPP
 if (file_exists(APPPATH.'Config')) {
     $modulesPath = APPPATH.'Config';
     $modules = scandir($modulesPath.'/templates');
-
+$commonModel = new CommonModel();
+$activeTemplate=$commonModel->getOne('settings',[],['themePath']);
     foreach ($modules as $module) {
         if ($module === '.' || $module === '..') continue;
         if (is_dir($modulesPath) . '/' . $module) {
-            $routesPath = $modulesPath . '/templates/default/Routes.php';
+            $routesPath = $modulesPath . '/templates/'.$activeTemplate->templateInfos->path.'/Routes.php';
             if (file_exists($routesPath)) require($routesPath);
             else continue;
         }
