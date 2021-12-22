@@ -125,7 +125,7 @@ class Home extends BaseController
         $totalItems = $this->commonModel->count('blog', ['isActive' => true]);
         $itemsPerPage = 12;
         $currentPage = $this->request->uri->getSegment(3, 1);
-        $urlPattern = '/category/'.$seflink.'(:num)';
+        $urlPattern = '/category/'.$seflink.'/(:num)';
         $paginator = new Paginator($totalItems, $itemsPerPage, $currentPage, $urlPattern);
         $paginator->setMaxPagesToShow(5);
         $this->defData['paginator'] = $paginator;
