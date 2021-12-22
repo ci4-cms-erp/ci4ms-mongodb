@@ -525,7 +525,6 @@ class AuthLibrary
     public function ipFormatContol($ipAddress, $rangeStart, $rangeEnd) : bool
     {
         $ips = array ('ipAddress' => $ipAddress,'rangeStart' => $rangeStart,'rangeEnd' => $rangeEnd);
-        $ipsFormat = [];
         foreach ($ips as $ip) {
             if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) $ipsFormat [] = 'ip4' ;
             if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) $ipsFormat [] = 'ip6';
