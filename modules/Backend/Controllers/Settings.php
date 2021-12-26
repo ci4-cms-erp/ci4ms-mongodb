@@ -7,6 +7,9 @@ use MongoDB\BSON\ObjectId;
 
 class Settings extends BaseController
 {
+    /**
+     * @return string
+     */
     public function index()
     {
         $this->defData['request'] = $this->request;
@@ -35,6 +38,9 @@ class Settings extends BaseController
         return view('Modules\Backend\Views\settings', $this->defData);
     }
 
+    /**
+     * @return \CodeIgniter\HTTP\RedirectResponse
+     */
     public function compInfosPost()
     {
         $valData = ([
@@ -96,6 +102,9 @@ class Settings extends BaseController
             return redirect()->back()->with('message', 'Şirket Bilgileri Güncellendi.');
     }
 
+    /**
+     * @return \CodeIgniter\HTTP\RedirectResponse
+     */
     public function socialMediaPost()
     {
         $valData = (['socialNetwork' => ['label' => 'Sosyal medya adı veya linki boş bırakılamaz', 'rules' => 'required']]);
@@ -129,6 +138,9 @@ class Settings extends BaseController
         else return redirect()->back()->with('message', 'Şirket Sosyal Medya Bilgileri Güncellendi.');
     }
 
+    /**
+     * @return \CodeIgniter\HTTP\RedirectResponse
+     */
     public function mailSettingsPost()
     {
         $valData = [
@@ -157,6 +169,9 @@ class Settings extends BaseController
             return redirect()->back()->with('message', 'Şirket Sosyal Medya Bilgileri Güncellendi.');
     }
 
+    /**
+     * @return \CodeIgniter\HTTP\RedirectResponse
+     */
     public function loginSettingsPost()
     {
         $valData = [
@@ -215,6 +230,9 @@ class Settings extends BaseController
             return redirect()->back()->with('message', 'Giriş Ayarları Bilgileri Güncellendi.');
     }
 
+    /**
+     * @return \CodeIgniter\HTTP\RedirectResponse|\CodeIgniter\HTTP\ResponseInterface|void
+     */
     public function templateSelectPost()
     {
         if ($this->request->isAJAX()) {
@@ -228,6 +246,9 @@ class Settings extends BaseController
         } else redirect()->route('403');
     }
 
+    /**
+     * @return \CodeIgniter\HTTP\RedirectResponse
+     */
     public function saveAllowedFiles()
     {
         $valData = ([
@@ -237,5 +258,25 @@ class Settings extends BaseController
         $data=explode(',',$this->request->getPost('allowedFiles'));
         if ($this->commonModel->updateOne('settings', [], ['allowedFiles' => $data])) return redirect()->back()->with('message', 'Dosya Türleri Güncellendi.');
         else return redirect()->back()->withInput()->with('error', 'Dosya Türleri Güncellenemedi.');
+    }
+
+    /**
+     * @return string
+     */
+    public function templateSettings()
+    {
+        return view('templates/'.$this->defData['settings']->templateInfos->path.'/temp-settings',$this->defData);
+    }
+
+    /**
+     * @return \CodeIgniter\HTTP\RedirectResponse
+     */
+    public function templateSettings_post()
+    {
+        $valData = (['settings' => ['label' => 'widgets', 'rules' => 'required']]);
+        if ($this->validate($valData) == false) return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        $data=array_merge((array)$this->defData['settings']->templateInfos,$this->request->getPost('settings'));
+        if($this->commonModel->updateMany('settings',[],['templateInfos'=>$data])) return redirect()->back()->with('success', 'Tema Ayarları kayıt edildi.');
+        else return redirect()->back()->with('error','Tema Ayarları kayıt edilemedi');
     }
 }

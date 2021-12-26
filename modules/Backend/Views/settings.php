@@ -1,7 +1,7 @@
 <?= $this->extend('Modules\Backend\Views\base') ?>
 
 <?= $this->section('title') ?>
-Anasayfa
+Ayarlar
 <?= $this->endSection() ?>
 
 <?= $this->section('head') ?>
@@ -146,6 +146,8 @@ Anasayfa
                                                         <div class="col-md-12">
                                                             <?php if($settings->templateInfos->path!=$data->defPath):?>
                                                             <button class="btn btn-outline-success" id="<?=$data->defPath?>" type="button" onclick="chooseTemplate('<?=$data->defPath?>','<?=$data->templateName?>')">Seç</button>
+                                                            <?php else: ?>
+                                                            <a href="<?=route_to('templateSettings')?>" class="btn btn-outline-primary">Ayarlar</a>
                                                             <?php endif; ?>
                                                         </div>
                                                     </div>

@@ -8,6 +8,6 @@ class Errors extends BaseController
 {
     public function error404()
     {
-        echo view('templates/default-template/404',$this->defData);
+        echo view('templates/default/404',$this->defData);
     }
 }

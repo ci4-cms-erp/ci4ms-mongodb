@@ -13,7 +13,7 @@
 <section class="py-5">
     <div class="container">
         <div class="row">
-            <div class="col-md-9">
+            <div class="<?=(!empty($settings->templateInfos->widgets->sidebar))?'col-md-9':'col-md-12'?>">
                 <div class="px-5">
                     <div class="row gx-5">
                         <?php foreach ($blogs as $blog): ?>
@@ -49,80 +49,13 @@
                         <?php endforeach; ?>
                     </div>
                     <div class="text-end mb-5 mb-xl-0">
-                        <?php if ($paginator->getNumPages() > 1): ?>
-                            <div class="card-footer clearfix">
-                                <ul class="pagination pagination-sm m-0 float-right">
-                                    <?php if ($paginator->getPrevUrl()): ?>
-                                        <li class="page-item"><a class="page-link"
-                                                                 href="<?php echo $paginator->getPrevUrl(); ?>">&laquo;</a>
-                                        </li>
-                                    <?php endif; ?>
-
-                                    <?php foreach ($paginator->getPages() as $page): ?>
-                                        <?php if ($page['url']): ?>
-                                            <li class="page-item <?php echo $page['isCurrent'] ? 'active' : ''; ?>">
-                                                <a class="page-link"
-                                                   href="<?php echo $page['url']; ?>"><?php echo $page['num']; ?></a>
-                                            </li>
-                                        <?php else: ?>
-                                            <li class="disabled page-item"><span><?php echo $page['num']; ?></span></li>
-                                        <?php endif; ?>
-                                    <?php endforeach; ?>
-
-                                    <?php if ($paginator->getNextUrl()): ?>
-                                        <li class="page-item"><a class="page-link"
-                                                                 href="<?php echo $paginator->getNextUrl(); ?>">&raquo;</a>
-                                        </li>
-                                    <?php endif; ?>
-                                </ul>
-                            </div>
-                        <?php endif; ?>
+                        <?= view('paginator-template') ?>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <!-- Search widget-->
-                <div class="card mb-4">
-                    <div class="card-header">Search</div>
-                    <div class="card-body">
-                        <div class="input-group">
-                            <input class="form-control" type="text" placeholder="Enter search term..."
-                                   aria-label="Enter search term..." aria-describedby="button-search"/>
-                            <button class="btn btn-primary" id="button-search" type="button">Go!</button>
-                        </div>
-                    </div>
-                </div>
-                <!-- Categories widget-->
-                <div class="card mb-4">
-                    <div class="card-header">Categories</div>
-                    <div class="card-body">
-                        <div class="row">
-                            <?php $c = 0;
-                            foreach ($categories as $category):
-                                if ($c == 0):?>
-                                    <div class="col-sm-6">
-                                    <ul class="list-unstyled mb-0">
-                                <?php endif; ?>
-                                <li>
-                                    <a href="<?= site_url('category/' . $category->seflink) ?>"><?= $category->title ?></a>
-                                </li>
-                                <?php if ($c == 0): ?>
-                                </ul>
-                                </div>
-                            <?php endif; $c++;
-                                if($c==3) $c=0;
-                            endforeach; ?>
-                        </div>
-                    </div>
-                </div>
-                <!-- Side widget-->
-                <div class="card mb-4">
-                    <div class="card-header">Side Widget</div>
-                    <div class="card-body">You can put anything you want inside of these side widgets. They are easy to
-                        use, and feature the Bootstrap 5 card component!
-                    </div>
-                </div>
-            </div>
+            <?php if(!empty($settings->templateInfos->widgets->sidebar)):
+                echo view('templates/default/widgets/sidebar');
+            endif; ?>
         </div>
     </div>
 </section>

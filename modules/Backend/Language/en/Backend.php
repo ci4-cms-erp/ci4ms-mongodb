@@ -29,4 +29,5 @@ return [
     'tagUpdate' => 'Etiket Güncelleme',
     'blog' => 'Blog Modülü',
     'logs' => 'Logs',
+    'templateSettings'=>'Template Settings'
 ];

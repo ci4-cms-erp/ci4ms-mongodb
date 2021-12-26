@@ -37,19 +37,15 @@ class Home extends BaseController
     public function maintenanceMode()
     {
         $this->defData['settings']=$this->commonModel->getOne('settings');
-        if($this->defData['settings']->maintenanceMode===false)
-            return redirect()->route('/');
+        if($this->defData['settings']->maintenanceMode===false) return redirect()->route('/');
         return view('maintenance',$this->defData);
     }
 
     public function blog()
     {
-        $totalItems = $this->commonModel->count('blog', ['isActive' => true]);
         $this->defData['seo'] = $this->commonLibrary->seo('Blog', 'blog listesi', 'blog', ['keywords' => ["value"=> "blog listesi"]]);
         $itemsPerPage = 12;
-        $currentPage = $this->request->uri->getSegment(2, 1);
-        $urlPattern = '/blog/(:num)';
-        $paginator = new Paginator($totalItems, $itemsPerPage, $currentPage, $urlPattern);
+        $paginator = new Paginator($this->commonModel->count('blog', ['isActive' => true]), $itemsPerPage, $this->request->uri->getSegment(2, 1), '/blog/(:num)');
         $paginator->setMaxPagesToShow(5);
         $this->defData['paginator'] = $paginator;
         $bpk = ($this->request->uri->getSegment(2, 1) - 1) * $itemsPerPage;
@@ -74,8 +70,8 @@ class Home extends BaseController
             $this->defData['dateI18n'] = new Time();
             $modelTag = new AjaxModel();
             $this->defData['tags'] = $modelTag->limitTags_ajax(['pivot.piv_id' => $this->defData['infos']->_id]);
+            $keywords = [];
             if (!empty($this->defData['tags'])) {
-                $keywords = [];
                 foreach ($this->defData['tags'] as $tag) {
                     $keywords[] = $tag->_id->value;
                 }
