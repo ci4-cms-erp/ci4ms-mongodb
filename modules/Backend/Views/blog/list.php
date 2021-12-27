@@ -1,7 +1,7 @@
 <?= $this->extend('Modules\Backend\Views\base') ?>
 
 <?= $this->section('title') ?>
-<?=lang('Backend.'.$title->pagename)?>
+<?= lang('Backend.' . $title->pagename) ?>
 <?= $this->endSection() ?>
 
 <?= $this->section('head') ?>
@@ -14,7 +14,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1><?=lang('Backend.'.$title->pagename)?></h1>
+                <h1><?= lang('Backend.' . $title->pagename) ?></h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -47,6 +47,7 @@
                     <thead>
                     <tr>
                         <th>Blog Başlığı</th>
+                        <th>Durumu</th>
                         <th>#İşlemler</th>
                     </tr>
                     </thead>
@@ -54,6 +55,11 @@
                     <?php foreach ($blogs as $blog) : ?>
                         <tr>
                             <td><?= $blog->title ?></td>
+                            <td>
+                                <input type="checkbox" name="my-checkbox"
+                                       class="bswitch" <?= ($blog->isActive === true) ? 'checked' : '' ?>
+                                       data-id="<?= $blog->_id ?>" data-off-color="danger" data-on-color="success">
+                            </td>
                             <td>
                                 <a href="<?= route_to('blogUpdate', $blog->_id) ?>"
                                    class="btn btn-outline-info btn-sm"><i class="fas fa-edit"></i> Düzenle</a>
@@ -102,4 +108,25 @@
 
 <?= $this->section('javascript') ?>
 <script src="/be-assets/plugins/sweetalert2/sweetalert2.min.js"></script>
+<!-- Bootstrap Switch -->
+<script src="/be-assets/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+<script>
+    $('.bswitch').bootstrapSwitch();
+    $('.bswitch').on('switchChange.bootstrapSwitch', function () {
+        var id = $(this).data('id'), isActive;
+
+        if ($(this).prop('checked'))
+            isActive = 1;
+        else
+            isActive = 0;
+
+        $.post('<?=route_to('isActive')?>',
+            {
+                "<?=csrf_token()?>": "<?=csrf_hash()?>",
+                "id": id,
+                'isActive': isActive,
+                'where': 'blog'
+            }, 'json').done();
+    });
+</script>
 <?= $this->endSection() ?>
