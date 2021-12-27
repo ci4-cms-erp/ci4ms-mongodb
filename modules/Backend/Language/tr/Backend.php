@@ -30,5 +30,6 @@ return [
     'tagUpdate' => 'Etiket Güncelleme',
     'blog' => 'Blog Modülü',
     'logs' => 'Günlükler',
-    'templateSettings'=>'Tema Ayarları'
+    'templateSettings'=>'Tema Ayarları',
+    'pageUpdate'=>'Sayfa Güncelle'
 ];

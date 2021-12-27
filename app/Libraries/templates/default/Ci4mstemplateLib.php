@@ -4,13 +4,6 @@ use ci4mongodblibrary\Models\CommonModel;
 
 class Ci4mstemplateLib
 {
-    public $commonModel;
-
-    public function __construct()
-    {
-        $this->commonModel = new CommonModel();
-    }
-
     public static function contactForm()
     {
         return view('templates/default/contactForm');
@@ -18,6 +11,13 @@ class Ci4mstemplateLib
 
     public static function categories()
     {
-        return view('templates/default/categories', ['categories' => $this->commonModel->getList('categories')]);
+        $commonModel = new CommonModel();
+        return view('templates/default/categories', ['categories' => $commonModel->getList('categories')]);
+    }
+
+    public static function gmapiframe()
+    {
+        $commonModel = new CommonModel();
+        return view('templates/default/gmapiframe',  ['settings' => $commonModel->getOne('settings')]);
     }
 }

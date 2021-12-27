@@ -17,15 +17,15 @@ class Settings extends BaseController
         $whitelists = $this->commonModel->getOne('login_rules', ['type' => 'whitelist']);
 
         if (!empty($blacklists)) {
-            $blacklistRange = implode(', ',(array)$blacklists->range);
-            $blacklistLine =  implode(', ',(array)$blacklists->line);
-            $blacklistUsername = implode(', ',(array)$blacklists->username);
+            $blacklistRange = implode(', ', (array)$blacklists->range);
+            $blacklistLine = implode(', ', (array)$blacklists->line);
+            $blacklistUsername = implode(', ', (array)$blacklists->username);
         }
 
         if (!empty($whitelists)) {
-            $whitelistRange = implode(', ',(array)$whitelists->range);
-            $whitelistLine = implode(', ',(array)$whitelists->line);
-            $whitelistUsername = implode(', ',(array)$whitelists->username);
+            $whitelistRange = implode(', ', (array)$whitelists->range);
+            $whitelistLine = implode(', ', (array)$whitelists->line);
+            $whitelistUsername = implode(', ', (array)$whitelists->username);
         }
 
         $this->defData['blacklistRange'] = ($blacklistRange ?? '');
@@ -51,17 +51,12 @@ class Settings extends BaseController
             'cMail' => ['label' => 'Şirket Maili', 'rules' => 'required|valid_email'],
         ]);
 
-        if (!empty($this->request->getPost('cSlogan')))
-            $valData['cSlogan'] = ['label' => 'Slogan', 'rules' => 'required'];
-        if (!empty($this->request->getPost('cGSM')))
-            $valData['cGSM'] = ['label' => 'Şirket GSM', 'rules' => 'required'];
-        if (!empty($this->request->getPost('cMap')))
-            $valData['cMap'] = ['label' => 'Google Map iframe linki', 'rules' => 'required'];
-        if ($this->request->getFile('cLogo')->isValid() == true)
-            $valData['cLogo'] = ['label' => 'Şirket Logosu', 'rules' => 'uploaded[cLogo]|max_size[cLogo,2048]|is_image[cLogo]'];
+        if (!empty($this->request->getPost('cSlogan'))) $valData['cSlogan'] = ['label' => 'Slogan', 'rules' => 'required'];
+        if (!empty($this->request->getPost('cGSM'))) $valData['cGSM'] = ['label' => 'Şirket GSM', 'rules' => 'required'];
+        if (!empty($this->request->getPost('cMap'))) $valData['cMap'] = ['label' => 'Google Map iframe linki', 'rules' => 'required'];
+        if (!empty($this->request->getPost('cLogo'))) $valData['cLogo'] = ['label' => 'Şirket Logosu', 'rules' => 'required'];
 
-        if ($this->validate($valData) == false)
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        if ($this->validate($valData) == false) return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
 
         $data = ['siteName' => $this->request->getPost('cName'),
             'siteURL' => $this->request->getPost('cUrl'),
@@ -69,37 +64,14 @@ class Settings extends BaseController
             'companyPhone' => $this->request->getPost('cPhone'),
             'companyEMail' => $this->request->getPost('cMail')
         ];
-        if (!empty($this->request->getPost('cSlogan')))
-            $data['slogan'] = $this->request->getPost('cSlogan');
-        if (!empty($this->request->getPost('cGSM')))
-            $data['companyGSM'] = $this->request->getPost('cGSM');
-        if (!empty($this->request->getPost('cMap')))
-            $data['map_iframe'] = $this->request->getPost('cMap');
+        if (!empty($this->request->getPost('cSlogan'))) $data['slogan'] = $this->request->getPost('cSlogan');
+        if (!empty($this->request->getPost('cGSM'))) $data['companyGSM'] = $this->request->getPost('cGSM');
+        if (!empty($this->request->getPost('cMap'))) $data['map_iframe'] = $this->request->getPost('cMap');
+        if (!empty($this->request->getPost('cLogo'))) $data['logo'] = $this->request->getPost('cLogo');
 
         $settings = $this->commonModel->getOne('settings');
-        $result = $this->commonModel->updateOne('settings', ['_id' => new ObjectId($settings->_id)], $data);
-        //logo günceleme
-        if ($this->request->getFile('cLogo')->isValid() == true) {
-            if (!empty($settings->logo)) {
-                helper('filesystem');
-                if (delete_files(APPPATH . '../public/uploads/' . $settings->logo))
-                    log_message('notice', 'eski logo silindi.');
-                else
-                    log_message('error', 'eski logo silinemedi.');
-            }
-
-            $file = $this->request->getFile('cLogo');
-            $fResult = $file->move(APPPATH . '../public/uploads');
-            if ($fResult === true)
-                $result = $this->commonModel->updateOne('settings', ['_id' => new ObjectId($settings->_id)], ['logo' => $file->getName()]);
-            else
-                return redirect()->back()->with('message', 'Şirket logoso Güncellenemedi.');
-        }
-
-        if ((bool)$result === false)
-            return redirect()->back()->withInput()->with('error', 'Şirket Bilgileri Güncellenemedi.');
-        else
-            return redirect()->back()->with('message', 'Şirket Bilgileri Güncellendi.');
+        if ($this->commonModel->updateOne('settings', ['_id' => new ObjectId($settings->_id)], $data)) return redirect()->back()->with('message', 'Şirket Bilgileri Güncellendi.');
+        else return redirect()->back()->withInput()->with('error', 'Şirket Bilgileri Güncellenemedi.');
     }
 
     /**
@@ -255,7 +227,7 @@ class Settings extends BaseController
             'allowedFiles' => ['label' => 'Dosya Türleri', 'rules' => 'required'],
         ]);
         if ($this->validate($valData) == false) return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
-        $data=explode(',',$this->request->getPost('allowedFiles'));
+        $data = explode(',', $this->request->getPost('allowedFiles'));
         if ($this->commonModel->updateOne('settings', [], ['allowedFiles' => $data])) return redirect()->back()->with('message', 'Dosya Türleri Güncellendi.');
         else return redirect()->back()->withInput()->with('error', 'Dosya Türleri Güncellenemedi.');
     }
@@ -265,7 +237,7 @@ class Settings extends BaseController
      */
     public function templateSettings()
     {
-        return view('templates/'.$this->defData['settings']->templateInfos->path.'/temp-settings',$this->defData);
+        return view('templates/' . $this->defData['settings']->templateInfos->path . '/temp-settings', $this->defData);
     }
 
     /**
@@ -275,8 +247,8 @@ class Settings extends BaseController
     {
         $valData = (['settings' => ['label' => 'widgets', 'rules' => 'required']]);
         if ($this->validate($valData) == false) return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
-        $data=array_merge((array)$this->defData['settings']->templateInfos,$this->request->getPost('settings'));
-        if($this->commonModel->updateMany('settings',[],['templateInfos'=>$data])) return redirect()->back()->with('success', 'Tema Ayarları kayıt edildi.');
-        else return redirect()->back()->with('error','Tema Ayarları kayıt edilemedi');
+        $data = array_merge((array)$this->defData['settings']->templateInfos, $this->request->getPost('settings'));
+        if ($this->commonModel->updateMany('settings', [], ['templateInfos' => $data])) return redirect()->back()->with('success', 'Tema Ayarları kayıt edildi.');
+        else return redirect()->back()->with('error', 'Tema Ayarları kayıt edilemedi');
     }
 }
