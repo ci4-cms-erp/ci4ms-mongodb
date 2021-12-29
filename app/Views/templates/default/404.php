@@ -1,4 +1,4 @@
-<?= $this->extend('Views/templates/default-template/base') ?>
+<?= $this->extend('Views/templates/default/base') ?>
 <?= $this->section('head')?>
     <link href="<?=site_url('templates/default/assets/404.css')?>" rel="stylesheet" />
 <?=$this->endSection()?>

@@ -3,6 +3,9 @@
 // Create a new instance of our RouteCollection class.
 use ci4mongodblibrary\Models\CommonModel;
 
+$commonModel = new CommonModel();
+$activeTemplate=$commonModel->getOne('settings');
+
 $routes = Services::routes();
 
 // Load the system's routing file first, so that the app and ENVIRONMENT
@@ -35,8 +38,9 @@ $routes->get('maintenance-mode','Home::maintenanceMode',['as'=>'maintenance-mode
 $routes->get('blog','Home::blog',['filter'=>'ci4ms']);
 $routes->get('blog/(:num)','Home::blog/$1',['filter'=>'ci4ms']);
 $routes->get('blog/(:any)','Home::blogDetail/$1',['filter'=>'ci4ms']);
-$routes->get('category/(:any)','Home::category/$1',['filter'=>'ci4ms']);
 $routes->get('tag/(:any)','Home::tagList/$1',['filter'=>'ci4ms','as'=>'tag']);
+$routes->get('category/(:any)','Home::category/$1',['filter'=>'ci4ms','as'=>'category']);
+$routes->get('archive/(:any)','Home::archive/$1',['filter'=>'ci4ms','as'=>'archive']);
 /*$routes->add('feed', function () {
     $rss = new RSSFeeder();
 
@@ -60,14 +64,12 @@ if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) require APPP
 
 /**
  * --------------------------------------------------------------------
- * Include Templates Routes Files TODO: kütüphaneye fonksiyon olarak eklesek ve aktif temanın adını koyarak çağırsak
+ * Include Templates Routes Files
  * --------------------------------------------------------------------
  */
 if (file_exists(APPPATH.'Config')) {
     $modulesPath = APPPATH.'Config';
     $modules = scandir($modulesPath.'/templates');
-$commonModel = new CommonModel();
-$activeTemplate=$commonModel->getOne('settings',[],['themePath']);
     foreach ($modules as $module) {
         if ($module === '.' || $module === '..') continue;
         if (is_dir($modulesPath) . '/' . $module) {

@@ -1,11 +1,16 @@
 <?= $this->extend('Modules\Backend\Views\base') ?>
 
 <?= $this->section('title') ?>
-Anasayfa
+Ayarlar
 <?= $this->endSection() ?>
 
 <?= $this->section('head') ?>
 <link rel="stylesheet" href="/be-assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+<link rel="stylesheet" href="/be-assets/plugins/jquery-ui/jquery-ui.css">
+<link rel="stylesheet" type="text/css"
+      href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+<link rel="stylesheet" href="/be-assets/plugins/elFinder/css/elfinder.full.css">
+<link rel="stylesheet" href="/be-assets/plugins/elFinder/css/theme.css">
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -64,8 +69,7 @@ Anasayfa
                     <div class="tab-content" id="vert-tabs-tabContent">
                         <div class="tab-pane text-left fade active show" id="vert-tabs-home" role="tabpanel"
                              aria-labelledby="vert-tabs-home-tab">
-                            <form action="<?= route_to('compInfosPost') ?>" method="post" class="form-row"
-                                  enctype="multipart/form-data">
+                            <form action="<?= route_to('compInfosPost') ?>" method="post" class="form-row">
                                 <?= csrf_field() ?>
                                 <div class="col-6 form-group">
                                     <label for="">Şirket Adı</label>
@@ -105,15 +109,16 @@ Anasayfa
                                 <div class="col-6 form-group">
                                     <label for="">Google Map iframe linki</label>
                                     <input type="text" name="cMap" class="form-control"
-                                           value="<?= (!empty($settings->map_iframe)) ? $settings->map_iframe : '' ?>">
+                                           value='<?= (!empty($settings->map_iframe)) ? $settings->map_iframe : '' ?>'>
                                 </div>
                                 <div class="col-6 form-group">
                                     <label for="">Şirket Logosu</label>
-                                    <input type="file" name="cLogo" class="form-control">
+                                    <button type="button" class="pageIMG btn btn-info w-100">Görsel Seçiniz</button>
+                                    <input hidden class="pageimg-input" name="cLogo">
                                 </div>
-                                <div class="col-6 form-group">
-                                    <img src="<?= (!empty($settings->logo)) ? '/uploads/' . $settings->logo : '' ?>"
-                                         class="img-fluid" alt="">
+                                <div class="col-6 form-group rounded bg-dark p-3">
+                                    <img src="<?= (!empty($settings->logo)) ? $settings->logo : '' ?>"
+                                         class="img-fluid pageimg">
                                 </div>
                                 <div class="col-12 form-group">
                                     <button class="btn btn-success float-right mt-5">Güncelle</button>
@@ -146,6 +151,8 @@ Anasayfa
                                                         <div class="col-md-12">
                                                             <?php if($settings->templateInfos->path!=$data->defPath):?>
                                                             <button class="btn btn-outline-success" id="<?=$data->defPath?>" type="button" onclick="chooseTemplate('<?=$data->defPath?>','<?=$data->templateName?>')">Seç</button>
+                                                            <?php else: ?>
+                                                            <a href="<?=route_to('templateSettings')?>" class="btn btn-outline-primary">Ayarlar</a>
                                                             <?php endif; ?>
                                                         </div>
                                                     </div>
@@ -385,10 +392,15 @@ Anasayfa
 <?= $this->endSection() ?>
 
 <?= $this->section('javascript') ?>
+<script src="/be-assets/plugins/jquery-ui/jquery-ui.js"></script>
 <script src="/be-assets/plugins/sweetalert2/sweetalert2.min.js"></script>
 <script src="/be-assets/node_modules/jquery.repeater/jquery.repeater.js"></script>
 <!-- Bootstrap Switch -->
 <script src="/be-assets/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+<script src="/be-assets/plugins/elFinder/js/elfinder.full.js"></script>
+<script src="/be-assets/plugins/elFinder/js/i18n/elfinder.tr.js"></script>
+<script src="/be-assets/plugins/elFinder/js/extras/editors.default.js"></script>
+<script src="/be-assets/js/ci4ms.js"></script>
 <script>
     $(document).ready(function () {
         'use strict';

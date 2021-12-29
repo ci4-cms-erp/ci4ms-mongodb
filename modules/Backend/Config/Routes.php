@@ -67,6 +67,8 @@ $routes->group('backend', ['namespace' => 'Modules\Backend\Controllers'], functi
         $routes->post('loginSettings', 'Settings::loginSettingsPost', ['as' => 'loginSettingsPost', 'filter' => 'backendAfterLoginFilter']);
         $routes->post('setTemplate', 'Settings::templateSelectPost', ['as' => 'setTemplate', 'filter' => 'backendAfterLoginFilter']);
         $routes->post('saveAllowedFiles', 'Settings::saveAllowedFiles', ['as' => 'saveAllowedFiles', 'filter' => 'backendAfterLoginFilter']);
+        $routes->get('templateSettings', 'Settings::templateSettings', ['as' => 'templateSettings', 'filter' => 'backendAfterLoginFilter']);
+        $routes->post('templateSettings_post', 'Settings::templateSettings_post', ['as' => 'templateSettings_post', 'filter' => 'backendAfterLoginFilter']);
     });
 
     //menu module
