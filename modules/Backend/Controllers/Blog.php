@@ -34,7 +34,7 @@ class Blog extends BaseController
     public function new()
     {
         $this->defData['categories'] = $this->commonModel->getList('categories');
-        $this->defData['authors']=$this->commonModel->getList('users',['status'=>'active']);
+        $this->defData['authors'] = $this->commonModel->getList('users',['status'=>'active']);
         return view('Modules\Backend\Views\blog\create', $this->defData);
     }
 

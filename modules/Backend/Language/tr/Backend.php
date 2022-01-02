@@ -30,6 +30,7 @@ return [
     'tagUpdate' => 'Etiket Güncelleme',
     'blog' => 'Blog Modülü',
     'logs' => 'Günlükler',
+    'locked_accounts' => 'Hesap Kilit Verileri',
     'templateSettings'=>'Tema Ayarları',
     'pageUpdate'=>'Sayfa Güncelle'
 ];

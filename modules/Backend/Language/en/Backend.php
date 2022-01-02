@@ -30,5 +30,6 @@ return [
     'blog' => 'Blog Modülü',
     'logs' => 'Logs',
     'templateSettings'=>'Template Settings',
-    'pageUpdate'=>'Page Update'
+    'pageUpdate'=>'Page Update',
+    'locked_accounts' => 'Hesap Kilit Verileri',
 ];
