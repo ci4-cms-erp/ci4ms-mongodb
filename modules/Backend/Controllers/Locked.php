@@ -18,10 +18,6 @@ class Locked extends BaseController
             'paginator' => $paginator,
             'locks' => $this->commonModel->getList('locked', [], ['limit' => $itemsPerPage, 'skip' => $bpk])
         ]);
-        d($itemsPerPage);
-        d($bpk);
-        dd($this->commonModel->getList('locked', [], ['limit' => $itemsPerPage, 'skip' => $bpk]));
-
         return view('Modules\Backend\Views\logs\locked', $this->defData);
     }
 }
