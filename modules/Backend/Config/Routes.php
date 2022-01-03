@@ -116,4 +116,10 @@ $routes->group('backend', ['namespace' => 'Modules\Backend\Controllers'], functi
     $routes->post('isActive', 'AJAX::isActive', ['as' => 'isActive', 'filter' => 'backendAfterLoginFilter']);
     $routes->post('maintenance', 'AJAX::maintenance', ['as' => 'maintenance', 'filter' => 'backendAfterLoginFilter']);
     $routes->get('media', 'Media::index', ['as' => 'media', 'filter' => 'backendAfterLoginFilter']);
+
+    //log module
+    $routes->group('locked', function ($routes) {
+        $routes->get('(:num)', 'Locked::index/$1', ['as' => 'locked', 'filter' => 'backendAfterLoginFilter']);
+
+    });
 });
