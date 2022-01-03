@@ -51,9 +51,9 @@
                         </td>
                         <td class="col-md-2">
                             <a href="<?= route_to('pageUpdate', $page->_id) ?>"
-                               class="btn btn-outline-info btn-sm"><i class="fas fa-edit"></i> Düzenle</a>
+                               class="btn btn-outline-info btn-sm"><?=lang('Backend.update')?></a>
                             <a href="<?= route_to('pageDelete', $page->_id) ?>"
-                               class="btn btn-outline-danger btn-sm"><i class="fas fa-edit"></i> Sil</a>
+                               class="btn btn-outline-danger btn-sm"><?=lang('Backend.delete')?></a>
                         </td>
                     </tr>
                     <?php endforeach; ?>

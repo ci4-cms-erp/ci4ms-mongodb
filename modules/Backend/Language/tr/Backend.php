@@ -31,5 +31,9 @@ return [
     'blog' => 'Blog Modülü',
     'logs' => 'Günlükler',
     'templateSettings'=>'Tema Ayarları',
-    'pageUpdate'=>'Sayfa Güncelle'
+    'pageUpdate'=>'Sayfa Güncelle',
+    'add'=>'<i class="fas fa-plus"></i> Ekle',
+    'update'=>'<i class="fas fa-edit"></i> Düzenle',
+    'delete'=>'<i class="fas fa-trash"></i> Sil',
+    'backToList'=>'Listeye dön'
 ];
