@@ -28,7 +28,7 @@ class Pages extends BaseController
         $paginator->setMaxPagesToShow(5);
         $this->defData['paginator'] = $paginator;
         $bpk = ($this->request->uri->getSegment(3, 1) - 1) * $itemsPerPage;
-        $this->defData['pages'] = $this->commonModel->getList('pages', [], ['$limit' => $itemsPerPage, '$skip' => $bpk]);
+        $this->defData['pages'] = $this->commonModel->getList('pages', [], ['limit' => $itemsPerPage, 'skip' => $bpk]);
         return view('Modules\Backend\Views\pages\list', $this->defData);
     }
 

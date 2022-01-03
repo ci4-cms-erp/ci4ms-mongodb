@@ -16,11 +16,11 @@ class Locked extends BaseController
         $bpk = ($this->request->uri->getSegment(3, 1) - 1) * $itemsPerPage;
         $this->defData = array_merge($this->defData, [
             'paginator' => $paginator,
-            'locks' => $this->commonModel->getList('locked', [], ['$limit' => $itemsPerPage, '$skip' => $bpk])
+            'locks' => $this->commonModel->getList('locked', [], ['limit' => $itemsPerPage, 'skip' => $bpk])
         ]);
         d($itemsPerPage);
         d($bpk);
-        dd($this->commonModel->getList('locked', [], ['$limit' => $itemsPerPage, '$skip' => $bpk]));
+        dd($this->commonModel->getList('locked', [], ['limit' => $itemsPerPage, 'skip' => $bpk]));
 
         return view('Modules\Backend\Views\logs\locked', $this->defData);
     }

@@ -17,7 +17,7 @@ class Tags extends BaseController
         $paginator->setMaxPagesToShow(5);
         $this->defData['paginator'] = $paginator;
         $bpk = ($this->request->uri->getSegment(4, 1) - 1) * $itemsPerPage;
-        $this->defData['tags']=$this->commonModel->getList('tags',[],['$limit'=>$itemsPerPage,'$skip'=>$bpk]);
+        $this->defData['tags']=$this->commonModel->getList('tags',[],['limit'=>$itemsPerPage,'skip'=>$bpk]);
         return view('Modules\Backend\Views\tags\list',$this->defData);
     }
 

@@ -50,7 +50,7 @@ class Home extends BaseController
         $this->defData['paginator'] = $paginator;
         $bpk = ($this->request->uri->getSegment(2, 1) - 1) * $itemsPerPage;
         $this->defData['dateI18n'] = new Time();
-        $this->defData['blogs'] = $this->commonModel->getList('blog', ['isActive' => true], ['$limit' => $itemsPerPage, '$skip' => $bpk]);
+        $this->defData['blogs'] = $this->commonModel->getList('blog', ['isActive' => true], ['limit' => $itemsPerPage, 'skip' => $bpk]);
         $modelTag = new AjaxModel();
         foreach ($this->defData['blogs'] as $key => $blog) {
             $this->defData['blogs'][$key]['tags'] = $modelTag->limitTags_ajax(['pivot.piv_id' => $blog->_id]);
@@ -127,7 +127,7 @@ class Home extends BaseController
         $this->defData['paginator'] = $paginator;
         $bpk = ($this->request->uri->getSegment(3, 1) - 1) * $itemsPerPage;
         $this->defData['dateI18n'] = new Time();
-        $this->defData['blogs'] = $this->ci4msModel->categoryList('categories',[(string)$this->defData['category']->_id],['isActive'=>true], ['$limit' => $itemsPerPage, '$skip' => $bpk]);
+        $this->defData['blogs'] = $this->ci4msModel->categoryList('categories',[(string)$this->defData['category']->_id],['isActive'=>true], ['limit' => $itemsPerPage, 'skip' => $bpk]);
         $modelTag = new AjaxModel();
         foreach ($this->defData['blogs'] as $key => $blog) {
             $this->defData['blogs'][$key]['tags'] = $modelTag->limitTags_ajax(['pivot.piv_id' => $blog->_id]);

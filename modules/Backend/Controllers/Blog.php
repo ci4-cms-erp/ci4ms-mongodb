@@ -27,7 +27,7 @@ class Blog extends BaseController
         $paginator = new Paginator($totalItems, $itemsPerPage, $currentPage, $urlPattern);
         $paginator->setMaxPagesToShow(5);
         $bpk = ($this->request->uri->getSegment(3, 1) - 1) * $itemsPerPage;
-        $this->defData = array_merge($this->defData, ['paginator' => $paginator, 'blogs' => $this->commonModel->getList('blog', [], ['$limit' => $itemsPerPage, '$skip' => $bpk])]);
+        $this->defData = array_merge($this->defData, ['paginator' => $paginator, 'blogs' => $this->commonModel->getList('blog', [], ['limit' => $itemsPerPage, 'skip' => $bpk])]);
         return view('Modules\Backend\Views\blog\list', $this->defData);
     }
 
