@@ -74,23 +74,31 @@ class AJAX extends BaseController
     }
 
     /**
-     * @return \CodeIgniter\HTTP\RedirectResponse|void
+     * @return \CodeIgniter\HTTP\ResponseInterface
      */
     public function isActive()
     {
         if ($this->request->isAJAX()) {
+            $attribute = 'isActive';
+            
+            if ($this->request->getPost('where') === 'locked') $attribute = 'isLocked';
+
             $valData = ([
                 'id' => ['label' => 'id', 'rules' => 'required'],
-                'isActive' => ['label' => 'isActive', 'rules' => 'required'],
+                $attribute => ['label' => $attribute, 'rules' => 'required'],
                 'where' => ['label' => 'where', 'rules' => 'required']
             ]);
 
             if ($this->validate($valData) == false) return redirect('403');
 
-            if($this->commonModel->updateOne($this->request->getPost('where'), ['_id' => new ObjectId($this->request->getPost('id'))], ['isActive' => (bool)$this->request->getPost('isActive')]))
-                return $this->response->setJSON(['result'=>true]);
+            if ($this->commonModel->updateOne(
+                $this->request->getPost('where'),
+                ['_id' => new ObjectId($this->request->getPost('id'))],
+                [$attribute => (bool)$this->request->getPost($attribute)])
+            )
+                return $this->response->setJSON(['result' => true]);
             else
-                return $this->response->setJSON(['result'=>false]);
+                return $this->response->setJSON(['result' => false]);
         } else redirect('403');
     }
 
