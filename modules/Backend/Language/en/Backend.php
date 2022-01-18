@@ -23,6 +23,8 @@ return [
     'transactions'=>'İşlemler',
     'status'=>'Durumu',
     'save'=>'Kaydet',
+    'start'=>'Başlangıç',
+    'expire'=>'Bitiş',
 
     //pages
     'homepage' => 'Anasayfa',

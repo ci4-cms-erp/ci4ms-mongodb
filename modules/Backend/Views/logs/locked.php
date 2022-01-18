@@ -18,8 +18,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <a href="<?= route_to('blogCreate') ?>" class="btn btn-outline-success"><i
-                            class="fas fa-plus"></i> Ekle</a>
+                    <a href="<?= route_to('blogCreate') ?>" class="btn btn-outline-success"><?=lang('Backend.add')?></a>
                 </ol>
             </div>
         </div>
@@ -46,12 +45,12 @@
                 <table class="table table-striped table-bordered">
                     <thead>
                     <tr>
-                        <th>Blog Başlığı</th>
-                        <th>E-mail</th>
+                        <th>#</th>
+                        <th><?=lang('Backend.email')?></th>
                         <th>IP</th>
-                        <th>Başlangıç</th>
-                        <th>Bitiş</th>
-                        <th>#İşlemler</th>
+                        <th><?=lang('Backend.start')?></th>
+                        <th><?=lang('Backend.expire')?></th>
+                        <th><?=lang('Backend.transactions')?></th>
                     </tr>
                     </thead>
                     <tbody>
