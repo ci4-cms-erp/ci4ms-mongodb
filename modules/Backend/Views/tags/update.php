@@ -18,8 +18,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <a href="<?= route_to('') ?>" class="btn btn-outline-info"><i
-                                class="fas fa-arrow-circle-left"></i> Listeye Dön</a>
+                    <a href="<?= route_to('') ?>" class="btn btn-outline-info"><?=lang('Backend.backToList')?></a>
                 </ol>
             </div>
         </div>
@@ -43,16 +42,16 @@
             <?= view('Modules\Auth\Views\_message_block') ?>
             <form action="<?= route_to('tagUpdate') ?>" method="post" class="form-row">
                 <div class="form-group col-md-12">
-                    <label for="">Etiket Başlığı</label>
+                    <label for=""><?=lang('Backend.title')?></label>
                     <input type="text" name="title" class="form-control ptitle" placeholder="Etiket Başlığı"
                            required value="<?=$infos->tag?>">
                 </div>
                 <div class="form-group col-md-12">
-                    <label for="">Etiket URL</label>
+                    <label for=""><?=lang('Backend.url')?></label>
                     <input type="text" class="form-control seflink" name="seflink" required value="<?=$infos->seflink?>">
                 </div>
                 <div class="form-group col-md-12">
-                    <button type="button" class="btn btn-success float-right">Güncelle</button>
+                    <button type="button" class="btn btn-success float-right"><?=lang('Backend.update')?></button>
                 </div>
             </form>
         </div>

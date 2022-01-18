@@ -21,8 +21,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <a href="<?= route_to('pages', 1) ?>" class="btn btn-outline-info"><i
-                                class="fas fa-arrow-circle-left"></i> Listeye Dön</a>
+                    <a href="<?= route_to('pages', 1) ?>" class="btn btn-outline-info"><?=lang('Backend.backToList')?></a>
                 </ol>
             </div>
         </div>
@@ -34,7 +33,7 @@
     <!-- Default box -->
     <div class="card card-outline card-shl">
         <div class="card-header">
-            <h3 class="card-title font-weight-bold">Sayfa Oluşur</h3>
+            <h3 class="card-title font-weight-bold"><?= lang('Backend.' . $title->pagename) ?></h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -48,16 +47,16 @@
                 <?= csrf_field() ?>
                 <div class="col-md-8 form-group row">
                     <div class="form-group col-md-12">
-                        <label for="">Sayfa Başlığı</label>
-                        <input type="text" name="title" class="form-control ptitle" placeholder="Sayfa Başlığı"
+                        <label for=""><?=lang('Backend.title')?></label>
+                        <input type="text" name="title" class="form-control ptitle" placeholder="<?=lang('Backend.title')?>"
                                required>
                     </div>
                     <div class="form-group col-md-12">
-                        <label for="">Sayfa URL</label>
+                        <label for=""><?=lang('Backend.url')?></label>
                         <input type="text" class="form-control seflink" name="seflink" required>
                     </div>
                     <div class="form-group col-md-12">
-                        <label for="">İçerik</label>
+                        <label for=""><?=lang('Backend.content')?></label>
                         <textarea name="content" rows="60" class="form-control editor" required></textarea>
                     </div>
                 </div>
@@ -65,50 +64,50 @@
                     <div class="form-group col-12">
                         <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
                         <label class="btn btn-outline-secondary">
-                            <input type="radio" name="isActive" id="option1" autocomplete="off" value="0"> Taslak
+                            <input type="radio" name="isActive" id="option1" autocomplete="off" value="0"> <?=lang('Backend.draft')?>
                         </label>
                             <label class="btn btn-outline-secondary active">
-                                <input type="radio" name="isActive" id="option2" autocomplete="off" checked value="1"> Yayında
+                                <input type="radio" name="isActive" id="option2" autocomplete="off" checked value="1"> <?=lang('Backend.publish')?>
                             </label>
                         </div>
                     </div>
                     <div class="form-group col-md-12 row">
                         <div class="col-12 form-group">
-                            <label for="">Kapak Görseli</label>
-                            <img src="" alt="" class="pageimg img-fluid">
+                            <label for=""><?=lang('Backend.coverImage')?></label>
+                            <img src="" class="pageimg img-fluid">
                         </div>
                         <div class="col-12 form-group">
-                            <label for="">Görsel URL</label>
+                            <label for=""><?=lang('Backend.coverImgURL')?></label>
                             <input type="text" name="pageimg" class="form-control pageimg-input"
-                                   placeholder="Görsel URL">
+                                   placeholder="<?=lang('Backend.coverImgURL')?>">
                         </div>
                         <div class="col-12 row form-group">
                             <div class="col-sm-6">
-                                <label for="">Görsel Genişliği</label>
+                                <label for=""><?=lang('Backend.coverImgWith')?></label>
                                 <input type="number" name="pageIMGWidth" class="form-control" id="pageIMGWidth"
                                        readonly>
                             </div>
                             <div class="col-sm-6">
-                                <label for="">Görsel Yüksekliği</label>
+                                <label for=""><?=lang('Backend.coverImgHeight')?></label>
                                 <input type="number" name="pageIMGHeight" class="form-control" id="pageIMGHeight"
                                        readonly>
                             </div>
                         </div>
                         <div class="col-12 form-group">
-                            <button type="button" class="pageIMG btn btn-info w-100">Görsel Seçiniz</button>
+                            <button type="button" class="pageIMG btn btn-info w-100"><?=lang('Backend.selectCoverImg')?></button>
                         </div>
                     </div>
                     <div class="form-group col-md-12">
-                        <label for="">Seo Açıklaması</label>
+                        <label for=""><?=lang('Backend.seoDescription')?></label>
                         <textarea class="form-control" name="description"></textarea>
                     </div>
                     <div class="form-group col-md-12">
-                        <label for="">Seo Anahtar Kelimeleri</label>
+                        <label for=""><?=lang('Backend.seoKeywords')?></label>
                         <textarea name="keywords" class="keywords" placeholder="write some keywords"></textarea>
                     </div>
                 </div>
                 <div class="form-group col-md-12">
-                    <button class="btn btn-success float-right">Ekle</button>
+                    <button class="btn btn-success float-right"><?=lang('Backend.add')?></button>
                 </div>
             </form>
         </div>

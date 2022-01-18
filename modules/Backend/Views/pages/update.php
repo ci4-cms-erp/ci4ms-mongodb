@@ -21,8 +21,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <a href="<?= route_to('pages', 1) ?>" class="btn btn-outline-info"><i
-                                class="fas fa-arrow-circle-left"></i> Listeye Dön</a>
+                    <a href="<?= route_to('pages', 1) ?>" class="btn btn-outline-info"><?=lang('Backend.backToList')?></a>
                 </ol>
             </div>
         </div>
@@ -48,16 +47,16 @@
                 <?= csrf_field() ?>
                 <div class="col-md-8 form-group row">
                     <div class="form-group col-md-12">
-                        <label for="">Sayfa Başlığı</label>
-                        <input type="text" name="title" class="form-control ptitle" placeholder="Sayfa Başlığı" value="<?=$pageInfo->title?>"
+                        <label for=""><?=lang('Backend.title')?></label>
+                        <input type="text" name="title" class="form-control ptitle" placeholder="<?=lang('Backend.title')?>" value="<?=$pageInfo->title?>"
                                required>
                     </div>
                     <div class="form-group col-md-12">
-                        <label for="">Sayfa URL</label>
+                        <label for=""><?=lang('Backend.url')?></label>
                         <input type="text" class="form-control seflink" name="seflink" required value="<?=$pageInfo->seflink?>">
                     </div>
                     <div class="form-group col-md-12">
-                        <label for="">İçerik</label>
+                        <label for=""><?=lang('Backend.content')?></label>
                         <textarea name="content" rows="60" class="form-control editor" required><?=$pageInfo->content?></textarea>
                     </div>
                 </div>
@@ -74,41 +73,41 @@
                     </div>
                     <div class="form-group col-md-12 row">
                         <div class="col-12 form-group">
-                            <label for="">Kapak Görseli</label>
-                            <img src="<?=(!empty($pageInfo->seo->coverImage))?$pageInfo->seo->coverImage:''?>" alt="" class="pageimg img-fluid">
+                            <label for=""><?=lang('Backend.coverImage')?></label>
+                            <img src="<?=(!empty($pageInfo->seo->coverImage))?$pageInfo->seo->coverImage:''?>" class="pageimg img-fluid">
                         </div>
                         <div class="col-12 form-group">
-                            <label for="">Görsel URL</label>
+                            <label for=""><?=lang('Backend.coverImgURL')?></label>
                             <input type="text" name="pageimg" class="form-control pageimg-input" value="<?=(!empty($pageInfo->seo->coverImage))?$pageInfo->seo->coverImage:''?>"
-                                   placeholder="Görsel URL">
+                                   placeholder="<?=lang('Backend.coverImgURL')?>">
                         </div>
                         <div class="col-12 row form-group">
                             <div class="col-sm-6">
-                                <label for="">Görsel Genişliği</label>
+                                <label for=""><?=lang('Backend.coverImgWith')?></label>
                                 <input type="number" name="pageIMGWidth" class="form-control" id="pageIMGWidth" value="<?=(!empty($pageInfo->seo->IMGWidth))?$pageInfo->seo->IMGWidth:''?>"
                                        readonly>
                             </div>
                             <div class="col-sm-6">
-                                <label for="">Görsel Yüksekliği</label>
+                                <label for=""><?=lang('Backend.coverImgHeight')?></label>
                                 <input type="number" name="pageIMGHeight" class="form-control" id="pageIMGHeight" value="<?=(!empty($pageInfo->seo->IMGHeight))?$pageInfo->seo->IMGHeight:''?>"
                                        readonly>
                             </div>
                         </div>
                         <div class="col-12 form-group">
-                            <button type="button" class="pageIMG btn btn-info w-100">Görsel Seçiniz</button>
+                            <button type="button" class="pageIMG btn btn-info w-100"><?=lang('Backend.selectCoverImg')?></button>
                         </div>
                     </div>
                     <div class="form-group col-md-12">
-                        <label for="">Seo Açıklaması</label>
+                        <label for=""><?=lang('Backend.seoDescription')?></label>
                         <textarea class="form-control" name="description"><?=(!empty($pageInfo->seo->description))?$pageInfo->seo->description:''?></textarea>
                     </div>
                     <div class="form-group col-md-12">
-                        <label for="">Seo Anahtar Kelimeleri</label>
+                        <label for=""><?=lang('Backend.seoKeywords')?></label>
                         <textarea name="keywords" class="keywords" placeholder="write some tags"><?=!empty($pageInfo->seo->keywords)?json_encode($pageInfo->seo->keywords):''?></textarea>
                     </div>
                 </div>
                 <div class="form-group col-md-12">
-                    <button class="btn btn-success float-right">Güncelle</button>
+                    <button class="btn btn-success float-right"><?=lang('Backend.update')?></button>
                 </div>
             </form>
         </div>

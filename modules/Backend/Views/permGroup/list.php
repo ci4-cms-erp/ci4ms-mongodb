@@ -14,8 +14,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <a href="<?= route_to('group_create') ?>" class="btn btn-outline-success"><i
-                                class="fas fa-user-plus"></i> Yeni Grup Ekle</a>
+                    <a href="<?= route_to('group_create') ?>" class="btn btn-outline-success"><?=lang('Backend.add')?></a>
                 </ol>
             </div>
         </div>
@@ -28,7 +27,7 @@
     <!-- Default box -->
     <div class="card card-outline card-shl">
         <div class="card-header">
-            <h3 class="card-title font-weight-bold">Grup Listesi</h3>
+            <h3 class="card-title font-weight-bold"><?=lang('Backend.permGroupList')?></h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -43,8 +42,8 @@
                 <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <th>Grup Listesi</th>
-                        <th>#İşlemler</th>
+                        <th><?=lang('Backend.permGroupList')?></th>
+                        <th><?=lang('Backend.transactions')?></th>
                     </tr>
                     <tbody>
                     <?php foreach ($groups as $group):

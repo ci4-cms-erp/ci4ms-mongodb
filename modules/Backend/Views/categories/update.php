@@ -26,8 +26,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <a href="<?= route_to('categories', 1) ?>" class="btn btn-outline-info"><i
-                                class="fas fa-arrow-circle-left"></i> Listeye Dön</a>
+                    <a href="<?= route_to('categories', 1) ?>" class="btn btn-outline-info"><?=lang('Backend.backToList')?></a>
                 </ol>
             </div>
         </div>
@@ -54,59 +53,59 @@
                 <?= csrf_field() ?>
                 <div class="col-md-8">
                     <div class="form-group">
-                        <label for="">Kategori Adı</label>
+                        <label for=""><?=lang('Backend.title')?></label>
                         <input type="text" class="form-control ptitle" required name="title" value="<?=$infos->title?>">
                     </div>
                     <div class="form-group">
-                        <label for="">Kategori URL</label>
+                        <label for=""><?=lang('Backend.url')?></label>
                         <input type="text" class="form-control seflink" name="seflink" required value="<?=$infos->seflink?>">
                     </div>
                     <div class="form-group">
-                        <label for="">Seo Açıklaması</label>
+                        <label for=""><?=lang('Backend.seoDescription')?></label>
                         <textarea name="description" class="form-control" rows="10"><?=$infos->seo->description?></textarea>
                     </div>
                 </div>
                 <div class="col-md-4 row">
                     <div class="col-md-12 form-group">
-                        <label for="">Üst Kategori</label>
+                        <label for=""><?=lang('Backend.parentCategory')?></label>
                         <select name="parent" id="" class="form-control select2bs4" data-placeholder="Select a Category">
-                            <option value="">Select a Category</option>
+                            <option value=""><?=lang('Backend.select')?></option>
                             <?php foreach ($categories as $category) :?>
                                 <option value="<?=$category->_id?>" <?=(!empty($infos->parent) && $infos->parent==$category->_id)?'selected':''?>><?=$category->title?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="col-md-12 form-group">
-                        <label for="">Kapak Görseli</label>
+                        <label for=""><?=lang('Backend.parentCategory')?></label>
                         <img src="<?=$infos->seo->coverImage?>" alt="" class="pageimg img-fluid">
                     </div>
                     <div class="col-md-12 form-group">
-                        <label for="">Görsel URL</label>
+                        <label for=""><?=lang('Backend.parentCategory')?></label>
                         <input type="text" name="pageimg" class="form-control pageimg-input"
                                placeholder="Görsel URL" value="<?=$infos->seo->coverImage?>">
                     </div>
                     <div class="col-md-12 row form-group">
                         <div class="col-sm-6">
-                            <label for="">Görsel Genişliği</label>
+                            <label for=""><?=lang('Backend.parentCategory')?></label>
                             <input type="number" name="pageIMGWidth" class="form-control" id="pageIMGWidth"
                                    readonly value="<?=$infos->seo->IMGWidth?>">
                         </div>
                         <div class="col-sm-6">
-                            <label for="">Görsel Yüksekliği</label>
+                            <label for=""><?=lang('Backend.parentCategory')?></label>
                             <input type="number" name="pageIMGHeight" class="form-control" id="pageIMGHeight"
                                    readonly value="<?=$infos->seo->IMGHeight?>">
                         </div>
                     </div>
                     <div class="col-md-12 form-group">
-                        <button type="button" class="pageIMG btn btn-info w-100">Görsel Seçiniz</button>
+                        <button type="button" class="pageIMG btn btn-info w-100"><?=lang('Backend.parentCategory')?></button>
                     </div>
                     <div class="col-md-12 form-group">
-                        <label for="">Seo Anahtar Kelimeleri</label>
+                        <label for=""><?=lang('Backend.seoKeywords')?></label>
                         <textarea name="keywords" class="keywords" placeholder="write some tags"><?=!empty($infos->seo->keywords)?json_encode($infos->seo->keywords):''?></textarea>
                     </div>
                 </div>
                 <div class="form-group col-md-12">
-                    <button class="btn btn-success float-right">Güncelle</button>
+                    <button class="btn btn-success float-right"><?=lang('Backend.update')?></button>
                 </div>
             </form>
         </div>

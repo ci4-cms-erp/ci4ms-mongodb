@@ -14,7 +14,7 @@
                 <h1><?=lang('Backend.'.$title->pagename)?></h1>
             </div>
             <div class="col-sm-6">
-                <a href="<?= route_to('pageCreate') ?>" class="btn btn-success float-right"><?=lang('Backend.pageAdd')?></a>
+                <a href="<?= route_to('pageCreate') ?>" class="btn btn-outline-success float-right"><?=lang('Backend.add')?></a>
             </div>
         </div>
     </div><!-- /.container-fluid -->
@@ -24,7 +24,7 @@
     <!-- Default box -->
     <div class="card card-outline card-shl">
         <div class="card-header">
-            <h3 class="card-title font-weight-bold">Sayfalar Listesi</h3>
+            <h3 class="card-title font-weight-bold"><?=lang('Backend.'.$title->pagename)?></h3>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                     <i class="fas fa-minus"></i>
@@ -37,9 +37,9 @@
                 <table class="table table-striped">
                     <thead>
                     <tr class="row">
-                        <th class="col-md-9">Sayfa Adı</th>
-                        <th class="col-md-1">Durumu</th>
-                        <th class="col-md-2">#İşlemler</th>
+                        <th class="col-md-9"><?=lang('Backend.title')?></th>
+                        <th class="col-md-1"><?=lang('Backend.status')?></th>
+                        <th class="col-md-2"><?=lang('Backend.transactions')?></th>
                     </tr>
                     </thead>
                     <tbody>

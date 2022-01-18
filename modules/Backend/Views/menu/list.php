@@ -1,5 +1,5 @@
-<h4><strong>Sayfalar</strong></h4>
-<?= empty($pages) ? '<strong>Menüye eklenebilecek sayfa bulunamadı !</strong>':''?>
+<h4><strong><?=lang('Backend.pages')?></strong></h4>
+<?= empty($pages) ? '<strong>'.lang('Backend.notFindinMenu').'</strong>':''?>
 <form class="list-group" id="addCheckedPages">
     <?php foreach ($pages as $page): ?>
         <div class="list-group-item" id="page-<?= $page->_id ?>">
@@ -13,22 +13,22 @@
                 </div>
                 <div class="col-xs-4">
                     <button class="btn btn-success addPages" type="button" onclick="addPages('<?= $page->_id ?>')">
-                        Ekle
+                        <?=lang('Backend.add')?>
                     </button>
                 </div>
             </div>
         </div>
     <?php endforeach; if(!empty($pages)): ?>
     <div class="list-group-item">
-        <button class="btn btn-success float-right" type="button" onclick="addCheckedPages()">Seçilenleri
-            ekle
+        <button class="btn btn-success float-right" type="button" onclick="addCheckedPages()">
+            <?=lang('Backend.addSelected')?>
         </button>
     </div>
     <?php endif; ?>
 </form>
 <hr>
-<h4><strong>Yazılar</strong></h4>
-<?= empty($blogs) ? '<strong>Menüye eklenebilecek yazı bulunamadı !</strong>':''?>
+<h4><strong><?=lang('Backend.blogs')?></strong></h4>
+<?= empty($blogs) ? '<strong>'.lang('Backend.notFindinManuBlogs').'</strong>':''?>
 <form class="list-group" id="addCheckedBlog">
     <?php foreach ($blogs as $blog): ?>
         <div class="list-group-item" id="blog-<?= $blog->_id ?>">
@@ -42,15 +42,15 @@
                 </div>
                 <div class="col-xs-4">
                     <button class="btn btn-success" type="button" onclick="addBlog('<?= $blog->_id ?>')">
-                        Ekle
+                        <?=lang('Backend.add')?>
                     </button>
                 </div>
             </div>
         </div>
     <?php endforeach; if(!empty($blogs)): ?>
     <div class="list-group-item">
-        <button class="btn btn-success float-right" type="button" onclick="addCheckedBlog()">Seçilenleri
-            ekle
+        <button class="btn btn-success float-right" type="button" onclick="addCheckedBlog()">
+            <?=lang('Backend.addSelected')?>
         </button>
     </div>
     <?php endif; ?>
@@ -58,14 +58,14 @@
 <hr>
 <form id="addUrls" method="post" class="form-row mt-2">
     <div class="col-md-5 form-group">
-        <input type="text" class="form-control" placeholder="Başlık Giriniz" name="URLname">
+        <input type="text" class="form-control" placeholder="<?=lang('Backend.title')?>" name="URLname">
     </div>
     <div class="col-md-5 form-group">
-        <input type="text" class="form-control" placeholder="URL giriniz" name="URL">
+        <input type="text" class="form-control" placeholder="<?=lang('Backend.url')?>" name="URL">
     </div>
     <div class="col-md-5 form-group">
         <select class="form-control" name="target">
-            <option value="">lütfen link target seçin</option>
+            <option value=""><?=lang('Backend.select')?></option>
             <option value="_blank">_blank</option>
             <option value="_self">_self</option>
             <option value="_parent">_parent</option>
@@ -73,6 +73,6 @@
         </select>
     </div>
     <div class="col-md-2 form-group">
-        <button class="btn btn-success w-100" type="button" onclick="addURL()">URL ekle</button>
+        <button class="btn btn-success w-100" type="button" onclick="addURL()"><?=lang('Backend.add')?></button>
     </div>
 </form>

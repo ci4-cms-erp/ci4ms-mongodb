@@ -27,8 +27,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <a href="<?= route_to('blogs', 1) ?>" class="btn btn-outline-info"><i
-                                class="fas fa-arrow-circle-left"></i> Listeye Dön</a>
+                    <a href="<?= route_to('blogs', 1) ?>" class="btn btn-outline-info"><?=lang('Backend.backToList')?></a>
                 </ol>
             </div>
         </div>
@@ -54,17 +53,17 @@
                 <?= csrf_field() ?>
                 <div class="col-md-8 form-group row">
                     <div class="form-group col-md-12">
-                        <label for="">Blog Başlığı</label>
+                        <label for=""><?=lang('Backend.title')?></label>
                         <input type="text" name="title" class="form-control ptitle" placeholder="Sayfa Başlığı"
                                required value="<?= $infos->title ?>">
                     </div>
                     <div class="form-group col-md-12">
-                        <label for="">Blog URL</label>
+                        <label for=""><?=lang('Backend.url')?></label>
                         <input type="text" class="form-control seflink" name="seflink" required
                         value="<?= $infos->seflink ?>">
                     </div>
                     <div class="form-group col-md-12">
-                        <label for="">İçerik</label>
+                        <label for=""><?=lang('Backend.content')?></label>
                         <textarea name="content" rows="60" class="form-control editor"
                                   required><?= $infos->content ?></textarea>
                     </div>
@@ -75,26 +74,26 @@
                             <label class="btn btn-outline-secondary">
                                 <input type="radio" name="isActive" id="option1"
                                        autocomplete="off" <?= ($infos->isActive === false) ? 'checked' : '' ?>
-                                       value="0"> Taslak
+                                       value="0"> <?=lang('Backend.draft')?>
                             </label>
                             <label class="btn btn-outline-secondary active">
                                 <input type="radio" name="isActive" id="option2"
                                        autocomplete="off" <?= ($infos->isActive === true) ? 'checked' : '' ?> value="1">
-                                Yayında
+                                <?=lang('Backend.publish')?>
                             </label>
                         </div>
                     </div>
                     <div class="col-md-12 form-group">
-                        <label for="">Yazar</label>
+                        <label for=""><?=lang('Backend.author')?></label>
                         <select name="author" id="" class="form-control" required>
-                            <option value="">Seçiniz</option>
+                            <option value=""><?=lang('Backend.author')?></option>
                             <?php foreach($authors as $author): ?>
                                 <option value="<?=$author->_id?>" <?=$author->_id==$infos->author?'selected':''?>><?=$author->firstname.' '.$author->sirname?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="col-md-12 form-group">
-                        <label for="">Oluşturulma Tarihi</label>
+                        <label for=""><?=lang('Backend.createdAt')?></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
@@ -103,7 +102,7 @@
                         </div>
                     </div>
                     <div class="col-md-12 form-group">
-                        <label for="">Kategoriler</label>
+                        <label for=""><?=lang('Backend.categories')?></label>
                         <select name="categories[]" id="" class="form-control select2bs4" multiple="multiple"
                                 data-placeholder="Select categories">
                             <?php $selected = [];
@@ -127,41 +126,41 @@
                     </div>
                     <div class="form-group col-md-12 row">
                         <div class="col-12 form-group">
-                            <label for="">Blog Kapak Görseli</label>
+                            <label for=""><?=lang('Backend.coverImage')?></label>
                             <img src="<?=$infos->seo->coverImage?>" alt="" class="pageimg img-fluid">
                         </div>
                         <div class="col-12 form-group">
-                            <label for="">Görsel URL</label>
+                            <label for=""><?=lang('Backend.coverImgURL')?></label>
                             <input type="text" name="pageimg" class="form-control pageimg-input"
                                    placeholder="Görsel URL" value="<?=$infos->seo->coverImage?>">
                         </div>
                         <div class="col-12 row form-group">
                             <div class="col-sm-6">
-                                <label for="">Görsel Genişliği</label>
+                                <label for=""><?=lang('Backend.coverImgWith')?></label>
                                 <input type="number" name="pageIMGWidth" class="form-control" id="pageIMGWidth"
                                        readonly value="<?=$infos->seo->IMGWidth?>">
                             </div>
                             <div class="col-sm-6">
-                                <label for="">Görsel Yüksekliği</label>
+                                <label for=""><?=lang('Backend.coverImgHeight')?></label>
                                 <input type="number" name="pageIMGHeight" class="form-control" id="pageIMGHeight"
                                        readonly value="<?=$infos->seo->IMGHeight?>">
                             </div>
                         </div>
                         <div class="col-12 form-group">
-                            <button type="button" class="pageIMG btn btn-info w-100">Görsel Seçiniz</button>
+                            <button type="button" class="pageIMG btn btn-info w-100"><?=lang('Backend.selectCoverImg')?></button>
                         </div>
                     </div>
                     <div class="form-group col-md-12">
-                        <label for="">Seo Açıklaması</label>
+                        <label for=""><?=lang('Backend.seoDescription')?></label>
                         <textarea class="form-control" name="description"><?=$infos->seo->description?></textarea>
                     </div>
                     <div class="form-group col-md-12">
-                        <label for="">Seo Anahtar Kelimeleri</label>
+                        <label for=""><?=lang('Backend.seoKeywords')?></label>
                         <textarea name="keywords" class="keywords" placeholder="write some tags"><?=$tags?></textarea>
                     </div>
                 </div>
                 <div class="form-group col-md-12">
-                    <button class="btn btn-success float-right">Ekle</button>
+                    <button class="btn btn-success float-right"><?=lang('Backend.update')?></button>
                 </div>
             </form>
         </div>

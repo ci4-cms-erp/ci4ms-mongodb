@@ -19,8 +19,7 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModalCenter"
-                            href="<?= route_to('tagCreate') ?>" class="btn btn-outline-success"><i
-                                class="fas fa-plus"></i> Ekle
+                            href="<?= route_to('tagCreate') ?>" class="btn btn-outline-success"><?=lang('Backend.add')?>
                     </button>
                 </ol>
             </div>
@@ -48,8 +47,8 @@
                 <table class="table table-striped table-bordered">
                     <thead>
                     <tr>
-                        <th>Etiket</th>
-                        <th>işlemler</th>
+                        <th><?=lang('Backend.tags')?></th>
+                        <th><?=lang('Backend.transactions')?></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -58,9 +57,9 @@
                             <td><?= $tag->tag ?></td>
                             <td>
                                 <a href="<?= route_to('tagUpdate', $tag->_id) ?>"
-                                   class="btn btn-outline-info btn-sm"><i class="fas fa-edit"></i> Düzenle</a>
+                                   class="btn btn-outline-info btn-sm"><?=lang('Backend.update')?></a>
                                 <a href="<?= route_to('tagDelete', $tag->_id) ?>"
-                                   class="btn btn-outline-danger btn-sm"><i class="fas fa-edit"></i> Sil</a>
+                                   class="btn btn-outline-danger btn-sm"><?=lang('Backend.delete')?></a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
@@ -103,7 +102,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Etiket ekle</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle"><?=lang('Backend.add')?></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -111,21 +110,21 @@
                 <div class="modal-body">
                     <form action="<?= route_to('tagCreate') ?>" method="post" class="form-row">
                         <div class="form-group col-md-12">
-                            <label for="">Etiket Başlığı</label>
+                            <label for=""><?=lang('Backend.title')?></label>
                             <input type="text" name="title" class="form-control ptitle" placeholder="Etiket Başlığı"
                                    required>
                         </div>
                         <div class="form-group col-md-12">
-                            <label for="">Etiket URL</label>
+                            <label for=""><?=lang('Backend.url')?></label>
                             <input type="text" class="form-control seflink" name="seflink" required>
                         </div>
                         <div class="form-group col-md-12">
-                            <button type="button" class="btn btn-success float-right">Ekle</button>
+                            <button type="button" class="btn btn-success float-right"><?=lang('Backend.add')?></button>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><?=lang('Backend.close')?></button>
                 </div>
             </div>
         </div>

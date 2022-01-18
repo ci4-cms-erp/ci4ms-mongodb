@@ -107,7 +107,7 @@
                         <?php if (!empty($nestable2)) menu($nestable2); ?>
                         </ol>
                     </div>
-                    <button class="btn btn-success float-right" onclick="saveMenu()">Menüyü kaydet</button>
+                    <button class="btn btn-success float-right" onclick="saveMenu()"><?=lang('Backend.save')?></button>
                 </div>
             </div>
         </div>
