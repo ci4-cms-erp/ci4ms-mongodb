@@ -18,7 +18,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <a href="<?= route_to('') ?>" class="btn btn-outline-info"><?=lang('Backend.backToList')?></a>
+                    <a href="<?= route_to('tags',1) ?>" class="btn btn-outline-info"><?=lang('Backend.backToList')?></a>
                 </ol>
             </div>
         </div>
@@ -40,7 +40,8 @@
         </div>
         <div class="card-body">
             <?= view('Modules\Auth\Views\_message_block') ?>
-            <form action="<?= route_to('tagUpdate') ?>" method="post" class="form-row">
+            <form action="<?= route_to('tagUpdate',$infos->_id) ?>" method="post" class="form-row">
+                <?= csrf_field() ?>
                 <div class="form-group col-md-12">
                     <label for=""><?=lang('Backend.title')?></label>
                     <input type="text" name="title" class="form-control ptitle" placeholder="Etiket Başlığı"
@@ -51,7 +52,7 @@
                     <input type="text" class="form-control seflink" name="seflink" required value="<?=$infos->seflink?>">
                 </div>
                 <div class="form-group col-md-12">
-                    <button type="button" class="btn btn-success float-right"><?=lang('Backend.update')?></button>
+                    <button type="submit" class="btn btn-success float-right"><?=lang('Backend.update')?></button>
                 </div>
             </form>
         </div>

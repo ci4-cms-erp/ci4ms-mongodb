@@ -119,7 +119,7 @@
                             <input type="text" class="form-control seflink" name="seflink" required>
                         </div>
                         <div class="form-group col-md-12">
-                            <button type="button" class="btn btn-success float-right"><?=lang('Backend.add')?></button>
+                            <button type="submit" class="btn btn-success float-right"><?=lang('Backend.add')?></button>
                         </div>
                     </form>
                 </div>

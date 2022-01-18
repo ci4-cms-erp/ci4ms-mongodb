@@ -34,6 +34,7 @@
         <div class="card-body">
             <?= view('Modules\Auth\Views\_message_block') ?>
             <div class="container-fluid">
+                <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
                     <tr class="row">
@@ -59,6 +60,7 @@
                     <?php endforeach; ?>
                     </tbody>
                 </table>
+                </div>
             </div>
         </div>
         <?php if ($paginator->getNumPages() > 1): ?>

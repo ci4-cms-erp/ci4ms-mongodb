@@ -60,6 +60,7 @@ return [
     'logs' => 'Günlükler',
     'locked_accounts' => 'Hesap Kilit Verileri',
     'templateSettings'=>'Tema Ayarları',
+    'pageAdd'=>'Sayfa Oluşturma',
     'pageUpdate'=>'Sayfa Güncelle',
     'removeFromBlackList'=>'Kara Listeden Çıkar ve Aktivasyon Maili Gönder',
     'whyAddedBlakList'=>'Kara listeye eklenme sebebi',

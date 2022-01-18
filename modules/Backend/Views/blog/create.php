@@ -68,7 +68,7 @@
                     </div>
                 </div>
                 <div class="col-md-4 form-group row">
-                    <div class="form-group col-12">
+                    <div class="form-group col-md-12">
                         <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
                             <label class="btn btn-outline-secondary">
                                 <input type="radio" name="isActive" id="option1" autocomplete="off" value="0"> <?=lang('Backend.draft')?>
@@ -105,16 +105,16 @@
                         </select>
                     </div>
                     <div class="form-group col-md-12 row">
-                        <div class="col-12 form-group">
+                        <div class="col-md-12 form-group">
                             <label for=""><?=lang('Backend.coverImage')?></label>
                             <img src="" alt="" class="pageimg img-fluid">
                         </div>
-                        <div class="col-12 form-group">
+                        <div class="col-md-12 form-group">
                             <label for=""><?=lang('Backend.coverImgURL')?></label>
                             <input type="text" name="pageimg" class="form-control pageimg-input"
                                    placeholder="Görsel URL">
                         </div>
-                        <div class="col-12 row form-group">
+                        <div class="col-md-12 row form-group">
                             <div class="col-sm-6">
                                 <label for=""><?=lang('Backend.coverImgWith')?></label>
                                 <input type="number" name="pageIMGWidth" class="form-control" id="pageIMGWidth"
@@ -126,7 +126,7 @@
                                        readonly>
                             </div>
                         </div>
-                        <div class="col-12 form-group">
+                        <div class="col-md-12 form-group">
                             <button type="button" class="pageIMG btn btn-info w-100"><?=lang('Backend.selectCoverImg')?></button>
                         </div>
                     </div>

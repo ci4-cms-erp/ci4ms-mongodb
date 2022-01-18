@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-md-12">
                         <button type="submit" class="btn btn-success btn-block">Yeni şifre iste</button>
                     </div>
                     <!-- /.col -->

@@ -40,21 +40,21 @@
             <?= view('Modules\Auth\Views\_message_block') ?>
             <form action="<?= route_to('group_update',$group_perms->_id) ?>" method="post" class="form-row">
                 <?= csrf_field() ?>
-                <div class="col-6 col-md-6">
+                <div class="col-md-6">
                     <label for=""><?=lang('Backend.permGroupName')?></label>
                     <input type="text" class="form-control" value="<?= $group_perms->name ?>" name="groupName" required>
                 </div>
-                <div class="col-6 col-md-6">
+                <div class="col-md-6">
                     <label for="">Seflink</label>
                     <input type="text" class="form-control" value="<?= $group_perms->seflink ?>" name="seflink"
                            required>
                 </div>
-                <div class="col-12 col-md-12">
+                <div class="col-md-12">
                     <label for=""><?=lang('Backend.content')?></label>
                     <textarea name="description" cols="30" rows="10"
                               class="form-control" required><?= $group_perms->description ?></textarea>
                 </div>
-                <div class="col-12 col-md-12 mt-3">
+                <div class="col-md-12 mt-3">
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped">
                             <thead>
@@ -115,7 +115,7 @@
                     </div>
                 </div>
 
-                <div class="col-12 col-md-12">
+                <div class="col-md-12">
                     <button class="btn btn-success float-right"><?=lang('Backend.update')?></button>
                 </div>
             </form>

@@ -28,7 +28,7 @@ Ofis Çalışanı Güncelleme
             <?= view('Modules\Auth\Views\_message_block') ?>
         <form action="<?=route_to('update_user',$userInfo->_id)?>" method="post" class="form-row">
             <?= csrf_field() ?>
-            <div class="col-6 col-md-6">
+            <div class="col-md-6">
                 <div class="form-group">
                     <label for=""><?=lang('Backend.fullName')?> <?=lang('Backend.required')?></label>
                     <div class="input-group">
@@ -37,13 +37,13 @@ Ofis Çalışanı Güncelleme
                     </div>
                 </div>
             </div>
-            <div class="col-6 col-md-6">
+            <div class="col-md-6">
                 <div class="form-group">
                     <label for=""><?=lang('Backend.email')?> <?=lang('Backend.required')?></label>
                     <input type="email" name="email" class="form-control" value="<?=$userInfo->email?>" required>
                 </div>
             </div>
-            <div class="col-6 col-md-6">
+            <div class="col-md-6">
                 <div class="form-group">
                     <label for=""><?=lang('Backend.authority')?> <?=lang('Backend.required')?></label>
                     <select name="group" class="form-control" required>
@@ -56,13 +56,13 @@ Ofis Çalışanı Güncelleme
                     </select>
                 </div>
             </div>
-            <div class="col-6 col-md-6">
+            <div class="col-md-6">
                 <div class="form-group">
                     <label for=""><?=lang('Backend.password')?> <?=lang('Backend.takeNotePassword')?></label>
                     <input type="text" class="form-control" name="password" minlength="8" value="">
                 </div>
             </div>
-            <div class="col-12 col-md-12">
+            <div class="col-md-12">
                 <button class="btn btn-outline-success float-right"><?=lang('Backend.update')?></button>
             </div>
         </form>

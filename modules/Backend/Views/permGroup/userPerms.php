@@ -36,7 +36,7 @@
             <?= view('Modules\Auth\Views\_message_block') ?>
             <form action="<?= route_to('user_perms',$group_perms->_id) ?>" method="post" class="form-row">
                 <?= csrf_field() ?>
-                <div class="col-12 col-md-12 mt-3">
+                <div class="col-md-12 mt-3">
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped">
                             <thead>
@@ -97,7 +97,7 @@
                     </div>
                 </div>
 
-                <div class="col-12 col-md-12">
+                <div class="col-md-12">
                     <button class="btn btn-success float-right"><?=lang('Backend.add')?></button>
                 </div>
             </form>

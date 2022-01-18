@@ -36,7 +36,7 @@
                     <input type="text" name="captcha" class="form-control" required autocomplete="off" placeholder="Doğrulama kodu">
                 </div>
                 <div class="row">
-                    <div class="col-8">
+                    <div class="col-md-8">
                         <div class="icheck-success">
                             <input type="checkbox" name="remember" id="remember">
                             <label for="remember">
@@ -45,7 +45,7 @@
                         </div>
                     </div>
                     <!-- /.col -->
-                    <div class="col-4">
+                    <div class="col-md-4">
                         <button type="submit" class="btn btn-success btn-block"><?=lang('Auth.loginAction')?></button>
                     </div>
                     <!-- /.col -->

@@ -1,5 +1,5 @@
 <h4><strong><?=lang('Backend.pages')?></strong></h4>
-<?= empty($pages) ? '<strong>'.lang('Backend.notFindinMenu').'</strong>':''?>
+<?= empty($pages) ? '<strong>'.lang('Backend.notFindinMenuPages').'</strong>':''?>
 <form class="list-group" id="addCheckedPages">
     <?php foreach ($pages as $page): ?>
         <div class="list-group-item" id="page-<?= $page->_id ?>">
@@ -28,7 +28,7 @@
 </form>
 <hr>
 <h4><strong><?=lang('Backend.blogs')?></strong></h4>
-<?= empty($blogs) ? '<strong>'.lang('Backend.notFindinManuBlogs').'</strong>':''?>
+<?= empty($blogs) ? '<strong>'.lang('Backend.notFindinMenuBlogs').'</strong>':''?>
 <form class="list-group" id="addCheckedBlog">
     <?php foreach ($blogs as $blog): ?>
         <div class="list-group-item" id="blog-<?= $blog->_id ?>">

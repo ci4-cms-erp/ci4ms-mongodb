@@ -27,7 +27,7 @@
             <?= view('Modules\Auth\Views\_message_block') ?>
             <form action="<?= route_to('createUserPost') ?>" method="post" class="form-row">
                 <?= csrf_field() ?>
-                <div class="col-6 col-md-6">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for=""><?=lang('Backend.fullName')?> <?=lang('Backend.required')?></label>
                         <div class="input-group">
@@ -38,13 +38,13 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-6 col-md-6">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for=""><?=lang('Backend.email')?> <?=lang('Backend.required')?></label>
                         <input type="email" name="email" class="form-control" required>
                     </div>
                 </div>
-                <div class="col-6 col-md-6">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for=""><?=lang('Backend.authority')?> <?=lang('Backend.required')?></label>
                         <select name="group" class="form-control" required>
@@ -57,14 +57,14 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-6 col-md-6">
+                <div class="col-md-6">
                     <div class="form-group">
                         <label for=""><?=lang('Backend.password')?> <?=lang('Backend.takeNotePassword')?></label>
                         <input type="text" class="form-control" name="password" minlength="8"
                                value="<?= $authLib->randomPassword() ?>" required>
                     </div>
                 </div>
-                <div class="col-12 col-md-12">
+                <div class="col-md-12">
                 <button class="btn btn-outline-success float-right"><?=lang('Backend.add')?>
                 </button>
         </div>
