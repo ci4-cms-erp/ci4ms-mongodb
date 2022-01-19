@@ -34,7 +34,7 @@
                     <?=$item->icon?>
                 </div>
                 <a href="<?=route_to($item->lang,1)?>" class="small-box-footer">
-                    <?php echo lang('more_info'); ?>
+                    <?php echo lang('Backend.more_info'); ?>
                 </a>
             </div>
         </div>

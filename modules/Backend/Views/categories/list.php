@@ -18,8 +18,7 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <a href="<?= route_to('categoryCreate') ?>" class="btn btn-outline-success"><i
-                                class="fas fa-plus"></i> Kategori Oluştur</a>
+                    <a href="<?= route_to('categoryCreate') ?>" class="btn btn-outline-success"><?=lang('Backend.add')?></a>
                 </ol>
             </div>
         </div>
@@ -46,9 +45,9 @@
                 <table class="table table-striped table-bordered">
                     <thead>
                     <tr>
-                        <th>Kategori Adı</th>
-                        <th>Üst Kategorisi</th>
-                        <th>#İşlemler</th>
+                        <th><?=lang('Backend.title')?></th>
+                        <th><?=lang('Backend.parentCategory')?></th>
+                        <th><?=lang('Backend.transactions')?></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -60,9 +59,9 @@
                                 endif; ?></td>
                             <td>
                                 <a href="<?= route_to('categoryUpdate', $category->_id) ?>"
-                                   class="btn btn-outline-info btn-sm"><i class="fas fa-edit"></i> Düzenle</a>
+                                   class="btn btn-outline-info btn-sm"><?=lang('Backend.update')?></a>
                                 <a href="<?= route_to('categoryDelete', $category->_id) ?>"
-                                   class="btn btn-outline-danger btn-sm"><i class="fas fa-edit"></i> Sil</a>
+                                   class="btn btn-outline-danger btn-sm"><?=lang('Backend.delete')?></a>
                             </td>
                         </tr>
                     <?php endforeach; ?>

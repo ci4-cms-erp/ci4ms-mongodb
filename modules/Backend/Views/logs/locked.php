@@ -107,7 +107,6 @@ use CodeIgniter\I18n\Time;
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-
                     <i class="fas fa-minus"></i>
                 </button>
             </div>
@@ -118,12 +117,11 @@ use CodeIgniter\I18n\Time;
                 <table class="table table-striped table-bordered">
                     <thead>
                     <tr>
-                        <th>Blog Başlığı</th>
-                        <th>E-mail</th>
+                        <th><?=lang('Backend.email')?></th>
                         <th>IP</th>
-                        <th>Başlangıç</th>
-                        <th>Bitiş</th>
-                        <th>Durum</th>
+                        <th><?=lang('Backend.start')?></th>
+                        <th><?=lang('Backend.expire')?></th>
+                        <th><?=lang('Backend.transactions')?></th>
                     </tr>
                     </thead>
                     <tbody>

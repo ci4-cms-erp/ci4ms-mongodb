@@ -1,7 +1,7 @@
 <?= $this->extend('Modules\Backend\Views\base') ?>
 
 <?= $this->section('title') ?>
-<?=lang('Backend.')?>Ofis Çalışan Listesi
+<?=lang('Backend.userList')?>
 <?= $this->endSection() ?>
 <?= $this->section('head') ?>
 <link rel="stylesheet" href="/be-assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
@@ -12,12 +12,12 @@
     <div class="container-fluid">
         <div class="row pb-3 border-bottom">
             <div class="col-sm-6">
-                <h1>Ofis Çalışan Listesi</h1>
+                <h1><?=lang('Backend.userList')?></h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right"><a href="<?= route_to('create_user') ?>"
                                                          class="btn btn-outline-success"><i
-                                class="fas fa-user-plus"></i> Yeni Kullanıcı Ekle</a></ol>
+                                class="fas fa-user-plus"></i> <?=lang('Backend.addUser')?></a></ol>
             </div>
         </div>
     </div><!-- /.container-fluid -->
@@ -33,11 +33,11 @@
                 <table class="table table-bordered">
                     <thead>
                     <tr>
-                        <th>Ad Soyad</th>
-                        <th>E-mail</th>
-                        <th style="width: 40px">Durumu</th>
-                        <th style="width: 150px" class="text-center">Yetkisi</th>
-                        <th style="width: 500px" class="text-center">#İşlemler</th>
+                        <th><?=lang('Backend.fullName')?></th>
+                        <th><?=lang('Backend.email')?></th>
+                        <th style="width: 40px"><?=lang('Backend.status')?></th>
+                        <th style="width: 150px" class="text-center"><?=lang('Backend.authority')?></th>
+                        <th style="width: 500px" class="text-center"><?=lang('Backend.transactions')?></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -51,16 +51,16 @@
                             <td class="text-center"><?= $userList->groupInfo->name ?></td>
                             <td>
                                 <a href="<?= route_to('update_user', $userList->_id) ?>"
-                                   class="btn btn-outline-info btn-sm"><i class="fas fa-edit"></i> Düzenle</a>
+                                   class="btn btn-outline-info btn-sm"><?=lang('Backend.update')?></a>
                                 <?php if ($userList->status == 'banned'): ?>
                                     <button class="btn btn-outline-dark btn-sm"
                                             data-target="#inblackList<?= $userList->_id ?>" data-toggle="modal"><i
-                                                class="fas fa-user-slash"></i> Kara Listede
+                                                class="fas fa-user-slash"></i> <?=lang('Backend.inBlackList')?>
                                     </button>
                                 <?php else: ?>
                                     <button class="btn btn-outline-dark btn-sm"
                                             data-target="#blackList<?= $userList->_id ?>" data-toggle="modal"><i
-                                                class="fas fa-user-slash"></i> Kara Liste
+                                                class="fas fa-user-slash"></i> <?=lang('Backend.blackList')?>
                                     </button>
                                 <?php endif; ?>
                                 <button class="btn btn-outline-dark btn-sm <?php
@@ -68,12 +68,12 @@
                                     $time = $timeClass::parse($userList->reset_expires);
                                     if (time() < $time->getTimestamp())
                                         echo 'disabled';
-                                    }?>" id="fpwd" data-uid="<?= $userList->_id ?>"><i class="fas fa-key"></i> Şifre Sıfırla</button>
+                                    }?>" id="fpwd" data-uid="<?= $userList->_id ?>"><?=lang('Backend.resetPassword')?></button>
                                 <a href="<?= route_to('user_perms', $userList->_id) ?>"
                                    class="btn btn-outline-primary btn-sm">
-                                    <i class="fas fa-sitemap"></i> Özel Yetki
+                                    <i class="fas fa-sitemap"></i> <?=lang('Backend.spacialAuth')?>
                                 </a>
-                                <a class="btn btn-outline-danger btn-sm" href="<?=route_to('user_del',$userList->_id)?>"><i class="fas fa-user-minus"></i> sil</a>
+                                <a class="btn btn-outline-danger btn-sm" href="<?=route_to('user_del',$userList->_id)?>"><?=lang('Backend.delete')?></a>
                             </td>
                             <?php if ($userList->status == 'banned'): ?>
                                 <div class="modal fade" id="inblackList<?= $userList->_id ?>" tabindex="-1"
@@ -81,7 +81,7 @@
                                     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Kara Liste</h5>
+                                                <h5 class="modal-title" id="exampleModalLabel"><?=lang('Backend.blackList')?></h5>
                                                 <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
@@ -89,8 +89,8 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div class="row">
-                                                    <div class="col-12">
-                                                        <label for="">Kara listeye eklenme sebebi</label>
+                                                    <div class="col-md-12">
+                                                        <label for=""><?=lang('Backend.whyAddedBlakList')?></label>
                                                         <div>
                                                             <?= $userList->inBlackList->notes ?>
                                                         </div>
@@ -103,11 +103,11 @@
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
                                                             data-dismiss="modal">
-                                                        Vazgeç
+                                                        <?=lang('Backend.cancel')?>
                                                     </button>
                                                     <button type="submit" class="btn btn-dark"><i
                                                                 class="fas fa-user-check"></i>
-                                                        Kara Listeden Çıkar ve Aktivasyon Maili Gönder
+                                                        <?=lang('Backend.removeFromBlackList')?>
                                                     </button>
                                                 </div>
                                             </form>

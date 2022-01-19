@@ -6,12 +6,11 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1><?=$group_perms->firstname.' '.$group_perms->sirname?> yetkilerini güncelle</h1>
+                <h1><?=$group_perms->firstname.' '.$group_perms->sirname?> <?=lang('Backend.permUpdate')?></h1>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
-                    <a href="<?= route_to('officeWorker',1) ?>" class="btn btn-outline-info"><i
-                                class="fas fa-arrow-circle-left"></i> Listeye Dön</a>
+                    <a href="<?= route_to('officeWorker',1) ?>" class="btn btn-outline-info"><?=lang('Backend.backToList')?></a>
                 </ol>
             </div>
         </div>
@@ -24,7 +23,7 @@
     <!-- Default box -->
     <div class="card card-outline card-shl">
         <div class="card-header">
-            <h3 class="card-title font-weight-bold"><?=$group_perms->firstname.' '.$group_perms->sirname?> yetkilerini güncelle</h3>
+            <h3 class="card-title font-weight-bold"><?=$group_perms->firstname.' '.$group_perms->sirname?> <?=lang('Backend.permUpdate')?></h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -37,14 +36,14 @@
             <?= view('Modules\Auth\Views\_message_block') ?>
             <form action="<?= route_to('user_perms',$group_perms->_id) ?>" method="post" class="form-row">
                 <?= csrf_field() ?>
-                <div class="col-12 col-md-12 mt-3">
+                <div class="col-md-12 mt-3">
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr>
-                                <td>Sayfa Adı</td>
-                                <td>Açıklaması</td>
-                                <td style="width: 200px">Yetkileri</td>
+                                <td><?=lang('Backend.pages')?></td>
+                                <td><?=lang('Backend.content')?></td>
+                                <td style="width: 200px"><?=lang('Backend.perms')?></td>
                             </tr>
                             </thead>
                             <tbody>
@@ -98,8 +97,8 @@
                     </div>
                 </div>
 
-                <div class="col-12 col-md-12">
-                    <button class="btn btn-success float-right">Kaydet</button>
+                <div class="col-md-12">
+                    <button class="btn btn-success float-right"><?=lang('Backend.add')?></button>
                 </div>
             </form>
         </div>
