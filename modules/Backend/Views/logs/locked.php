@@ -1,3 +1,8 @@
+<?php
+
+use CodeIgniter\I18n\Time;
+
+?>
 <?= $this->extend('Modules\Backend\Views\base') ?>
 
 <?= $this->section('title') ?>
@@ -16,12 +21,6 @@
         <div class="row mb-2">
             <div class="col-sm-6">
                 <h1><?= lang('Backend.' . $title->pagename) ?></h1>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <a href="<?= route_to('blogCreate') ?>" class="btn btn-outline-success"><i
-                                class="fas fa-plus"></i> Ekle</a>
-                </ol>
             </div>
         </div>
     </div><!-- /.container-fluid -->
@@ -51,7 +50,8 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                         </div>
-                        <input type="text" name="email" class="form-control" placeholder="Email">
+                        <input type="text" name="email" class="form-control" placeholder="Email"
+                               value="<?= $filteredData['email'] ?? null ?>">
                     </div>
                 </div>
 
@@ -61,7 +61,8 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-laptop"></i></span>
                         </div>
-                        <input type="text" name="ip" class="form-control" data-inputmask="'alias': 'ip'" data-mask>
+                        <input type="text" name="ip" class="form-control" data-inputmask="'alias': 'ip'" data-mask
+                               value="<?= $filteredData['ip'] ?? null ?>">
                     </div>
                 </div>
 
@@ -71,7 +72,8 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="far fa-clock"></i></span>
                         </div>
-                        <input type="text" name="date_range" class="form-control" id="reservationtime">
+                        <input type="text" name="date_range" class="form-control" id="reservationtime"
+                               value="<?= $filteredData['date_range'] ?? null ?>">
                     </div>
                 </div>
 
@@ -79,8 +81,12 @@
                     <label>Durum</label>
                     <select class="form-control" name="status">
                         <option value="">Seçin</option>
-                        <option value="1">Aktive</option>
-                        <option value="0">Pasif</option>
+                        <option <?= isset($filteredData['status']) && $filteredData['status'] === '1' ? 'selected' : '' ?>
+                                value="1">Aktive
+                        </option>
+                        <option <?= isset($filteredData['status']) && $filteredData['status'] === '0' ? 'selected' : '' ?>
+                                value="0">Pasif
+                        </option>
                     </select>
                 </div>
 
@@ -91,12 +97,13 @@
 
         </div>
     </div>
+    <!-- /.filter -->
 
-
-    <!-- Default box -->
+    <!-- table box -->
     <div class="card card-outline card-shl">
         <div class="card-header">
-            <h3 class="card-title font-weight-bold"><?= lang('Backend.' . $title->pagename) ?>  <small> (Toplam: <?= $totalCount ?? null ?> satır. )</small></h3>
+            <h3 class="card-title font-weight-bold"><?= lang('Backend.' . $title->pagename) ?> <small>
+                    (Toplam: <?= $totalCount ?? null ?> satır. )</small></h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -126,8 +133,8 @@
                                 <td><?= $keys + 1 ?></td>
                                 <td><?= $lock->username ?></td>
                                 <td><?= $lock->ip_address ?></td>
-                                <td><?= $lock->locked_at ?></td>
-                                <td><?= $lock->expiry_date ?></td>
+                                <td><?= Time::createFromFormat('Y-m-d H:i:s', new Time($lock->locked_at), 'Europe/Istanbul')->toLocalizedString('D-MMM-yy  | HH:MM') ?></td>
+                                <td><?= Time::createFromFormat('Y-m-d H:i:s', new Time($lock->expiry_date), 'Europe/Istanbul')->toLocalizedString('D-MMM-yy | HH:MM ') ?></td>
                                 <td>
                                     <input type="checkbox" name="my-checkbox"
                                            class="bswitch" <?= ($lock->isLocked === true) ? 'checked' : '' ?>
@@ -173,7 +180,7 @@
         </div>
         <!-- /.card-body -->
     </div>
-    <!-- /.card -->
+    <!-- /.list -->
 
 </section>
 <!-- /.content -->
@@ -213,11 +220,14 @@
     //Date range picker with time picker
     $('#reservationtime').daterangepicker({
         timePicker: true,
-        timePickerIncrement: 30,
+        timePickerIncrement: 10,
+        todayHighlight: true,
+        buttons: {showClear: true, showToday:true, showClose: true},
         locale: {
-            format: 'DD/MM/YYYY hh:mm A'
+            format: 'D-MMM-yy HH:MM'
         }
     })
+
 
     // IP mask
     $('[data-mask]').inputmask()
