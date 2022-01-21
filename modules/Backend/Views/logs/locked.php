@@ -41,10 +41,8 @@ use CodeIgniter\I18n\Time;
         </div>
 
         <div class="card-body">
-            <?= view('Modules\Auth\Views\_message_block') ?>
             <form action="<?= route_to('locked/(:any)') ?>" class="form-row" method="get">
-
-                <div class="form-group col-6">
+                <div class="form-group col-md-6">
                     <label for="email">Email</label>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
@@ -55,29 +53,29 @@ use CodeIgniter\I18n\Time;
                     </div>
                 </div>
 
-                <div class="form-group col-6">
+                <div class="form-group col-md-6">
                     <label>IP </label>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-laptop"></i></span>
                         </div>
-                        <input type="text" name="ip" class="form-control" data-inputmask="'alias': 'ip'" data-mask
-                               value="<?= $filteredData['ip'] ?? null ?>">
+                        <input type="text" name="ip" class="form-control"value="<?= $filteredData['ip'] ?? null ?>">
+                        <!--data-inputmask="'alias': 'ip'" data-mask -->
                     </div>
                 </div>
 
-                <div class="form-group col-6">
+                <div class="form-group col-md-6">
                     <label>Zaman Aralığı</label>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="far fa-clock"></i></span>
                         </div>
-                        <input type="text" name="date_range" class="form-control" id="reservationtime"
+                        <input type="text" name="date_range" class="form-control" id="reservationtime" autocomplete="off"
                                value="<?= $filteredData['date_range'] ?? null ?>">
                     </div>
                 </div>
 
-                <div class="form-group col-6">
+                <div class="form-group col-md-6">
                     <label>Durum</label>
                     <select class="form-control" name="status">
                         <option value="">Seçin</option>
@@ -90,7 +88,10 @@ use CodeIgniter\I18n\Time;
                     </select>
                 </div>
 
-                <div class="col-12">
+                <div class="col-md-9 ">
+                    <a href="<?= route_to('locked',1) ?>" >Filtreyi Temizle</a>
+                </div>
+                <div class="col-md-3 float-right">
                     <button type="submit" class=" form-control btn btn-success">Ara</button>
                 </div>
             </form>
@@ -117,6 +118,7 @@ use CodeIgniter\I18n\Time;
                 <table class="table table-striped table-bordered">
                     <thead>
                     <tr>
+                        <th>#</th>
                         <th><?=lang('Backend.email')?></th>
                         <th>IP</th>
                         <th><?=lang('Backend.start')?></th>
