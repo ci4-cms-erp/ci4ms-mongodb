@@ -102,4 +102,20 @@
 
 .elfinder{
     z-index:1050 !important;
+<<<<<<< HEAD
+=======
+}
+
+.dd-handle{
+    height:60px !important;
+    padding:10px 10px !important;
+}
+
+.dd-item>button{
+    margin:15px 0 !important;
+}
+
+.dd-handle span{
+    font-size:1.2em !important;
+>>>>>>> dev
 }

@@ -1,16 +1,31 @@
+<<<<<<< HEAD
 <?php
 
 namespace Config;
 
 // Create a new instance of our RouteCollection class.
+=======
+<?php namespace Config;
+
+// Create a new instance of our RouteCollection class.
+use ci4mongodblibrary\Models\CommonModel;
+
+$commonModel = new CommonModel();
+$activeTemplate=$commonModel->getOne('settings');
+
+>>>>>>> dev
 $routes = Services::routes();
 
 // Load the system's routing file first, so that the app and ENVIRONMENT
 // can override as needed.
+<<<<<<< HEAD
 if (file_exists(SYSTEMPATH . 'Config/Routes.php'))
 {
 	require SYSTEMPATH . 'Config/Routes.php';
 }
+=======
+if (file_exists(SYSTEMPATH . 'Config/Routes.php')) require SYSTEMPATH . 'Config/Routes.php';
+>>>>>>> dev
 
 /**
  * --------------------------------------------------------------------
@@ -32,11 +47,23 @@ $routes->setAutoRoute(true);
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
+<<<<<<< HEAD
 $routes->get('/', 'Home::index');
 $routes->add('/(:any)', 'Home::index/$1');
 $routes->get('maintenance-mode','Home::maintenanceMode');
 $routes->match(['get', 'post'], 'imageRender/(:segment)', 'RenderImage::index/$1');
 $routes->match(['get', 'post'], 'renderElfinder', 'RenderImage::renderElfinder');
+=======
+$routes->get('/', 'Home::index',['filter'=>'ci4ms']);
+$routes->add('/(:any)', 'Home::index/$1',['filter'=>'ci4ms']);
+$routes->get('maintenance-mode','Home::maintenanceMode',['as'=>'maintenance-mode']);
+$routes->get('blog','Home::blog',['filter'=>'ci4ms']);
+$routes->get('blog/(:num)','Home::blog/$1',['filter'=>'ci4ms']);
+$routes->get('blog/(:any)','Home::blogDetail/$1',['filter'=>'ci4ms']);
+$routes->get('tag/(:any)','Home::tagList/$1',['filter'=>'ci4ms','as'=>'tag']);
+$routes->get('category/(:any)','Home::category/$1',['filter'=>'ci4ms','as'=>'category']);
+$routes->get('archive/(:any)','Home::archive/$1',['filter'=>'ci4ms','as'=>'archive']);
+>>>>>>> dev
 /*$routes->add('feed', function () {
     $rss = new RSSFeeder();
 
@@ -56,8 +83,30 @@ $routes->match(['get', 'post'], 'renderElfinder', 'RenderImage::renderElfinder')
  * You will have access to the $routes object within that file without
  * needing to reload it.
  */
+<<<<<<< HEAD
 if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php'))
 	require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
+=======
+if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
+
+/**
+ * --------------------------------------------------------------------
+ * Include Templates Routes Files
+ * --------------------------------------------------------------------
+ */
+if (file_exists(APPPATH.'Config')) {
+    $modulesPath = APPPATH.'Config';
+    $modules = scandir($modulesPath.'/templates');
+    foreach ($modules as $module) {
+        if ($module === '.' || $module === '..') continue;
+        if (is_dir($modulesPath) . '/' . $module) {
+            $routesPath = $modulesPath . '/templates/'.$activeTemplate->templateInfos->path.'/Routes.php';
+            if (file_exists($routesPath)) require($routesPath);
+            else continue;
+        }
+    }
+}
+>>>>>>> dev
 
 /**
  * --------------------------------------------------------------------
@@ -76,4 +125,8 @@ if (file_exists(ROOTPATH.'modules')) {
             else continue;
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> dev

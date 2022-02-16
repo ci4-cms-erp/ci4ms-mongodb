@@ -3,7 +3,11 @@
 <?=lang('Backend.'.$title->pagename)?>
 <?= $this->endSection() ?>
 <?= $this->section('head') ?>
+<<<<<<< HEAD
 <link rel="stylesheet" href="/be-assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
+=======
+<?=link_tag("be-assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css")?>
+>>>>>>> dev
 <?= $this->endSection() ?>
 <?= $this->section('content') ?>
 <!-- Content Header (Page header) -->
@@ -14,7 +18,11 @@
                 <h1><?=lang('Backend.'.$title->pagename)?></h1>
             </div>
             <div class="col-sm-6">
+<<<<<<< HEAD
                 <a href="<?= route_to('pageCreate') ?>" class="btn btn-success float-right"><?=lang('Backend.pageAdd')?></a>
+=======
+                <a href="<?= route_to('pageCreate') ?>" class="btn btn-outline-success float-right"><?=lang('Backend.add')?></a>
+>>>>>>> dev
             </div>
         </div>
     </div><!-- /.container-fluid -->
@@ -24,7 +32,11 @@
     <!-- Default box -->
     <div class="card card-outline card-shl">
         <div class="card-header">
+<<<<<<< HEAD
             <h3 class="card-title font-weight-bold">Sayfalar Listesi</h3>
+=======
+            <h3 class="card-title font-weight-bold"><?=lang('Backend.'.$title->pagename)?></h3>
+>>>>>>> dev
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                     <i class="fas fa-minus"></i>
@@ -34,12 +46,22 @@
         <div class="card-body">
             <?= view('Modules\Auth\Views\_message_block') ?>
             <div class="container-fluid">
+<<<<<<< HEAD
                 <table class="table table-striped">
                     <thead>
                     <tr class="row">
                         <th class="col-md-9">Sayfa Adı</th>
                         <th class="col-md-1">Durumu</th>
                         <th class="col-md-2">#İşlemler</th>
+=======
+                <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr class="row">
+                        <th class="col-md-9"><?=lang('Backend.title')?></th>
+                        <th class="col-md-1"><?=lang('Backend.status')?></th>
+                        <th class="col-md-2"><?=lang('Backend.transactions')?></th>
+>>>>>>> dev
                     </tr>
                     </thead>
                     <tbody>
@@ -51,14 +73,24 @@
                         </td>
                         <td class="col-md-2">
                             <a href="<?= route_to('pageUpdate', $page->_id) ?>"
+<<<<<<< HEAD
                                class="btn btn-outline-info btn-sm"><i class="fas fa-edit"></i> Düzenle</a>
                             <a href="<?= route_to('pageDelete', $page->_id) ?>"
                                class="btn btn-outline-danger btn-sm"><i class="fas fa-edit"></i> Sil</a>
+=======
+                               class="btn btn-outline-info btn-sm"><?=lang('Backend.update')?></a>
+                            <a href="<?= route_to('pageDelete', $page->_id) ?>"
+                               class="btn btn-outline-danger btn-sm"><?=lang('Backend.delete')?></a>
+>>>>>>> dev
                         </td>
                     </tr>
                     <?php endforeach; ?>
                     </tbody>
                 </table>
+<<<<<<< HEAD
+=======
+                </div>
+>>>>>>> dev
             </div>
         </div>
         <?php if ($paginator->getNumPages() > 1): ?>
@@ -91,9 +123,15 @@
 <!-- /.content -->
 <?= $this->endSection() ?>
 <?= $this->section('javascript') ?>
+<<<<<<< HEAD
 <script src="/be-assets/plugins/sweetalert2/sweetalert2.min.js"></script>
 <!-- Bootstrap Switch -->
 <script src="/be-assets/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+=======
+<?=script_tag("be-assets/plugins/sweetalert2/sweetalert2.min.js")?>
+<!-- Bootstrap Switch -->
+<?=script_tag("be-assets/plugins/bootstrap-switch/js/bootstrap-switch.min.js")?>
+>>>>>>> dev
 <script>
     $('.bswitch').bootstrapSwitch();
     $('.bswitch').on('switchChange.bootstrapSwitch',function(){

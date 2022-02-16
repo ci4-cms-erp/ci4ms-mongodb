@@ -7,7 +7,10 @@ function pageImgelfinderDialog() {
         destroyOnClose: true,
         cssAutoLoad: [window.location.origin+'/be-assets/node_modules/elfinder-material-theme/Material/css/theme-gray.css'],
         getFileCallback: function (files, fm) {
+<<<<<<< HEAD
             console.log(files);
+=======
+>>>>>>> dev
             $('.pageimg-input').val(files.url);
             $('.pageimg').attr('src',files.url);
             const img = new Image();
@@ -40,6 +43,7 @@ $('.pageimg-input').change(function () {
     img.src = $(this).val();
 });
 
+<<<<<<< HEAD
 $('.editor').summernote({
     height: 300,
     toolbar: [
@@ -57,6 +61,8 @@ $('.editor').summernote({
     ]
 });
 
+=======
+>>>>>>> dev
 function elfinderDialog() {
     var fm = $('<div/>').dialogelfinder({
         url: '/be-assets/plugins/elFinder/php/connector.minimal.php', // change with the url of your connector
@@ -66,7 +72,10 @@ function elfinderDialog() {
         destroyOnClose: true,
         cssAutoLoad: [window.location.origin+'/be-assets/node_modules/elfinder-material-theme/Material/css/theme-gray.css'],
         getFileCallback: function (files, fm) {
+<<<<<<< HEAD
             console.log(files);
+=======
+>>>>>>> dev
             $('.editor').summernote('editor.insertImage', files.url);
         },
         commandsOptions: {
@@ -91,3 +100,23 @@ function tags(data) {
         }
     });
 }
+<<<<<<< HEAD
+=======
+
+$('.editor').summernote({
+    height: 300,
+    toolbar: [
+        ['style', ['style']],
+        ['style', ['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
+        ['fontname', ['fontname']],
+        ['fontsize', ['fontsize']],
+        ['color', ['color']],
+        ['para', ['ul', 'ol', 'paragraph']],
+        ['height', ['height']],
+        ['table', ['table']],
+        ['insert', ['link', 'picture', 'video', 'hr', 'readmore']],
+        ['media', ['elfinder']],
+        ['view', ['fullscreen', 'codeview']]
+    ]
+});
+>>>>>>> dev

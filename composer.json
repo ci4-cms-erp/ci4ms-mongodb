@@ -5,10 +5,17 @@
 	"homepage": "https://bertugfahriozer.com/blogDetail/sistemde-kimlik-dogrulama-auth",
 	"license": "MIT",
 	"require": {
+<<<<<<< HEAD
 		"php": "^7.3||^8.0",
 		"codeigniter4/framework": "^4",
 		"codeigniter4/translations": "^4.1",
 		"almasaeed2010/adminlte": "^v3.1.0-rc",
+=======
+		"php": "^7.3||^8",
+		"codeigniter4/framework": "^4",
+		"codeigniter4/translations": "^4.1",
+		"almasaeed2010/adminlte": "^v3",
+>>>>>>> dev
 		"mongodb/mongodb": "^1.8",
 		"gregwar/captcha": "1.*",
 		"phpmailer/phpmailer": "^6.4",

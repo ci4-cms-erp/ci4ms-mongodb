@@ -28,9 +28,15 @@ return [
 
     // Login
     'badAttempt' => 'Giriş yapılamıyor. Lütfen bilgilerinizi kontrol edin.',
+<<<<<<< HEAD
     'loginBlock' => 'Girişiniz askıya alınmıştır. Lütfen IT departmanına başvurun.',
     'loginSuccess' => 'Tekrar Hoşgeldiniz!',
     'invalidPassword' => 'Giriş yapılamıyor. Lütfen bilgilerinizi kontrol edin.',
+=======
+    'loginBlock' => '<b>Girişiniz askıya alınmıştır</b>. <br>Lütfen IT departmanına başvurun.',
+    'loginSuccess' => 'Tekrar Hoşgeldiniz!',
+    'invalidPassword' => 'Giriş yapılamıyor. Lütfen bilgilerinizi kontrol edin. %s',
+>>>>>>> dev
 
     // Forgotten Passwords
     'forgotDisabled' => 'Resseting password option has been disabled.', // translate

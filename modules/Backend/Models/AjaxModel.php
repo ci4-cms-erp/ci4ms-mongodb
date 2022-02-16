@@ -1,10 +1,17 @@
 <?php namespace Modules\Backend\Models;
 
+<<<<<<< HEAD
 use CodeIgniter\Model;
 use ci4mongodblibrary\Libraries\Mongo;
 use Config\MongoConfig;
 
 class AjaxModel extends Model
+=======
+use ci4mongodblibrary\Libraries\Mongo;
+use Config\MongoConfig;
+
+class AjaxModel
+>>>>>>> dev
 {
     protected $m;
     protected $mongoConfig;
@@ -12,7 +19,10 @@ class AjaxModel extends Model
 
     public function __construct()
     {
+<<<<<<< HEAD
         parent::__construct();
+=======
+>>>>>>> dev
         $this->m = new Mongo($this->databaseGroup);
         $this->mongoConfig = new MongoConfig();
     }
@@ -34,7 +44,11 @@ class AjaxModel extends Model
         ];
         if (!empty($credentials))
             $query[] = ['$match' => $credentials];
+<<<<<<< HEAD
         $query[]=['$group'=>['_id'=>['id'=>'$_id','value'=>'$tag']]];
+=======
+        $query[]=['$group'=>['_id'=>['id'=>'$_id','value'=>'$tag','seflink'=>'$seflink']]];
+>>>>>>> dev
         return $this->m->options($options)->aggregate('tags', $query)->toArray();
     }
 }

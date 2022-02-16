@@ -1,20 +1,28 @@
 <?php namespace Modules\Backend\Models;
 
 use ci4mongodblibrary\Libraries\Mongo;
+<<<<<<< HEAD
 use CodeIgniter\Model;
+=======
+>>>>>>> dev
 use Config\Services;
 use CodeIgniter\I18n\Time;
 use Modules\Backend\Config\Auth;
 
+<<<<<<< HEAD
 /**
  *
  */
 class UserModel extends Model
+=======
+class UserModel
+>>>>>>> dev
 {
     /**
      * @var string
      */
     protected $table;
+<<<<<<< HEAD
     /**
      * @var string
      */
@@ -23,10 +31,14 @@ class UserModel extends Model
      * @var string
      */
     protected $returnType = 'Modules\Auth\Entities\UserEntity';
+=======
+
+>>>>>>> dev
     /**
      * @var bool
      */
     protected $useTimestamps = true;
+<<<<<<< HEAD
     /**
      * @var string[]
      */
@@ -34,23 +46,32 @@ class UserModel extends Model
         '_id', 'email', 'firstname', 'sirname', 'username', 'activate_hash', 'password_hash', 'reset_hash', 'reset_at', 'reset_expires',
         'status', 'status_message', 'force_pass_reset', 'create_at', 'updated_at', 'deleted_at', 'groups_id'
     ];
+=======
+
+>>>>>>> dev
     /**
      * @var Mongo
      */
     protected $m;
 
+<<<<<<< HEAD
     /**
      *
      */
     public function __construct()
     {
         parent::__construct();
+=======
+    public function __construct()
+    {
+>>>>>>> dev
         $this->m = new Mongo();
         $this->table='users';
     }
 
     /**
      * @param array $credentials
+<<<<<<< HEAD
      * @param array $select
      * @return array|object|null
      */
@@ -71,6 +92,8 @@ class UserModel extends Model
 
     /**
      * @param array $credentials
+=======
+>>>>>>> dev
      * @param array $set
      * @return array|object|null
      */
@@ -154,14 +177,19 @@ class UserModel extends Model
     public function purgeOldRememberTokens()
     {
         $config = new Auth();
+<<<<<<< HEAD
 
         if (!$config->allowRemembering) {
             return;
         }
+=======
+        if (!$config->allowRemembering) return;
+>>>>>>> dev
         $this->m->deleteOne('auth_tokens', ['expires <=' => date('Y-m-d H:i:s')]);
     }
 
     /**
+<<<<<<< HEAD
      * @param string $id
      * @return bool
      */
@@ -180,12 +208,15 @@ class UserModel extends Model
     }
 
     /**
+=======
+>>>>>>> dev
      * @param string $selector
      * @param string $validator
      * @return array|object|null
      */
     public function updateRememberValidator(string $selector, string $validator)
     {
+<<<<<<< HEAD
         return $this->m->where(['selector' => $selector])
             ->findOneAndUpdate('auth_tokens', ['hashedValidator' => hash('sha256', $validator)]);
     }
@@ -239,4 +270,66 @@ class UserModel extends Model
             'created_at' => date('Y-m-d H:i:s')
         ]);
     }
+=======
+        return $this->m->where(['selector' => $selector])->findOneAndUpdate('auth_tokens', ['hashedValidator' => hash('sha256', $validator)]);
+    }
+
+    /**
+     * used for list data with where and  where_or
+     * @param string $collection
+     * @param array $where
+     * @param array $or
+     * @param array $options
+     * @param array $select
+     * @return mixed
+     * @throws \Exception
+     *
+     */
+    public function getListOr(string $collection, array $where = [], array $options = [], array $select = [], array $or = [])
+    {
+        return $this->m->options($options)->select($select)->where($where)->where_or($or)->find($collection)->toArray();
+    }
+
+    /**
+     * @param string $collection
+     * @param array $where
+     * @param array $options
+     * @param array $or
+     * @return mixed
+     * @throws \Exception
+     */
+    public function countOr(string $collection, array $where, array $options = [], array $or = [])
+    {
+        return $this->m->options($options)->where($where)->where_or($or)->count($collection);
+    }
+
+    /**
+     * @param string $collection
+     * @param array $where
+     * @param array $options
+     * @param array $select
+     * @param array $or
+     * @return mixed
+     * @throws \Exception
+     */
+    public function getOneOr(string $collection, array $where = [], array $options = [], array $select = [],array $or = [])
+    {
+        return $this->m->options($options)->select($select)->where($where)->where_or($or)->findOne($collection);
+    }
+
+    /**
+     * @param string $collection
+     * @param array $where
+     * @param array $set
+     * @param array $options
+     * @return mixed
+     * @throws \Exception
+     */
+
+    public function updateManyOr(string $collection, array $where, array $set, array $options = [], array $or =[])
+    {
+        return $this->m->options($options)->where($where)->where_or($or)->set($set)->updateMany($collection);
+    }
+
+>>>>>>> dev
 }

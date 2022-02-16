@@ -15,7 +15,15 @@
  */
 
 if (!function_exists('clearFilter')) {
+<<<<<<< HEAD
     function clearFilter($array)
+=======
+    /**
+     * @param array $array
+     * @return array
+     */
+    function clearFilter(array $array)
+>>>>>>> dev
     {
         $clear = array_filter(
             $array, function ($value) {
@@ -32,6 +40,12 @@ if (!function_exists('clearFilter')) {
 }
 
 if(!function_exists('show_404')) {
+<<<<<<< HEAD
+=======
+    /**
+     * @return mixed
+     */
+>>>>>>> dev
     function show_404()
     {
         throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
@@ -39,6 +53,14 @@ if(!function_exists('show_404')) {
 }
 
 if(!function_exists('seflink')) {
+<<<<<<< HEAD
+=======
+    /**
+     * @param $str
+     * @param $options
+     * @return string
+     */
+>>>>>>> dev
     function seflink($str, $options = array())
     {
         $str = mb_convert_encoding((string)$str, 'UTF-8', mb_list_encodings());
@@ -162,4 +184,41 @@ if(!function_exists('seflink')) {
         $str = trim($str, $options['delimiter']);
         return $options['lowercase'] ? mb_strtolower($str, 'UTF-8') : $str;
     }
+<<<<<<< HEAD
+=======
+}
+
+if (!function_exists('navigationWidget')) {
+    /**
+     * Bootstrap 5 dropdown used.
+     * @param array $menus
+     * @param $parent
+     * @param string $class
+     * @return void
+     */
+    function navigationWidget(array $menus, $parent = null, string $class='nav-link')
+    {
+        foreach ($menus as $menu) {
+            if ($menu->parent == $parent) {
+                echo '<li class="nav-item ';
+                if (isset($menu->hasChildren) && $menu->hasChildren === true) {
+                    echo "dropdown";
+                    $class.=' dropdown-toggle';
+                }
+                echo '"><a class="'.$class.'" href="'.site_url($menu->seflink).'"';
+                if (isset($menu->hasChildren) && $menu->hasChildren === true)
+                    echo ' role="button" data-bs-toggle="dropdown" aria-expanded="false"';
+                echo '>'.$menu->title.'</a>';
+                if (isset($menu->hasChildren) && $menu->hasChildren === true) {
+                    echo '<ul class="dropdown-menu">';
+                    $class='dropdown-item';
+                }
+                navigationWidget($menus, $menu->pages_id,$class);
+                if (isset($menu->hasChildren) && $menu->hasChildren === true)
+                    echo '</ul>';
+                echo '</li>';
+            }
+        }
+    }
+>>>>>>> dev
 }

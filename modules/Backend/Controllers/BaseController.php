@@ -38,7 +38,11 @@ class BaseController extends Controller
      *
      * @var array
      */
+<<<<<<< HEAD
     protected $helpers = ['text'];
+=======
+    protected $helpers = ['text','filesystem','html'];
+>>>>>>> dev
 
     /**
      * Constructor.
@@ -94,11 +98,28 @@ class BaseController extends Controller
         if($settings->mailProtocol==='smtp')
             $this->config->mailConfig['SMTPCrypto']='PHPMailer::ENCRYPTION_STARTTLS';
 
+<<<<<<< HEAD
+=======
+        $templates=directory_map(ROOTPATH.'public/templates');
+        foreach($templates as $key=>$template){
+                if(is_file(ROOTPATH.'public/templates/'.$key.'info.xml')===false && is_file(ROOTPATH.'public/templates/'.$key.'screenshot.png')===false)
+                {
+                    session()->setFlashdata('warning', ROOTPATH.'public/templates/'.$key.' klasöründe "info.xml" ve/veya "screenshot.png" dosyaları bulunmuyor. Kontrolü sağlayınız.');
+                    break;
+                }
+        }
+>>>>>>> dev
         $this->defData = ['config' => $this->config,
             'logged_in_user' => $this->logged_in_user,
             'backConfig' => $this->backConfig,
             'navigation' => $nav,
             'title'=>$this->commonModel->getOne('auth_permissions_pages', ['className' => str_replace('\\', '-',$router->controllerName()), 'methodName' => $router->methodName()], ['projection' => ['pagename' => true]]),
+<<<<<<< HEAD
             'uri' => $uri];
+=======
+            'uri' => $uri,
+            'settings'=>$settings];
+        if(count($templates)>=1) $this->defData['templates']=$templates;
+>>>>>>> dev
     }
 }

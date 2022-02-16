@@ -20,7 +20,30 @@
 
 <!-- Main content -->
 <section class="content">
+<<<<<<< HEAD
 
+=======
+    <div class="row">
+        <?php foreach ($dashboard as $item) : ?>
+        <div class="col-lg-3 col-md-3">
+            <!-- small card -->
+            <div class="small-box bg-light shadow">
+                <div class="inner">
+                    <h3><?=$item->count?></h3>
+
+                    <p><?= lang('Backend.'.$item->lang); ?></p>
+                </div>
+                <div class="icon">
+                    <?=$item->icon?>
+                </div>
+                <a href="<?=route_to($item->lang,1)?>" class="small-box-footer">
+                    <?php echo lang('Backend.more_info'); ?>
+                </a>
+            </div>
+        </div>
+        <?php endforeach; ?>
+    </div>
+>>>>>>> dev
 </section>
 <!-- /.content -->
 <?= $this->endSection() ?>

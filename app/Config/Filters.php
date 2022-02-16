@@ -2,6 +2,10 @@
 
 namespace Config;
 
+<<<<<<< HEAD
+=======
+use App\Filters\Ci4ms;
+>>>>>>> dev
 use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Filters\CSRF;
 use CodeIgniter\Filters\DebugToolbar;
@@ -21,6 +25,10 @@ class Filters extends BaseConfig
         'csrf' => CSRF::class,
         'toolbar' => DebugToolbar::class,
         'honeypot' => Honeypot::class,
+<<<<<<< HEAD
+=======
+        'ci4ms' => Ci4ms::class,
+>>>>>>> dev
         'backendAuthFilter' => BackendAuthFilter::class,
         'backendAfterLoginFilter' => BackendAfterLoginFilter::class,
     ];

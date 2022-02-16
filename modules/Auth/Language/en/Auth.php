@@ -95,5 +95,20 @@ return [
     'newPassword' => 'New Password',
     'newPasswordRepeat' => 'Repeat New Password',
     'resetPassword' => 'Reset Password',
+<<<<<<< HEAD
     'badCaptcha' => 'Captcha is wrong.'
+=======
+    'badCaptcha' => 'Captcha is wrong.',
+    'more_info' => 'More info <i class="fas fa-arrow-circle-right"></i>',
+    'sayfalar' => 'Sayfalar',
+    'Auth.resetPassword' => '',
+    'Auth.newPasswordRepeat' => '',
+    'Auth.newPassword' => '',
+    'Auth.email' => '',
+    'Backend.' => '',
+    'Backend.pageAdd' => '',
+    'Auth.forgotPassword' => '',
+    'Auth.loginAction' => '',
+    'Auth.rememberMe' => ''
+>>>>>>> dev
 ];
