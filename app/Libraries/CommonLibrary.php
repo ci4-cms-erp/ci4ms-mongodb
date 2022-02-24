@@ -124,7 +124,7 @@ class CommonLibrary
         }
         return $part;
     }
-
+    //TODO: çoklu veri işlenmesi için virgül kullanılır hale getirilecek.(,)
     public function parseInTextFunctions(string $string)
     {
         $functions=$this->findFunction($string,'{','/}');
