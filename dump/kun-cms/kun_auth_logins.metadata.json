@@ -1,1 +1,0 @@
-{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"94016f880678485ab48f1988a550e450","collectionName":"kun_auth_logins","type":"collection"}

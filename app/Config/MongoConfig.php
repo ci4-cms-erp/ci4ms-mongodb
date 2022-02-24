@@ -13,7 +13,7 @@ class MongoConfig extends BaseConfig
                 'db' => 'kun-cms', //your database
                 'hostname' => "37.156.246.140", //127.0.0.1 if you use remote server you should change host address
                 'userName' => "beaver",
-                'password' => "RFVtgb.2021",
+                'password' => "QAZwsx_2021",
                 'prefix' => 'kun_',
                 'port' => "49217",//27017 if you use different port you should change port address
                 'srv' => 'mongodb',//mongodb+srv

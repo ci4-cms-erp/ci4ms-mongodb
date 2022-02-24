@@ -128,11 +128,16 @@ class CommonLibrary
     public function parseInTextFunctions(string $string)
     {
         $functions=$this->findFunction($string,'{','/}');
-        if(empty($functions))
-            return $string;
+        if(strpos($string,'[/')) {
+            $val = $this->findFunction($string, '[/', '/]');
+            $v = array_values($val)[0];
+        }
+        if(empty($functions)) return $string;
         foreach ($functions as $function) {
             $f=explode('|',$function);
-            $data[$function] = call_user_func([$f[0], $f[1]]);
+            if(strpos($f[1],'[/')) $f[1]=strstr($f[1],'[/',true);
+            if(!empty($val)) $data[$function] = call_user_func_array($f,[$v]);
+            else $data[$function] = call_user_func($f);
         }
         return str_replace(array_keys($functions), $data, $string);
     }

@@ -1,23 +1,12 @@
 <?php namespace Modules\Backend\Controllers;
 
-<<<<<<< HEAD
-=======
 use Config\App;
 use Config\Mimes;
 use Config\Paths;
->>>>>>> dev
 use MongoDB\BSON\ObjectId;
 
 class Settings extends BaseController
 {
-<<<<<<< HEAD
-    public function index()
-    {
-        $this->defData['settings'] = $this->commonModel->getOne('settings');
-        return view('Modules\Backend\Views\settings', $this->defData);
-    }
-
-=======
     /**
      * @return string
      */
@@ -52,7 +41,6 @@ class Settings extends BaseController
     /**
      * @return \CodeIgniter\HTTP\RedirectResponse
      */
->>>>>>> dev
     public function compInfosPost()
     {
         $valData = ([
@@ -63,26 +51,12 @@ class Settings extends BaseController
             'cMail' => ['label' => 'Şirket Maili', 'rules' => 'required|valid_email'],
         ]);
 
-<<<<<<< HEAD
-        if (!empty($this->request->getPost('cSlogan')))
-            $valData['cSlogan'] = ['label' => 'Slogan', 'rules' => 'required'];
-        if (!empty($this->request->getPost('cGSM')))
-            $valData['cGSM'] = ['label' => 'Şirket GSM', 'rules' => 'required'];
-        if (!empty($this->request->getPost('cMap')))
-            $valData['cMap'] = ['label' => 'Google Map iframe linki', 'rules' => 'required'];
-        if ($this->request->getFile('cLogo')->isValid() == true)
-            $valData['cLogo'] = ['label' => 'Şirket Logosu', 'rules' => 'uploaded[cLogo]|max_size[cLogo,2048]|is_image[cLogo]'];
-
-        if ($this->validate($valData) == false)
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
-=======
         if (!empty($this->request->getPost('cSlogan'))) $valData['cSlogan'] = ['label' => 'Slogan', 'rules' => 'required'];
         if (!empty($this->request->getPost('cGSM'))) $valData['cGSM'] = ['label' => 'Şirket GSM', 'rules' => 'required'];
         if (!empty($this->request->getPost('cMap'))) $valData['cMap'] = ['label' => 'Google Map iframe linki', 'rules' => 'required'];
         if (!empty($this->request->getPost('cLogo'))) $valData['cLogo'] = ['label' => 'Şirket Logosu', 'rules' => 'required'];
 
         if ($this->validate($valData) == false) return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
->>>>>>> dev
 
         $data = ['siteName' => $this->request->getPost('cName'),
             'siteURL' => $this->request->getPost('cUrl'),
@@ -90,41 +64,6 @@ class Settings extends BaseController
             'companyPhone' => $this->request->getPost('cPhone'),
             'companyEMail' => $this->request->getPost('cMail')
         ];
-<<<<<<< HEAD
-        if (!empty($this->request->getPost('cSlogan')))
-            $data['slogan'] = $this->request->getPost('cSlogan');
-        if (!empty($this->request->getPost('cGSM')))
-            $data['companyGSM'] = $this->request->getPost('cGSM');
-        if (!empty($this->request->getPost('cMap')))
-            $data['map_iframe'] = $this->request->getPost('cMap');
-
-        $settings = $this->commonModel->getOne('settings');
-        $result = $this->commonModel->updateOne('settings', ['_id' => new ObjectId($settings->_id)], $data);
-        //logo günceleme
-        if ($this->request->getFile('cLogo')->isValid() == true) {
-            if (!empty($settings->logo)) {
-                helper('filesystem');
-                if (delete_files(WRITEPATH . 'uploads/' . $settings->logo))
-                    log_message('notice', 'eski logo silindi.');
-                else
-                    log_message('error', 'eski logo silinemedi.');
-            }
-
-            $file = $this->request->getFile('cLogo');
-            $fResult = $file->move(WRITEPATH . 'uploads');
-            if ($fResult === true)
-                $result = $this->commonModel->updateOne('settings', ['_id' => new ObjectId($settings->_id)], ['logo' => $file->getName()]);
-            else
-                return redirect()->back()->with('message', 'Şirket logoso Güncellenemedi.');
-        }
-
-        if ((bool)$result === false)
-            return redirect()->back()->withInput()->with('error', 'Şirket Bilgileri Güncellenemedi.');
-        else
-            return redirect()->back()->with('message', 'Şirket Bilgileri Güncellendi.');
-    }
-
-=======
         if (!empty($this->request->getPost('cSlogan'))) $data['slogan'] = $this->request->getPost('cSlogan');
         if (!empty($this->request->getPost('cGSM'))) $data['companyGSM'] = $this->request->getPost('cGSM');
         if (!empty($this->request->getPost('cMap'))) $data['map_iframe'] = $this->request->getPost('cMap');
@@ -138,7 +77,6 @@ class Settings extends BaseController
     /**
      * @return \CodeIgniter\HTTP\RedirectResponse
      */
->>>>>>> dev
     public function socialMediaPost()
     {
         $valData = (['socialNetwork' => ['label' => 'Sosyal medya adı veya linki boş bırakılamaz', 'rules' => 'required']]);
@@ -151,12 +89,7 @@ class Settings extends BaseController
                 $error['link'] = 'Sosyal Medya Linki URL olmalıdır !';
                 unset($socialNetwork[$key]);
             }
-<<<<<<< HEAD
-            if (!empty($error))
-                return redirect()->back()->withInput()->with('errors', $error);
-=======
             if (!empty($error)) return redirect()->back()->withInput()->with('errors', $error);
->>>>>>> dev
             if (!is_string($item['smName'])) {
                 $error['snName'] = 'Sosyal Medya Adı yazı değeri olmalıdır !';
                 unset($socialNetwork[$key]);
@@ -167,27 +100,12 @@ class Settings extends BaseController
             }
         }
 
-<<<<<<< HEAD
-        if (!empty($error))
-            return redirect()->back()->withInput()->with('errors', $error);
-        if ($this->validate($valData) == false)
-            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
-=======
         if (!empty($error)) return redirect()->back()->withInput()->with('errors', $error);
         if ($this->validate($valData) == false) return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
->>>>>>> dev
 
         $settings = $this->commonModel->getOne('settings');
         $result = $this->commonModel->updateOne('settings', ['_id' => new ObjectId($settings->_id)], ['socialNetwork' => $socialNetwork]);
 
-<<<<<<< HEAD
-        if ((bool)$result === false)
-            return redirect()->back()->withInput()->with('error', 'Şirket Sosyal Medya Bilgileri Güncellenemedi.');
-        else
-            return redirect()->back()->with('message', 'Şirket Sosyal Medya Bilgileri Güncellendi.');
-    }
-
-=======
         if ((bool)$result === false) return redirect()->back()->withInput()->with('error', 'Şirket Sosyal Medya Bilgileri Güncellenemedi.');
         else return redirect()->back()->with('message', 'Şirket Sosyal Medya Bilgileri Güncellendi.');
     }
@@ -195,7 +113,6 @@ class Settings extends BaseController
     /**
      * @return \CodeIgniter\HTTP\RedirectResponse
      */
->>>>>>> dev
     public function mailSettingsPost()
     {
         $valData = [
@@ -212,11 +129,7 @@ class Settings extends BaseController
             'mailPort' => $this->request->getPost('mPort'),
             'mailAddress' => $this->request->getPost('mAddress'),
             'mailPassword' => $this->request->getPost('mPwd'),
-<<<<<<< HEAD
-            'mailProtocol'=>$this->request->getPost('mProtocol'),
-=======
             'mailProtocol' => $this->request->getPost('mProtocol'),
->>>>>>> dev
             'mailTLS' => false];
         if ($this->request->getPost('mTls'))
             $data['mailTLS'] = true;
@@ -228,13 +141,6 @@ class Settings extends BaseController
             return redirect()->back()->with('message', 'Şirket Sosyal Medya Bilgileri Güncellendi.');
     }
 
-<<<<<<< HEAD
-    public function loginSettingsPost(){
-        $valData = [
-            'loginBlockMin' => ['label' => 'Engellme Süresi', 'rules' => 'required|is_natural_no_zero|less_than[180]|greater_than[10]'],
-            'loginCounter' => ['label' => 'Deneme Sayısı', 'rules' => 'required|is_natural_no_zero|less_than[20]|greater_than[2]'],
-        ];
-=======
     /**
      * @return \CodeIgniter\HTTP\RedirectResponse
      */
@@ -255,24 +161,11 @@ class Settings extends BaseController
         $whitelistRange = clearFilter(explode(',', preg_replace('/\s+/', '', $this->request->getPost('whitelistRange'))));
         $whitelistLine = clearFilter(explode(',', preg_replace('/\s+/', '', $this->request->getPost('whitelistLine'))));
         $whitelistUsername = clearFilter(explode(',', preg_replace('/\s+/', '', $this->request->getPost('whitelistUsername'))));
->>>>>>> dev
 
         if ($this->validate($valData) == false)
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
 
         $data = [
-<<<<<<< HEAD
-            'loginBlockIsActive' => ($this->request->getPost('loginIsActive') == 'on') ? true : false,
-            'loginBlockMin' => $this->request->getPost('loginBlockMin'),
-            'loginBlockAttemptsCounter' => $this->request->getPost('loginCounter'),
-        ];
-        $settings = $this->commonModel->getOne('settings');
-        $result = $this->commonModel->updateOne('settings', ['_id' => new ObjectId($settings->_id)], $data);
-        if ((bool)$result === false)
-            return redirect()->back()->withInput()->with('error', 'Şirket Sosyal Medya Bilgileri Güncellenemedi.');
-        else
-            return redirect()->back()->with('message', 'Şirket Sosyal Medya Bilgileri Güncellendi.');
-=======
             'lockedRecord' => $this->request->getPost('lockedRecord'),
             'lockedMin' => $this->request->getPost('lockedMin'),
             'lockedTry' => $this->request->getPost('lockedTry'),
@@ -351,6 +244,5 @@ class Settings extends BaseController
         $data = array_merge((array)$this->defData['settings']->templateInfos, $this->request->getPost('settings'));
         if ($this->commonModel->updateMany('settings', [], ['templateInfos' => $data])) return redirect()->back()->with('success', 'Tema Ayarları kayıt edildi.');
         else return redirect()->back()->with('error', 'Tema Ayarları kayıt edilemedi');
->>>>>>> dev
     }
 }

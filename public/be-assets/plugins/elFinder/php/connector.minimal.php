@@ -39,12 +39,7 @@ ob_start();
 include($_SERVER['DOCUMENT_ROOT'].'/index.php');
 ob_end_clean();
 $ci4ms=new \Modules\Backend\Libraries\AuthLibrary();
-<<<<<<< HEAD
-$csrf=new \Config\Security();
-$csrf->CSRFRegenerate=false;
-=======
 $commonModel=new \ci4mongodblibrary\Models\CommonModel();
->>>>>>> dev
 if(!$ci4ms->check()) throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
 // ===============================================
 
@@ -156,10 +151,7 @@ function access($attr, $path, $data, $volume, $isDir, $relpath) {
 // Documentation for connector options:
 // https://github.com/Studio-42/elFinder/wiki/Connector-configuration-options
 var_dump(dirname($_SERVER['PHP_SELF']));
-<<<<<<< HEAD
-=======
 $allowedFiles=$commonModel->getOne('settings',[],['allowedFiles']);
->>>>>>> dev
 $opts = array(
 	// 'debug' => true,
 	'roots' => array(
@@ -171,11 +163,7 @@ $opts = array(
 			'trashHash'     => 't1_Lw',                     // elFinder's hash of trash folder
 			'winHashFix'    => DIRECTORY_SEPARATOR !== '/', // to make hash same to Linux one on windows too
 			'uploadDeny'    => array('all'),                // All Mimetypes not allowed to upload
-<<<<<<< HEAD
-			'uploadAllow'   => array('image/x-ms-bmp', 'image/gif', 'image/jpeg', 'image/png', 'image/x-icon', 'text/plain'), // Mimetype `image` and `text/plain` allowed to upload
-=======
 			'uploadAllow'   => (array)$allowedFiles->allowedFiles, // Mimetype `image` and `text/plain` allowed to upload
->>>>>>> dev
 			'uploadOrder'   => array('deny', 'allow'),      // allowed Mimetype `image` and `text/plain` only
 			'accessControl' => 'access'                     // disable and hide dot starting files (OPTIONAL)
 		),
@@ -187,11 +175,7 @@ $opts = array(
 			'tmbURL'        => site_url('uploads/media/.trash/.tmb/'),
 			'winHashFix'    => DIRECTORY_SEPARATOR !== '/', // to make hash same to Linux one on windows too
 			'uploadDeny'    => array('all'),                // Recomend the same settings as the original volume that uses the trash
-<<<<<<< HEAD
-			'uploadAllow'   => array('image/x-ms-bmp', 'image/gif', 'image/jpeg', 'image/png', 'image/x-icon', 'text/plain'), // Same as above
-=======
 			'uploadAllow'   => (array)$allowedFiles->allowedFiles, // Same as above
->>>>>>> dev
 			'uploadOrder'   => array('deny', 'allow'),      // Same as above
 			'accessControl' => 'access',                    // Same as above
 		),

@@ -2,11 +2,8 @@
 
 namespace App\Controllers;
 
-<<<<<<< HEAD
-=======
 use App\Models\Ci4ms;
 use ci4mongodblibrary\Models\CommonModel;
->>>>>>> dev
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
@@ -23,39 +20,6 @@ use ci4mongodblibrary\Libraries\Mongo;
  *
  * For security be sure to declare any new methods as protected or private.
  */
-<<<<<<< HEAD
-
-class BaseController extends Controller
-{
-	/**
-	 * An array of helpers to be loaded automatically upon
-	 * class instantiation. These helpers will be available
-	 * to all other controllers that extend BaseController.
-	 *
-	 * @var array
-	 */
-	protected $helpers = [];
-
-    protected $mongo;
-	/**
-	 * Constructor.
-	 *
-	 * @param RequestInterface  $request
-	 * @param ResponseInterface $response
-	 * @param LoggerInterface   $logger
-	 */
-	public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
-	{
-		// Do Not Edit This Line
-		parent::initController($request, $response, $logger);
-
-		//--------------------------------------------------------------------
-		// Preload any models, libraries, etc, here.
-		//--------------------------------------------------------------------
-		// E.g.: $this->session = \Config\Services::session();
-        $this->mongo=new Mongo();
-	}
-=======
 class BaseController extends Controller
 {
     /**
@@ -65,7 +29,7 @@ class BaseController extends Controller
      *
      * @var array
      */
-    protected $helpers = [];
+    protected $helpers = ['templates/mkshirdavat'];
 
     protected $mongo;
     public $defData;
@@ -95,5 +59,4 @@ class BaseController extends Controller
             'menus' =>$this->commonModel->getList('menu',[],['sort' =>['queue'=>1]]),
             'settings'=>$this->commonModel->getOne('settings')];
     }
->>>>>>> dev
 }

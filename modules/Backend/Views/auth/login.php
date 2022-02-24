@@ -36,11 +36,7 @@
                     <input type="text" name="captcha" class="form-control" required autocomplete="off" placeholder="Doğrulama kodu">
                 </div>
                 <div class="row">
-<<<<<<< HEAD
-                    <div class="col-8">
-=======
                     <div class="col-md-8">
->>>>>>> dev
                         <div class="icheck-success">
                             <input type="checkbox" name="remember" id="remember">
                             <label for="remember">
@@ -49,11 +45,7 @@
                         </div>
                     </div>
                     <!-- /.col -->
-<<<<<<< HEAD
-                    <div class="col-4">
-=======
                     <div class="col-md-4">
->>>>>>> dev
                         <button type="submit" class="btn btn-success btn-block"><?=lang('Auth.loginAction')?></button>
                     </div>
                     <!-- /.col -->

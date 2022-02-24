@@ -102,8 +102,6 @@
 
 .elfinder{
     z-index:1050 !important;
-<<<<<<< HEAD
-=======
 }
 
 .dd-handle{
@@ -117,5 +115,4 @@
 
 .dd-handle span{
     font-size:1.2em !important;
->>>>>>> dev
 }

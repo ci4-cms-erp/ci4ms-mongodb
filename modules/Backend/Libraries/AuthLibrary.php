@@ -9,10 +9,7 @@ use Modules\Backend\Config\Auth;
 use Modules\Backend\Exceptions\AuthException;
 use Modules\Backend\Models\UserModel;
 use MongoDB\BSON\ObjectId;
-<<<<<<< HEAD
-=======
 use MongoDB\BSON\UTCDateTime;
->>>>>>> dev
 
 class AuthLibrary
 {
@@ -31,10 +28,7 @@ class AuthLibrary
         $this->user = null;
         $this->config->userTable = 'users';
         $this->ipAddress = Services::request()->getIPAddress();
-<<<<<<< HEAD
-=======
         $this->now = Time::createFromFormat('Y-m-d H:i:s',new Time('now'),'Europe/Istanbul');
->>>>>>> dev
 
     }
 
@@ -47,14 +41,11 @@ class AuthLibrary
         $this->user = $user;
         $groupSefLink = $this->commonModel->getOne('auth_groups', ['_id' => new ObjectId($this->user->group_id)], ['seflink' => true]);
 
-<<<<<<< HEAD
-=======
 
         $where_or = ['username' => $user->email , 'ip_address' => $this->ipAddress];
         $set_data = ['islocked' => false] ;
         $this->userModel->updateManyOr('locked',['islocked' => true],$set_data,[],$where_or);
 
->>>>>>> dev
         session()->set('redirect_url', $groupSefLink->seflink);
 
         $this->userModel->recordLoginAttempt($this->user->email, true);
@@ -113,13 +104,8 @@ class AuthLibrary
     {
         if ($userID = session($this->config->logged_in)) {
             // Store our current user object
-<<<<<<< HEAD
-            $this->user = $this->userModel->findOne(['_id' => new ObjectId($userID)]);
-            $groupSefLink = $this->userModel->getGroupInfos(['_id' => new ObjectId($this->user->group_id)], ['seflink']);
-=======
             $this->user = $this->commonModel->getOne($this->config->userTable,['_id' => new ObjectId($userID)]);
             $groupSefLink = $this->commonModel->getOne('auth_groups',['_id' => new ObjectId($this->user->group_id)], ['seflink']);
->>>>>>> dev
             session()->set('redirect_url', $groupSefLink->seflink);
             return true;
         }
@@ -132,11 +118,7 @@ class AuthLibrary
         helper('cookie');
         $oid = new ObjectId(session($this->config->logged_in));
         if ($userID = $oid) {
-<<<<<<< HEAD
-            $this->user = $this->userModel->findOne(['_id' => (object)$userID]);
-=======
             $this->user = $this->commonModel->getOne($this->config->userTable,['_id' => (object)$userID]);
->>>>>>> dev
         }
 
         $user = $this->user;
@@ -154,11 +136,7 @@ class AuthLibrary
         session()->regenerate(true);
 
         // Take care of any remember me functionality
-<<<<<<< HEAD
-        $this->userModel->purgeRememberTokens($user->_id);
-=======
         $this->commonModel->deleteOne('auth_tokens',['user_id'=>$user->_id]);
->>>>>>> dev
 
         // trigger logout event
         Events::trigger('logout', $user);
@@ -229,14 +207,6 @@ class AuthLibrary
 
     public function attempt(array $credentials, bool $remember = null): bool
     {
-<<<<<<< HEAD
-        $this->user = $this->validate($credentials, true);
-        $falseLogin = $this->commonModel->getOne('auth_logins',['ip_address' => $this->ipAddress],['sort'=> ['_id'=>-1]]);
-
-        if ($falseLogin->isSuccess === false ){
-            if(!isset($falseLogin->counter))
-                $falseCounter = 0;
-=======
 
         $this->user = $this->validate($credentials, true);
         $falseLogin = $this->commonModel->getOne('auth_logins',['ip_address' => $this->ipAddress],['sort'=> ['_id'=>-1]]);
@@ -245,7 +215,6 @@ class AuthLibrary
         // Kalan deneme hakkı hesaplanıyor.
         if ($falseLogin && $falseLogin->isSuccess === false ){
             if ($falseLogin->counter &&  ((int)$falseLogin->counter + 1 )  >= (int)$settings->lockedTry ) $falseCounter = -1;
->>>>>>> dev
             else $falseCounter = $falseLogin->counter;
         } else $falseCounter = null;
 
@@ -253,10 +222,6 @@ class AuthLibrary
         if (empty($this->user)) {
             // Always record a login attempt, whether success or not.
             $this->userModel->recordLoginAttempt($credentials['email'], false, (int)$falseCounter);
-<<<<<<< HEAD
-
-=======
->>>>>>> dev
             $this->user = null;
             return false;
         }
@@ -309,18 +274,11 @@ class AuthLibrary
         }
 
         // Can we find a user with those credentials?
-<<<<<<< HEAD
-        $user = $this->userModel->findOne($credentials);
-
-        if (!$user) {
-            $this->error = lang('Auth.badAttempt');
-=======
         $user = $this->commonModel->getOne($this->config->userTable,$credentials);
 
         if (!$user) {
             $this->error = lang('Auth.badAttempt');
             //$this->error = sprintf(lang('Auth.badAttempt'), $this->remainingEntry());
->>>>>>> dev
             return false;
         }
 
@@ -330,12 +288,8 @@ class AuthLibrary
         ), $user->password_hash);
 
         if (!$result) {
-<<<<<<< HEAD
-            $this->error = lang('Auth.invalidPassword');
-=======
             $this->error = sprintf(lang('Auth.invalidPassword'), '<br><b>Kalan deneme hakkınız ' . $this->remainingEntryCalculation() . ' tanedir.<b></b>');
             //$this->error = lang('Auth.invalidPassword');
->>>>>>> dev
             return false;
         }
 
@@ -353,21 +307,13 @@ class AuthLibrary
 
     public function isBanned($pk): bool
     {
-<<<<<<< HEAD
-        $userStatus = $this->userModel->findOne(['_id' => $pk], ['status']);
-=======
         $userStatus = $this->commonModel->getOne($this->config->userTable,['_id' => $pk], ['status']);
->>>>>>> dev
         return isset($userStatus->status) && $userStatus->status === 'banned';
     }
 
     public function isActivated($pk): bool
     {
-<<<<<<< HEAD
-        $userStatus = $this->userModel->findOne(['_id' => $pk], ['status']);
-=======
         $userStatus = $this->commonModel->getOne($this->config->userTable,['_id' => $pk], ['status']);
->>>>>>> dev
         return isset($userStatus->status) && $userStatus->status == 'active';
     }
 
@@ -393,11 +339,7 @@ class AuthLibrary
         [$selector, $validator] = explode(':', $remember);
         $validator = hash('sha256', $validator);
 
-<<<<<<< HEAD
-        $token = $this->userModel->getRememberToken($selector);
-=======
         $token = $this->commonModel->getOne('auth_tokens',['selector' => $selector]);
->>>>>>> dev
 
         if (empty($token)) {
             return false;
@@ -425,11 +367,7 @@ class AuthLibrary
 
     public function refreshRemember(string $userID, string $selector)
     {
-<<<<<<< HEAD
-        $existing = $this->userModel->getRememberToken($selector);
-=======
         $existing = $this->commonModel->getOne('auth_tokens',['selector'=>$selector]);
->>>>>>> dev
 
         // No matching record? Shouldn't happen, but remember the user now.
         if (empty($existing)) {
@@ -501,20 +439,6 @@ class AuthLibrary
         return bin2hex(random_bytes(16));
     }
 
-<<<<<<< HEAD
-    public function isBloackedIp(): bool
-    {
-        $settings = $this->commonModel->getOne('settings', [/* where */], [/* options */], ['loginBlockMin', 'loginBlockIsActive', 'loginBlockAttemptsCounter']);
-        $loginAttempts = $this->commonModel->getOne('auth_logins', ['ip_address' => $this->ipAddress, 'isSuccess' => false], ['sort' => ['_id' => -1]]);
-
-        if ($loginAttempts !== null && $settings->loginBlockIsActive && $settings->loginBlockAttemptsCounter <= $loginAttempts->counter) {
-            $now = new Time('now');
-            $tryDate = new Time($loginAttempts->trydate);
-            $blockFinisTime = $tryDate->addMinutes($settings->loginBlockMin);
-
-            if ($now->isBefore($blockFinisTime)) return false; else return true;
-        } else return true;
-=======
     /* if return is true user blocked else login active */
     public function isBlockedAttempt ($username) : bool {
         $settings = $this->commonModel->getOne('settings', [/* where */], [/* options */]);
@@ -639,6 +563,5 @@ class AuthLibrary
         $settings = $this->commonModel->getOne('settings', [/* where */], [/* options */], ['loginBlockMin', 'loginBlockIsActive', 'lockedTry']);
         if ($falseLogin) return (int)$settings->lockedTry - (int)$falseLogin->counter - 1 ;
         else return (int)$settings->lockedTry - 1 ;
->>>>>>> dev
     }
 }

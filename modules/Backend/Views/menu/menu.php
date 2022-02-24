@@ -208,7 +208,6 @@
         var formData=$('#addUrls').serializeArray();
         formData.push({name: "<?=csrf_token()?>", value: "<?=csrf_hash()?>"});
         formData.push({name:"type",value:"url"});
-        console.log(formData);
         $.post('<?=route_to('createMenu')?>', formData).done(function (data) {
             $('.dd').nestable('destroy');
             $('.dd').html(data);

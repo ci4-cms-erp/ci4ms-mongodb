@@ -1,13 +1,6 @@
 <?php
 
 return [
-<<<<<<< HEAD
-    //pages
-    'homepage' => 'Anasayfa',
-    'usersCrud' => 'Kullanıcı İşlemleri',
-    'officeWorkers' => 'Ofis Çalışan Listesi',
-    'permGroupList' => 'Yetki Grup Listesi',
-=======
     //common
     'title' => 'Başlık',
     'url' => 'URL',
@@ -42,20 +35,11 @@ return [
     'permUpdate' => 'yetkilerini güncelle',
     'permGroupName' => 'Yetki Grubu Adı',
     'perms' => 'Yetkiler',
->>>>>>> dev
     'addGroupPerms' => 'Grup Yetkisi Ekleme',
     'profile' => 'Profil',
     'updateGroupPerms' => 'Grup Yetkisi Güncelleme',
     'specialAuthUser' => 'Kullanıcıya özel yetki verme',
     'updateUser' => 'Kullanıcı Güncelleme',
-<<<<<<< HEAD
-    'settings'=>'Settings',
-    'officeUsers'=>'Ofis Kullanıcıları',
-    'candidateUsers'=>'Aday Kullanıcılar',
-    'pages'=>'Sayfalar',
-    'pageAdd'=>'Sayfa Oluşturma'
-];
-=======
     'settings' => 'Ayarlar',
     'candidateUsers' => 'Aday Kullanıcılar',
     'pages' => 'Sayfalar',
@@ -138,6 +122,6 @@ return [
     'blockUsername'=>'Kullanıcı Adı Bloklama',
     'trustedIps'=>'Güvenilir IP Aralığını',
     'trustedIp'=>'Güvenilir Tekil Ip',
-    'trustedUsername'=>'Güvenilir Kullanıcı Adı'
+    'trustedUsername'=>'Güvenilir Kullanıcı Adı',
+    'gallery'=>'Gallery'
 ];
->>>>>>> dev

@@ -6,10 +6,7 @@ use CodeIgniter\Validation\CreditCardRules;
 use CodeIgniter\Validation\FileRules;
 use CodeIgniter\Validation\FormatRules;
 use CodeIgniter\Validation\Rules;
-<<<<<<< HEAD
-=======
 use Modules\Backend\Validation\CustomRules;
->>>>>>> dev
 
 class Validation
 {
@@ -28,11 +25,8 @@ class Validation
         FormatRules::class,
         FileRules::class,
         CreditCardRules::class,
-<<<<<<< HEAD
-=======
         CreditCardRules::class,
         CustomRules::class, // Additional rules to Codeigniter 4
->>>>>>> dev
     ];
 
     /**

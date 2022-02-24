@@ -1,13 +1,6 @@
 <?= $this->extend('Modules\Backend\Views\base') ?>
 
 <?= $this->section('title') ?>
-<<<<<<< HEAD
-Anasayfa
-<?= $this->endSection() ?>
-
-<?= $this->section('head') ?>
-<link rel="stylesheet" href="/be-assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
-=======
 <?=lang('Backend.'.$title->pagename)?>
 <?= $this->endSection() ?>
 
@@ -18,7 +11,6 @@ Anasayfa
       href="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 <?=link_tag("be-assets/plugins/elFinder/css/elfinder.full.css")?>
 <?=link_tag("be-assets/plugins/elFinder/css/theme.css")?>
->>>>>>> dev
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -27,11 +19,7 @@ Anasayfa
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-<<<<<<< HEAD
-                <h1>Ayarlar</h1>
-=======
                 <h1><?=lang('Backend.'.$title->pagename)?></h1>
->>>>>>> dev
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right"></ol>
@@ -46,11 +34,7 @@ Anasayfa
     <!-- Default box -->
     <div class="card card-outline card-shl">
         <div class="card-header">
-<<<<<<< HEAD
-            <h3 class="card-title font-weight-bold">Site Ayarlarını güncelle</h3>
-=======
             <h3 class="card-title font-weight-bold"><?=lang('Backend.siteSettings')?></h3>
->>>>>>> dev
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -61,104 +45,6 @@ Anasayfa
         <div class="card-body">
             <?= view('Modules\Auth\Views\_message_block') ?>
             <div class="row">
-<<<<<<< HEAD
-                <div class="col-5 col-sm-3">
-                    <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist"
-                         aria-orientation="vertical">
-                        <a class="nav-link active" id="vert-tabs-home-tab" data-toggle="pill" href="#vert-tabs-home"
-                           role="tab" aria-controls="vert-tabs-home" aria-selected="true">Şirket Bilgileri</a>
-                        <a class="nav-link" id="vert-tabs-profile-tab" data-toggle="pill" href="#vert-tabs-profile"
-                           role="tab" aria-controls="vert-tabs-profile" aria-selected="false">Sosyal Medya</a>
-                        <a class="nav-link" id="vert-tabs-messages-tab" data-toggle="pill" href="#vert-tabs-messages"
-                           role="tab" aria-controls="vert-tabs-messages" aria-selected="false">Mail Ayarları</a>
-                        <a class="nav-link" id="vert-tabs-messages-tab" data-toggle="pill" href="#vert-tabs-login"
-                           role="tab" aria-controls="vert-tabs-messages" aria-selected="false">Giriş Ayarları</a>
-                    </div>
-                </div>
-                <div class="col-7 col-sm-9">
-                    <div class="tab-content" id="vert-tabs-tabContent">
-                        <div class="tab-pane text-left fade active show" id="vert-tabs-home" role="tabpanel"
-                             aria-labelledby="vert-tabs-home-tab">
-                            <form action="<?=route_to('compInfosPost')?>" method="post" class="form-row" enctype="multipart/form-data">
-                                <?= csrf_field() ?>
-                                <div class="col-6 form-group">
-                                    <label for="">Şirket Adı</label>
-                                    <input type="text" name="cName" class="form-control" value="<?=(!empty($settings->siteName))?$settings->siteName:''?>">
-                                </div>
-                                <div class="col-6 form-group">
-                                    <label for="">Site Linki</label>
-                                    <input type="text" name="cUrl" class="form-control" value="<?=(!empty($settings->siteURL))?$settings->siteURL:''?>">
-                                </div>
-                                <div class="col-6 form-group">
-                                    <label for="">Slogan</label>
-                                    <input type="text" name="cSlogan" class="form-control" value="<?=(!empty($settings->slogan))?$settings->slogan:''?>">
-                                </div>
-                                <div class="col-6 form-group">
-                                    <label for="">Şirket Adresi</label>
-                                    <input type="text" name="cAddress" class="form-control" value="<?=(!empty($settings->companyAddress))?$settings->companyAddress:''?>">
-                                </div>
-                                <div class="col-6 form-group">
-                                    <label for="">Şirket Telefonu</label>
-                                    <input type="text" name="cPhone" class="form-control" value="<?=(!empty($settings->companyPhone))?$settings->companyPhone:''?>">
-                                </div>
-                                <div class="col-6 form-group">
-                                    <label for="">Şirket GSM</label>
-                                    <input type="text" name="cGSM" class="form-control" value="<?=(!empty($settings->companyGSM))?$settings->companyGSM:''?>">
-                                </div>
-                                <div class="col-6 form-group">
-                                    <label for="">Şirket Maili</label>
-                                    <input type="text" name="cMail" class="form-control" value="<?=(!empty($settings->companyEMail))?$settings->companyEMail:''?>">
-                                </div>
-                                <div class="col-6 form-group">
-                                    <label for="">Google Map iframe linki</label>
-                                    <input type="text" name="cMap" class="form-control" value="<?=(!empty($settings->map_iframe))?$settings->map_iframe:''?>">
-                                </div>
-                                <div class="col-6 form-group">
-                                    <label for="">Şirket Logosu</label>
-                                    <input type="file" name="cLogo" class="form-control">
-                                </div>
-                                <div class="col-6 form-group">
-                                    <img src="<?=(!empty($settings->logo))?base_url('/imageRender/'.$settings->logo):''?>" class="img-fluid" alt="">
-                                </div>
-                                <div class="col-12 form-group">
-                                    <button class="btn btn-success float-right mt-5">Güncelle</button>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="tab-pane fade" id="vert-tabs-profile" role="tabpanel"
-                             aria-labelledby="vert-tabs-profile-tab">
-                            <form action="<?=route_to('socialMediaPost')?>" class="repeater" method="post">
-                                <?= csrf_field() ?>
-                                <div data-repeater-list="socialNetwork" class="col-12">
-                                    <?php if(!empty($settings->socialNetwork)):
-                                    foreach ($settings->socialNetwork as $socialNetwork) : ?>
-                                    <div class="row border-bottom" data-repeater-item>
-                                        <div class="col-6 form-group">
-                                            <label for="">Sosyal Medya Adı</label>
-                                            <input type="text" class="form-control" name="smName" value="<?=$socialNetwork->smName?>" placeholder="facebook" required>
-                                        </div>
-                                        <div class="col-5 form-group">
-                                            <label for="">Sosyal Medya Linki</label>
-                                            <input type="text" class="form-control" name="link" value="<?=$socialNetwork->link?>" required>
-                                        </div>
-                                        <div class="col-1 form-group">
-                                            <input data-repeater-delete type="button"
-                                                   class="btn btn-danger w-100" value="Sil"/>
-                                        </div>
-                                    </div>
-                                    <?php endforeach;
-                                    endif; ?>
-                                    <div class="row border-bottom" data-repeater-item>
-                                        <div class="col-6 form-group">
-                                            <label for="">Sosyal Medya Adı</label>
-                                            <input type="text" class="form-control" name="smName" placeholder="facebook" required>
-                                        </div>
-                                        <div class="col-5 form-group">
-                                            <label for="">Sosyal Medya Linki</label>
-                                            <input type="text" class="form-control" name="link" required>
-                                        </div>
-                                        <div class="col-1 form-group">
-=======
                 <div class="col-md-3">
                     <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist"
                          aria-orientation="vertical">
@@ -313,96 +199,22 @@ Anasayfa
                                             <input type="text" class="form-control" name="link" required>
                                         </div>
                                         <div class="col-md-1 form-group">
->>>>>>> dev
                                             <input data-repeater-delete type="button"
                                                    class="btn btn-danger w-100 mt-md-4" value="Sil"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row mt-3">
-<<<<<<< HEAD
-                                    <div class="col-6 form-group">
-                                        <input data-repeater-create type="button" class="btn btn-secondary"
-                                               value="Sosyal Medya Listesine Ekle"/>
-                                    </div>
-                                    <div class="col-6 form-group">
-                                        <button class="btn btn-success float-right">Güncelle</button>
-=======
                                     <div class="col-md-6 form-group">
                                         <input data-repeater-create type="button" class="btn btn-secondary"
                                                value="<?=lang('Backend.addText')?>"/>
                                     </div>
                                     <div class="col-md-6 form-group">
                                         <button class="btn btn-success float-right"><?=lang('Backend.update')?></button>
->>>>>>> dev
                                     </div>
                                 </div>
                             </form>
                         </div>
-<<<<<<< HEAD
-                        <div class="tab-pane fade" id="vert-tabs-messages" role="tabpanel"
-                             aria-labelledby="vert-tabs-messages-tab">
-                            <form action="<?=route_to('mailSettingsPost')?>" method="post" class="form-row">
-                                <?= csrf_field() ?>
-                                <div class="col-6 form-group">
-                                    <label for="">Mail Server</label>
-                                    <input type="text" name="mServer" class="form-control" value="<?=empty($settings->mailServer)?'':$settings->mailServer?>" required>
-                                </div>
-                                <div class="col-6 form-group">
-                                    <label for="">Mail Port</label>
-                                    <input type="text" name="mPort" class="form-control" value="<?=empty($settings->mailPort)?'':$settings->mailPort?>" required>
-                                </div>
-                                <div class="col-6 form-group">
-                                    <label for="">Mail Adresi</label>
-                                    <input type="text" name="mAddress" class="form-control" value="<?=empty($settings->mailAddress)?'':$settings->mailAddress?>" required>
-                                </div>
-                                <div class="col-6 form-group">
-                                    <label for="">Mail Şifresi</label>
-                                    <input type="text" name="mPwd" class="form-control" value="<?=empty($settings->mailPassword)?'':$settings->mailPassword?>" required>
-                                </div>
-                                <div class="col-6 form-group">
-                                    <label for="">Mail Protokolü</label>
-                                    <select name="mProtocol" id="" class="form-control" required>
-                                        <option value="smtp" <?=(isset($settings->mailProtocol) && $settings->mailProtocol==='smtp')?'selected':''?>>SMTP</option>
-                                        <option value="pop3" <?=(isset($settings->mailProtocol) && $settings->mailProtocol==='pop3')?'selected':''?>>POP3</option>
-                                    </select>
-                                </div>
-                                <div class="col-6 form-group">
-                                    <label for="">TLS aktif mi ? </label>
-                                    <input type="checkbox" name="mTls" id="" <?=(!empty($settings->mailTLS) && $settings->mailTLS===true) ?'checked':''?>>
-                                </div>
-                                <div class="col-12 form-group">
-                                    <button class="btn btn-success float-right">Güncelle</button>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="tab-pane fade" id="vert-tabs-login" role="tabpanel"
-                             aria-labelledby="vert-tabs-messages-tab">
-                            <form action="<?= route_to('loginSettingsPost') ?>" method="post" class="form-row">
-                                <?= csrf_field() ?>
-                                <div class="col-12 form-group">
-                                    <label for="">Giriş Ayarları Aktif mi ? </label>
-                                    <input type="checkbox" name="loginIsActive"
-                                        <?=(!empty($settings->loginBlockIsActive) && $settings->loginBlockIsActive===true) ?'checked':''?>>
-
-                                </div>
-                                <div class="col-6 form-group">
-                                    <label for="">Engellme Süresi <small>(dk)</small></label>
-                                    <input type="number" name="loginBlockMin" class="form-control"
-                                           value="<?= empty($settings->loginBlockMin) ? '' : $settings->loginBlockMin ?>" required>
-                                </div>
-                                <div class="col-6 form-group">
-                                    <label for="">Deneme Sayısı</label>
-                                    <input type="number" name="loginCounter" class="form-control"
-                                           value="<?= empty($settings->loginBlockAttemptsCounter) ? '' : $settings->loginBlockAttemptsCounter ?>" required>
-                                </div>
-                                <div class="col-12 form-group">
-                                    <button class="btn btn-success float-right">Güncelle</button>
-                                </div>
-                            </form>
-                        </div>
-
-=======
                         <div class="tab-pane fade" id="vert-tabs-mailSettings" role="tabpanel"
                              aria-labelledby="vert-tabs-mailSettings-tab">
                             <form action="<?= route_to('mailSettingsPost') ?>" method="post" class="form-row">
@@ -566,7 +378,6 @@ Anasayfa
                                 </div>
                             </form>
                         </div>
->>>>>>> dev
                     </div>
                 </div>
             </div>
@@ -580,13 +391,6 @@ Anasayfa
 <?= $this->endSection() ?>
 
 <?= $this->section('javascript') ?>
-<<<<<<< HEAD
-<script src="/be-assets/plugins/sweetalert2/sweetalert2.min.js"></script>
-<script src="/be-assets/node_modules/jquery.repeater/jquery.repeater.js"></script>
-
-
-
-=======
 <?=script_tag("be-assets/plugins/jquery-ui/jquery-ui.js")?>
 <?=script_tag("be-assets/plugins/sweetalert2/sweetalert2.min.js")?>
 <?=script_tag("be-assets/node_modules/jquery.repeater/jquery.repeater.js")?>
@@ -596,7 +400,6 @@ Anasayfa
 <?=script_tag("be-assets/plugins/elFinder/js/i18n/elfinder.tr.js")?>
 <?=script_tag("be-assets/plugins/elFinder/js/extras/editors.default.js")?>
 <?=script_tag("be-assets/js/ci4ms.js")?>
->>>>>>> dev
 <script>
     $(document).ready(function () {
         'use strict';
@@ -623,8 +426,6 @@ Anasayfa
             }
         });
     });
-<<<<<<< HEAD
-=======
 
     function chooseTemplate(path,templateName){
         $.post('<?=route_to('setTemplate')?>',{
@@ -659,6 +460,5 @@ Anasayfa
             }
         });
     });
->>>>>>> dev
 </script>
 <?= $this->endSection() ?>

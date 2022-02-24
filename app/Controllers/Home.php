@@ -2,13 +2,6 @@
 
 namespace App\Controllers;
 
-<<<<<<< HEAD
-class Home extends BaseController
-{
-    public function index($seflink = '/')
-    {
-        return view('templates/default-template/home');
-=======
 use App\Libraries\CommonLibrary;
 use CodeIgniter\I18n\Time;
 use JasonGrimes\Paginator;
@@ -39,14 +32,10 @@ class Home extends BaseController
             $this->defData['seo'] = $this->commonLibrary->seo($this->defData['pageInfo']->title, $this->defData['pageInfo']->seo->description, $seflink, $metatags = ['keywords' => $keywords], !empty($this->defData['pageInfo']->seo->coverImage)?$this->defData['pageInfo']->seo->coverImage:'');
             return view('templates/'.$this->defData['settings']->templateInfos->path.'/pages', $this->defData);
         } else return show_404();
->>>>>>> dev
     }
 
     public function maintenanceMode()
     {
-<<<<<<< HEAD
-        return view('maintenance');
-=======
         $this->defData['settings']=$this->commonModel->getOne('settings');
         if($this->defData['settings']->maintenanceMode===false) return redirect()->route('/');
         return view('maintenance',$this->defData);
@@ -146,6 +135,5 @@ class Home extends BaseController
         }
         $this->defData['categories'] = $this->commonModel->getList('categories');
         return view('templates/'.$this->defData['settings']->templateInfos->path.'/blog/list', $this->defData);
->>>>>>> dev
     }
 }

@@ -20,9 +20,6 @@
 
 <!-- Main content -->
 <section class="content">
-<<<<<<< HEAD
-
-=======
     <div class="row">
         <?php foreach ($dashboard as $item) : ?>
         <div class="col-lg-3 col-md-3">
@@ -43,7 +40,6 @@
         </div>
         <?php endforeach; ?>
     </div>
->>>>>>> dev
 </section>
 <!-- /.content -->
 <?= $this->endSection() ?>
