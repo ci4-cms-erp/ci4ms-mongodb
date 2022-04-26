@@ -62,5 +62,6 @@
 <script src="<?= base_url("templates/default/assets/node_modules/jquery/dist/jquery.js")?>"></script>
 <script src="<?= base_url("templates/default/assets/ci4ms.js")?>"></script>
 <?= $this->renderSection('javascript') ?>
+<?=$schema?>
 </body>
 </html>

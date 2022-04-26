@@ -9,6 +9,8 @@ use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use ci4mongodblibrary\Libraries\Mongo;
+use Melbahja\Seo\Schema;
+use Melbahja\Seo\Schema\Thing;
 
 /**
  * Class BaseController
@@ -58,5 +60,16 @@ class BaseController extends Controller
         $this->defData = ['logo' => $this->commonModel->getOne('settings', [],[],['logo','siteName','commpanyAddtess','companyEMail','slogan','companyPhone','socialNetwork']),
             'menus' =>$this->commonModel->getList('menu',[],['sort' =>['queue'=>1]]),
             'settings'=>$this->commonModel->getOne('settings')];
+        $this->defData['schema']=new Schema(
+            new Thing('Organization', [
+                'url'          => site_url(),
+                'logo'         => $this->defData['logo']->logo,
+                'contactPoint' => new Thing('ContactPoint', [
+                    'telephone' => $this->defData['settings']->companyPhone,
+                    'contactType' => 'customer service'
+                ])
+            ])
+        );
+        ;
     }
 }
