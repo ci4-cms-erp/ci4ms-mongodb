@@ -10,7 +10,7 @@ $routes = Services::routes();
 
 // Load the system's routing file first, so that the app and ENVIRONMENT
 // can override as needed.
-if (file_exists(SYSTEMPATH . 'Config/Routes.php')) require SYSTEMPATH . 'Config/Routes.php';
+if (is_file(SYSTEMPATH . 'Config/Routes.php')) {require SYSTEMPATH . 'Config/Routes.php';}
 
 /**
  * --------------------------------------------------------------------
@@ -22,6 +22,7 @@ $routes->setDefaultController('Home');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
 $routes->setAutoRoute(true);
+//$routes->set404Override();
 
 /*
  * --------------------------------------------------------------------
@@ -59,21 +60,21 @@ $routes->get('archive/(:any)','Home::archive/$1',['filter'=>'ci4ms','as'=>'archi
  * You will have access to the $routes object within that file without
  * needing to reload it.
  */
-if (file_exists(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
+if (is_file(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
 
 /**
  * --------------------------------------------------------------------
  * Include Templates Routes Files
  * --------------------------------------------------------------------
  */
-if (file_exists(APPPATH.'Config')) {
+if (is_file(APPPATH.'Config')) {
     $modulesPath = APPPATH.'Config';
     $modules = scandir($modulesPath.'/templates');
     foreach ($modules as $module) {
         if ($module === '.' || $module === '..') continue;
         if (is_dir($modulesPath) . '/' . $module) {
             $routesPath = $modulesPath . '/templates/'.$activeTemplate->templateInfos->path.'/Routes.php';
-            if (file_exists($routesPath)) require($routesPath);
+            if (is_file($routesPath)) require($routesPath);
             else continue;
         }
     }
@@ -84,7 +85,7 @@ if (file_exists(APPPATH.'Config')) {
  * Include Modules Routes Files
  * --------------------------------------------------------------------
  */
-if (file_exists(ROOTPATH.'modules')) {
+if (is_file(ROOTPATH.'modules')) {
     $modulesPath = ROOTPATH.'modules/';
     $modules = scandir($modulesPath);
 
@@ -92,7 +93,7 @@ if (file_exists(ROOTPATH.'modules')) {
         if ($module === '.' || $module === '..') continue;
         if (is_dir($modulesPath) . '/' . $module) {
             $routesPath = $modulesPath . $module . '/Config/Routes.php';
-            if (file_exists($routesPath)) require($routesPath);
+            if (is_file($routesPath)) require($routesPath);
             else continue;
         }
     }

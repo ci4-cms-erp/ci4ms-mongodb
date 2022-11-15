@@ -7,6 +7,8 @@ use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Filters\CSRF;
 use CodeIgniter\Filters\DebugToolbar;
 use CodeIgniter\Filters\Honeypot;
+use CodeIgniter\Filters\InvalidChars;
+use CodeIgniter\Filters\SecureHeaders;
 use Modules\Backend\Filters\BackendAfterLoginFilter;
 use Modules\Backend\Filters\BackendAuthFilter;
 
@@ -22,6 +24,8 @@ class Filters extends BaseConfig
         'csrf' => CSRF::class,
         'toolbar' => DebugToolbar::class,
         'honeypot' => Honeypot::class,
+        'invalidchars'  => InvalidChars::class,
+        'secureheaders' => SecureHeaders::class,
         'ci4ms' => Ci4ms::class,
         'backendAuthFilter' => BackendAuthFilter::class,
         'backendAfterLoginFilter' => BackendAfterLoginFilter::class,

@@ -2,13 +2,14 @@
 
 namespace Config;
 
+use CodeIgniter\Config\BaseConfig;
 use CodeIgniter\Validation\CreditCardRules;
 use CodeIgniter\Validation\FileRules;
 use CodeIgniter\Validation\FormatRules;
 use CodeIgniter\Validation\Rules;
 use Modules\Backend\Validation\CustomRules;
 
-class Validation
+class Validation extends BaseConfig
 {
     //--------------------------------------------------------------------
     // Setup
