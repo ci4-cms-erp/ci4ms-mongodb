@@ -31,7 +31,7 @@ class BaseController extends Controller
      *
      * @var array
      */
-    protected $helpers = ['templates/mkshirdavat'];
+    protected $helpers = [];
 
     protected $mongo;
     public $defData;
@@ -49,7 +49,6 @@ class BaseController extends Controller
     {
         // Do Not Edit This Line
         parent::initController($request, $response, $logger);
-        $this->parser=service('parser');
         //--------------------------------------------------------------------
         // Preload any models, libraries, etc, here.
         //--------------------------------------------------------------------

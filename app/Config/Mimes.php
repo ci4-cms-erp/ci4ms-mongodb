@@ -510,7 +510,11 @@ class Mimes
 
         $proposedExtension = trim(strtolower($proposedExtension ?? ''));
 
-        if ($proposedExtension !== '' && array_key_exists($proposedExtension, static::$mimes) && in_array($type, (array) static::$mimes[$proposedExtension], true)) {
+        if (
+            $proposedExtension !== ''
+            && array_key_exists($proposedExtension, static::$mimes)
+            && in_array($type, (array) static::$mimes[$proposedExtension], true)
+        ) {
             // The detected mime type matches with the proposed extension.
             return $proposedExtension;
         }

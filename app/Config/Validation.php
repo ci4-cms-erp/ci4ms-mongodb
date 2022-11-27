@@ -7,13 +7,12 @@ use CodeIgniter\Validation\CreditCardRules;
 use CodeIgniter\Validation\FileRules;
 use CodeIgniter\Validation\FormatRules;
 use CodeIgniter\Validation\Rules;
-use Modules\Backend\Validation\CustomRules;
 
 class Validation extends BaseConfig
 {
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
     // Setup
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
 
     /**
      * Stores the classes that contain the
@@ -26,8 +25,6 @@ class Validation extends BaseConfig
         FormatRules::class,
         FileRules::class,
         CreditCardRules::class,
-        CreditCardRules::class,
-        CustomRules::class, // Additional rules to Codeigniter 4
     ];
 
     /**
@@ -41,7 +38,7 @@ class Validation extends BaseConfig
         'single' => 'CodeIgniter\Validation\Views\single',
     ];
 
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
     // Rules
-    //--------------------------------------------------------------------
+    // --------------------------------------------------------------------
 }
