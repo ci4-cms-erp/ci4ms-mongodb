@@ -30,7 +30,7 @@ class Seo extends BaseController
                 }
             });
             $sitemap->links('categories.xml', function ($map) {
-                $blogs = $this->commonModel->getList('kun_categories', ['isActive' => true]);
+                $blogs = $this->commonModel->getList('categories', ['isActive' => true]);
                 foreach ($blogs as $blog) {
                     $map->loc("category/{$blog->seflink}")->freq('weekly')->priority('0.7');
                 }
@@ -46,5 +46,4 @@ class Seo extends BaseController
         } else
             return show_404();
     }
-
 }

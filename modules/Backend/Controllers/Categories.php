@@ -39,7 +39,7 @@ class Categories extends BaseController
         if (!empty($this->request->getPost('pageimg'))) $valData['pageimg'] = ['label' => 'Görsel URL', 'rules' => 'valid_url'];
         if ($this->validate($valData) == false) return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         if ($this->commonModel->get_where(['seflink' => $this->request->getPost('seflink')], 'categories') === 0) {
-            $data = ['title' => $this->request->getPost('title'), 'seflink' => $this->request->getPost('seflink')];
+            $data = ['title' => $this->request->getPost('title'), 'seflink' => $this->request->getPost('seflink'),'isActive' => $this->request->getPost('isActive')];
             if (!empty($this->request->getPost('parent'))) $data['parent'] = new ObjectId($this->request->getPost('parent'));
             $seo = [];
             if (!empty($this->request->getPost('description'))) $seo['description'] = $this->request->getPost('description');
@@ -71,7 +71,7 @@ class Categories extends BaseController
         if ($this->validate($valData) == false) return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         $info = $this->commonModel->getOne('categories', ['_id' => new ObjectId($id)]);
         if ($info->seflink != $this->request->getPost('seflink') && $this->commonModel->get_where(['seflink' => $this->request->getPost('seflink')], 'categories') === 1) return redirect()->back()->withInput()->with('error', 'Kategori seflink adresi daha önce kullanılmış. lütfen kontrol ederek bir daha oluşturmayı deneyeyiniz.');
-        $data = ['title' => $this->request->getPost('title'), 'seflink' => $this->request->getPost('seflink')];
+        $data = ['title' => $this->request->getPost('title'), 'seflink' => $this->request->getPost('seflink'),'isActive' => $this->request->getPost('isActive')];
         if (!empty($this->request->getPost('parent'))) $data['parent'] = new ObjectId($this->request->getPost('parent'));
         $seo = [];
         if (!empty($this->request->getPost('description'))) $seo['description'] = $this->request->getPost('description');

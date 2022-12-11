@@ -66,6 +66,16 @@
                     </div>
                 </div>
                 <div class="col-md-4 row">
+                    <div class="form-group col-md-12">
+                        <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
+                            <label class="btn btn-outline-secondary">
+                                <input type="radio" name="isActive" id="option1" autocomplete="off" value="0"> <?=lang('Backend.draft')?>
+                            </label>
+                            <label class="btn btn-outline-secondary active">
+                                <input type="radio" name="isActive" id="option2" autocomplete="off" checked value="1"> <?=lang('Backend.publish')?>
+                            </label>
+                        </div>
+                    </div>
                     <div class="col-md-12 form-group">
                         <label for=""><?=lang('Backend.parentCategory')?></label>
                         <select name="parent" id="" class="form-control select2bs4" data-placeholder="Select a Category">

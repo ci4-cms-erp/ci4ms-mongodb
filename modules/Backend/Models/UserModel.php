@@ -4,6 +4,7 @@ use ci4mongodblibrary\Libraries\Mongo;
 use Config\Services;
 use CodeIgniter\I18n\Time;
 use Modules\Backend\Config\Auth;
+use MongoDB\BSON\ObjectId;
 
 class UserModel
 {
@@ -100,9 +101,9 @@ class UserModel
         $expires = new \DateTime($expires);
 
         return $this->m->insertOne('auth_tokens', [
-            'user_id' => $userID,
+            'user_id' => new ObjectId($userID),
             'selector' => $selector,
-            'hashedValidator' => $validator,
+            'hashedValidator' => hash('sha256',$validator),
             'expires' => $expires->format('Y-m-d H:i:s'),
         ]);
     }
@@ -114,7 +115,7 @@ class UserModel
     {
         $config = new Auth();
         if (!$config->allowRemembering) return;
-        $this->m->deleteOne('auth_tokens', ['expires <=' => date('Y-m-d H:i:s')]);
+        $this->m->options(['expires' =>['$lte'=> date('Y-m-d H:i:s')]])->deleteOne('auth_tokens');
     }
 
     /**

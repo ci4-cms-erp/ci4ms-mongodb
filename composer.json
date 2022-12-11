@@ -13,7 +13,6 @@
 		"phpmailer/phpmailer": "^6.4",
 		"jasongrimes/paginator": "~1.0",
 		"bertugfahriozer/ci4mongodblibrary": "^1.0",
-		"dg/rss-php": "^1.5",
 		"melbahja/seo": "^2.0"
 	},
 	"require-dev": {

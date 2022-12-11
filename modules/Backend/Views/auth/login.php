@@ -16,7 +16,7 @@
                 <?= csrf_field() ?>
                 <div class="input-group mb-3">
                     <input type="email" name="email" class="form-control" placeholder="Email" required
-                           autocomplete="off" autofocus>
+                           autofocus>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
@@ -33,7 +33,7 @@
                 </div>
                 <div class="input-group mb-3">
                     <img src="<?php echo $cap->inline(); ?>"/>
-                    <input type="text" name="captcha" class="form-control" required autocomplete="off" placeholder="Doğrulama kodu">
+                    <input type="text" name="captcha" class="form-control" required placeholder="Doğrulama kodu">
                 </div>
                 <div class="row">
                     <div class="col-md-8">

@@ -33,19 +33,12 @@ $routes->set404Override('App\Controllers\Errors::error404');
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index',['filter'=>'ci4ms']);
-$routes->add('/(:any)', 'Home::index/$1',['filter'=>'ci4ms']);
 $routes->get('maintenance-mode','Home::maintenanceMode',['as'=>'maintenance-mode']);
 $routes->get('blog','Home::blog',['filter'=>'ci4ms']);
 $routes->get('blog/(:num)','Home::blog/$1',['filter'=>'ci4ms']);
 $routes->get('blog/(:any)','Home::blogDetail/$1',['filter'=>'ci4ms']);
 $routes->get('tag/(:any)','Home::tagList/$1',['filter'=>'ci4ms','as'=>'tag']);
 $routes->get('category/(:any)','Home::category/$1',['filter'=>'ci4ms','as'=>'category']);
-$routes->get('archive/(:any)','Home::archive/$1',['filter'=>'ci4ms','as'=>'archive']);
-/*$routes->add('feed', function () {
-    $rss = new RSSFeeder();
-
-    return $rss->feed('general');
-});*/
 
 /*
  * --------------------------------------------------------------------
@@ -67,7 +60,7 @@ if (is_file(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) require APPPATH 
  * Include Templates Routes Files
  * --------------------------------------------------------------------
  */
-if (is_file(APPPATH.'Config')) {
+if (is_dir(APPPATH.'Config')) {
     $modulesPath = APPPATH.'Config';
     $modules = scandir($modulesPath.'/templates');
     foreach ($modules as $module) {
@@ -85,7 +78,7 @@ if (is_file(APPPATH.'Config')) {
  * Include Modules Routes Files
  * --------------------------------------------------------------------
  */
-if (is_file(ROOTPATH.'modules')) {
+if (is_dir(ROOTPATH.'modules')) {
     $modulesPath = ROOTPATH.'modules/';
     $modules = scandir($modulesPath);
 
@@ -98,3 +91,5 @@ if (is_file(ROOTPATH.'modules')) {
         }
     }
 }
+
+$routes->get('/(:any)', 'Home::index/$1',['filter'=>'ci4ms']);
