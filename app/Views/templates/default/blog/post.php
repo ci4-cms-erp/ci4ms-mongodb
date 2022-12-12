@@ -53,9 +53,22 @@
                         <div class="card bg-light">
                             <div class="card-body">
                                 <!-- Comment form-->
-                                <form class="mb-4"><textarea class="form-control" rows="3"
+                                <form class="mb-4 row">
+                                    <div class="col-md-6 form-group mb-3">
+                                        <input type="text" class="form-control" name="comFullName" placeholder="Full name">
+                                    </div>
+                                    <div class="col-md-6 form-group mb-3">
+                                        <input type="email" class="form-control" name="comEmail" placeholder="E-mail">
+                                    </div>
+                                    <div class="col-12 form-group mb-3">
+                                        <textarea class="form-control" rows="3"
                                                              placeholder="Join the discussion and leave a comment!"></textarea>
+                                    </div>
+                                    <div class="col-12 form-group text-end">
+                                        <button class="btn btn-primary btn-sm">Send</button>
+                                    </div>
                                 </form>
+                                <hr>
                                 <!-- Comment with nested comments-->
                                 <div class="d-flex mb-4">
                                     <!-- Parent comment-->
@@ -67,6 +80,29 @@
                                         If you're going to lead a space frontier, it has to be government; it'll never
                                         be private enterprise. Because the space frontier is dangerous, and it's
                                         expensive, and it has unquantified risks.
+                                        <div class="text-start">
+                                            <!-- TODO : id name will change for comments-->
+                                            <button class="btn btn-sm btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Reply</button>
+                                            <div class="collapse" id="collapseExample">
+                                                <div class="card card-body">
+                                                    <form class="mb-1 row">
+                                                        <div class="col-md-6 form-group mb-3">
+                                                            <input type="text" class="form-control" name="comFullName" placeholder="Full name">
+                                                        </div>
+                                                        <div class="col-md-6 form-group mb-3">
+                                                            <input type="email" class="form-control" name="comEmail" placeholder="E-mail">
+                                                        </div>
+                                                        <div class="col-12 form-group mb-3">
+                                        <textarea class="form-control" rows="3"
+                                                  placeholder="Join the discussion and leave a comment!"></textarea>
+                                                        </div>
+                                                        <div class="col-12 form-group text-end">
+                                                            <button class="btn btn-primary btn-sm">Send</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <!-- Child comment 1-->
                                         <div class="d-flex mt-4">
                                             <div class="flex-shrink-0"><img class="rounded-circle"
@@ -76,6 +112,7 @@
                                                 <div class="fw-bold">Commenter Name</div>
                                                 And under those conditions, you cannot establish a capital-market
                                                 evaluation of that enterprise. You can't get investors.
+                                                <div class="text-start"><button class="btn btn-sm btn-secondary">Reply</button></div>
                                             </div>
                                         </div>
                                         <!-- Child comment 2-->
@@ -86,6 +123,7 @@
                                             <div class="ms-3">
                                                 <div class="fw-bold">Commenter Name</div>
                                                 When you put money directly to a problem, it makes a good headline.
+                                                <div class="text-start"><button class="btn btn-sm btn-secondary">Reply</button></div>
                                             </div>
                                         </div>
                                     </div>
@@ -99,6 +137,7 @@
                                         <div class="fw-bold">Commenter Name</div>
                                         When I look at the universe and all the ways the universe wants to kill us, I
                                         find it hard to reconcile that with statements of beneficence.
+                                        <div class="text-start"><button class="btn btn-sm btn-secondary">Reply</button></div>
                                     </div>
                                 </div>
                             </div>
@@ -112,3 +151,7 @@
         </div>
     </section>
 <?= $this->endSection() ?>
+<?= $this->section('javascript') ?>
+<script>
+</script>
+<?=$this->endSection() ?>

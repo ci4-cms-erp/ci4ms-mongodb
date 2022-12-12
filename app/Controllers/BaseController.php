@@ -31,7 +31,7 @@ class BaseController extends Controller
      *
      * @var array
      */
-    protected $helpers = [];
+    protected $helpers = ['html'];
 
     protected $mongo;
     public $defData;

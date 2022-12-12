@@ -42,3 +42,5 @@
         });
     });
 })(bootstrap);
+
+// TODO : comment ajax
