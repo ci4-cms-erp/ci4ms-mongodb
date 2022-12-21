@@ -209,3 +209,16 @@ if (!function_exists('navigationWidget')) {
         }
     }
 }
+
+function _printr($data){
+    echo '<pre>';
+    print_r($data);
+    echo '</pre>';
+}
+
+function _printrDie($data){
+    echo '<pre>';
+    print_r($data);
+    echo '</pre>';
+    die();
+}

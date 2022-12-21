@@ -24,7 +24,7 @@ $routes->setTranslateURIDashes(false);
 //$routes->setAutoRoute(true);
 $routes->set404Override('App\Controllers\Errors::error404');
 
-/*
+/**
  * --------------------------------------------------------------------
  * Route Definitions
  * --------------------------------------------------------------------
@@ -39,8 +39,11 @@ $routes->get('blog/(:num)','Home::blog/$1',['filter'=>'ci4ms']);
 $routes->get('blog/(:any)','Home::blogDetail/$1',['filter'=>'ci4ms']);
 $routes->get('tag/(:any)','Home::tagList/$1',['filter'=>'ci4ms','as'=>'tag']);
 $routes->get('category/(:any)','Home::category/$1',['filter'=>'ci4ms','as'=>'category']);
+$routes->post('newComment','Home::newComment',['filter'=>'ci4ms','as'=>'newComment']);
+$routes->post('repliesComment','Home::repliesComment',['filter'=>'ci4ms','as'=>'repliesComment']);
+$routes->post('loadMoreComments','Home::loadMoreComments',['filter'=>'ci4ms','as'=>'loadMoreComments']);
 
-/*
+/**
  * --------------------------------------------------------------------
  * Additional Routing
  * --------------------------------------------------------------------

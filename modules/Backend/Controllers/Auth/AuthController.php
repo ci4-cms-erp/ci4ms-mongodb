@@ -44,7 +44,7 @@ class AuthController extends BaseController
         ];
 
         $captcha = $this->request->getPost('captcha');
-        $cap = $this->request->getPost('cap');
+        $cap = $this->session->getFlashdata('cap');
         //TODO: production kısmına çekerken silinecek.
         if (ENVIRONMENT === 'development') {
             $captcha = "EEEEE";

@@ -11,6 +11,7 @@ use Psr\Log\LoggerInterface;
 use ci4mongodblibrary\Libraries\Mongo;
 use Melbahja\Seo\Schema;
 use Melbahja\Seo\Schema\Thing;
+use CodeIgniter\API\ResponseTrait;
 
 /**
  * Class BaseController
@@ -24,6 +25,7 @@ use Melbahja\Seo\Schema\Thing;
  */
 class BaseController extends Controller
 {
+    use ResponseTrait;
     /**
      * An array of helpers to be loaded automatically upon
      * class instantiation. These helpers will be available

@@ -43,4 +43,83 @@
     });
 })(bootstrap);
 
-// TODO : comment ajax
+// create comment ajax
+$('.sendComment').on('click', function () {
+    var id = $(this).data('id');
+    var blogID = $(this).data('blogid');
+    var comFullName = $(this).closest("form").find("input[name='comFullName']").val();
+    var comEmail = $(this).closest("form").find("input[name='comEmail']").val();
+    var comMessage = $(this).closest("form").find("textarea[name='comMessage']").val();
+
+    const d = {
+        'blog_id': blogID, 'comFullName': comFullName,
+        'comEmail': comEmail, 'comMessage': comMessage
+    };
+
+    if (id.length > 0) d.commentID = id;
+    $.ajax({
+        url: "/newComment",
+        method: "POST",
+        data: d,
+        dataType: "json",
+        success: function (data) {
+            if (data.result === true)
+                Swal.fire("You send successfully your comment", "", "success").then(function (isConfirm) {
+                    if (isConfirm) {
+                        location.reload(true);
+                    }
+                });
+        },
+        statusCode: {
+            400: function (data) {
+                var str = '';
+                $.each(data.responseJSON.messages, function (i, item) {
+                    str += item + '<br>';
+                });
+                Swal.fire({
+                    title: "Error 400 !",
+                    html: str,
+                    icon: "error"
+                });
+            }
+        }
+    });
+});
+
+// display replies ajax
+function replies(commentID) {
+    $.ajax({
+        url: "/repliesComment",
+        method: "POST",
+        data: {comID:commentID},
+        dataType: "json",
+        success: function (data) {
+            console.log(data);
+            $('#replies'+commentID).html(data.display);
+        }
+    });
+}
+
+//comment Load More
+function loadMore(blogID,commentID='') {
+    var id='#loadMore';
+    if(commentID.length>0) id=id+commentID;
+    var skip=$(id).data('skip');
+    var d={
+        blogID:blogID,skip:skip
+    };
+    if(commentID.length>0) d.comID=commentID;
+    $.ajax({
+        url:"/loadMoreComments",
+        method: "POST",
+        data:d,
+        dataType:"json",
+        success: function(data){
+            console.log(data);
+            console.log(id);
+            $(id).data('skip',skip+$(id).data('defskip'));
+            if(data.count==0) $(id).remove();
+            $('#comments').append(data.display);
+        }
+    });
+}
