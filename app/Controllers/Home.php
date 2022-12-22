@@ -184,4 +184,9 @@ class Home extends BaseController
             return $this->respond(['display' => view('templates/' . $this->defData['settings']->templateInfos->path . '/blog/loadMoreComments', ['comments' => $comments, 'blogID' => $this->request->getPost('blogID')]), 'count' => count($comments)], 200);
         } else return $this->failForbidden();
     }
+
+    public function commentCaptcha()
+    {
+        
+    }
 }

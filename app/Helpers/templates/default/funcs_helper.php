@@ -10,8 +10,7 @@ if (!function_exists('comments')) {
 <div class="fw-bold">' . $comment->comFullName . '</div>' . $comment->comMessage . '
 <div class="w-100"></div>
 <div class="btn-group">
-<button class="btn btn-sm btn-secondary" type="button" data-bs-toggle="collapse"
-data-bs-target="#reply' . (string)$comment->_id . '" aria-expanded="false" aria-controls="reply' . (string)$comment->_id . '">Reply</button>';
+<button class="btn btn-sm btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#reply' . (string)$comment->_id . '" aria-expanded="false" aria-controls="reply' . (string)$comment->_id . '">Reply</button>';
             if(!empty($comment->isThereAnReply) && $comment->isThereAnReply===true)
                 $returnData .= '<button class="btn btn-sm btn-link" onclick="replies(\''.(string)$comment->_id.'\')" type="button" data-bs-toggle="collapse"
 data-bs-target="#replies'.(string)$comment->_id.'" aria-expanded="false" aria-controls="'.(string)$comment->_id.'">Replies <i class="bi-caret-down-fill"></i></button>';

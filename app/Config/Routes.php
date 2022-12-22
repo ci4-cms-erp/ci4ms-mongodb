@@ -42,6 +42,7 @@ $routes->get('category/(:any)','Home::category/$1',['filter'=>'ci4ms','as'=>'cat
 $routes->post('newComment','Home::newComment',['filter'=>'ci4ms','as'=>'newComment']);
 $routes->post('repliesComment','Home::repliesComment',['filter'=>'ci4ms','as'=>'repliesComment']);
 $routes->post('loadMoreComments','Home::loadMoreComments',['filter'=>'ci4ms','as'=>'loadMoreComments']);
+$routes->post('commentCaptcha','Home::commentCaptcha',['filter'=>'ci4ms','as'=>'commentCaptcha']);
 
 /**
  * --------------------------------------------------------------------

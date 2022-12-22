@@ -7,23 +7,23 @@ use CodeIgniter\Session\Handlers\FileHandler;
 
 class App extends BaseConfig
 {
-	/**
-	 * --------------------------------------------------------------------------
-	 * Base Site URL
-	 * --------------------------------------------------------------------------
-	 *
-	 * URL to your CodeIgniter root. Typically this will be your base URL,
-	 * WITH a trailing slash:
-	 *
-	 *    http://example.com/
-	 *
-	 * If this is not set then CodeIgniter will try guess the protocol, domain
-	 * and path to your installation. However, you should always configure this
-	 * explicitly and never rely on auto-guessing, especially in production
-	 * environments.
-	 *
-	 * @var string
-	 */
+    /**
+     * --------------------------------------------------------------------------
+     * Base Site URL
+     * --------------------------------------------------------------------------
+     *
+     * URL to your CodeIgniter root. Typically this will be your base URL,
+     * WITH a trailing slash:
+     *
+     *    http://example.com/
+     *
+     * If this is not set then CodeIgniter will try guess the protocol, domain
+     * and path to your installation. However, you should always configure this
+     * explicitly and never rely on auto-guessing, especially in production
+     * environments.
+     *
+     * @var string
+     */
     public $baseURL = 'http://localhost:8080/';
 
     /**
@@ -332,18 +332,21 @@ class App extends BaseConfig
      *
      * If your server is behind a reverse proxy, you must whitelist the proxy
      * IP addresses from which CodeIgniter should trust headers such as
-     * HTTP_X_FORWARDED_FOR and HTTP_CLIENT_IP in order to properly identify
+     * X-Forwarded-For or Client-IP in order to properly identify
      * the visitor's IP address.
      *
-     * You can use both an array or a comma-separated list of proxy addresses,
-     * as well as specifying whole subnets. Here are a few examples:
+     * You need to set a proxy IP address or IP address with subnets and
+     * the HTTP header for the client IP address.
      *
-     * Comma-separated:	'10.0.1.200,192.168.5.0/24'
-     * Array: ['10.0.1.200', '192.168.5.0/24']
+     * Here are some examples:
+     *     [
+     *         '10.0.1.200'     => 'X-Forwarded-For',
+     *         '192.168.5.0/24' => 'X-Real-IP',
+     *     ]
      *
      * @var string|string[]
      */
-    public $proxyIPs = '';
+    public $proxyIPs = [];
 
     /**
      * --------------------------------------------------------------------------
