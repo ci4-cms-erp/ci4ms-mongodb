@@ -45,9 +45,7 @@ class AuthController extends BaseController
 
         if (!$this->validate($rules)) return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
 
-        $captcha = $this->request->getPost('captcha');
-        $cap = $this->session->getFlashdata('cap');
-        $captchaCheck=($captcha == $cap)?true:false;
+        $captchaCheck=($this->request->getPost('captcha') == $this->session->getFlashdata('cap'))?true:false;
         if (ENVIRONMENT === 'development') $captchaCheck=true;
 
         if ($captchaCheck===true) {
