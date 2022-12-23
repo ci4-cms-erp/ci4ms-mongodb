@@ -43,18 +43,14 @@ class AuthController extends BaseController
             'captcha' => 'required'
         ];
 
-        $captcha = $this->request->getPost('captcha');
-        $cap = $this->session->getFlashdata('cap');
-        //TODO: production kısmına çekerken silinecek.
-        if (ENVIRONMENT === 'development') {
-            $captcha = "EEEEE";
-            $cap = "EEEEE";
-            unset($rules['captcha']);
-        }
-
         if (!$this->validate($rules)) return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
 
-        if ($captcha == $cap) {
+        $captcha = $this->request->getPost('captcha');
+        $cap = $this->session->getFlashdata('cap');
+        $captchaCheck=($captcha == $cap)?true:false;
+        if (ENVIRONMENT === 'development') $captchaCheck=true;
+
+        if ($captchaCheck===true) {
             $login = $this->request->getPost('email');
             $password = $this->request->getPost('password');
             $remember = (bool)$this->request->getPost('remember');
