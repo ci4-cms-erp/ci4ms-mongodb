@@ -120,6 +120,7 @@ function loadMore(blogID,commentID='') {
             $(id).data('skip',skip+$(id).data('defskip'));
             if(data.count==0) $(id).remove();
             $('#comments').append(data.display);
+            captchaF();
         }
     });
 }
@@ -134,4 +135,4 @@ function captchaF() {
     });
 }
 
-captchaF('#captcha');
+captchaF();
