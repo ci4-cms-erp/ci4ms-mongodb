@@ -27,7 +27,14 @@ data-bs-target="#replies'.(string)$comment->_id.'" aria-expanded="false" aria-co
 <div class="col-12 form-group mb-3">
 <textarea class="form-control" rows="3" name="comMessage" placeholder="Join the discussion and leave a comment!"></textarea>
 </div>
-<div class="col-12 form-group text-end">
+<div class="col-6 form-group">
+<div class="input-group">
+<img src="" class="captcha" alt="captcha">
+<input type="text" placeholder="captcha" name="captcha" class="form-control">
+<button class="btn btn-secondary" onclick="captchaF()" type="button">New Captcha</button>
+</div>
+</div>
+<div class="col-6 form-group text-end">
 <button class="btn btn-primary btn-sm sendComment" type="button" data-blogid="'.(string)$blog_id.'" data-id="'.(string)$comment->_id.'">Send</button>
 </div>
 </form>

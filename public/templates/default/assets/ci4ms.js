@@ -50,10 +50,12 @@ $('.sendComment').on('click', function () {
     var comFullName = $(this).closest("form").find("input[name='comFullName']").val();
     var comEmail = $(this).closest("form").find("input[name='comEmail']").val();
     var comMessage = $(this).closest("form").find("textarea[name='comMessage']").val();
+    var captcha = $(this).closest("form").find("input[name='captcha']").val();
 
     const d = {
         'blog_id': blogID, 'comFullName': comFullName,
-        'comEmail': comEmail, 'comMessage': comMessage
+        'comEmail': comEmail, 'comMessage': comMessage,
+        'captcha':captcha
     };
 
     if (id.length > 0) d.commentID = id;
@@ -115,11 +117,21 @@ function loadMore(blogID,commentID='') {
         data:d,
         dataType:"json",
         success: function(data){
-            console.log(data);
-            console.log(id);
             $(id).data('skip',skip+$(id).data('defskip'));
             if(data.count==0) $(id).remove();
             $('#comments').append(data.display);
         }
     });
 }
+
+function captchaF() {
+    $.ajax({
+        url:"/commentCaptcha",
+        method: "POST",
+        success: function(data){
+            $('.captcha').attr('src',data.capIMG);
+        }
+    });
+}
+
+captchaF('#captcha');

@@ -43,7 +43,8 @@ class Filters extends BaseConfig
             'csrf'=>['except' => [
                 'newComment',
                 'repliesComment',
-                'loadMoreComments'
+                'loadMoreComments',
+                'commentCaptcha'
             ]],
             // 'invalidchars',
         ],

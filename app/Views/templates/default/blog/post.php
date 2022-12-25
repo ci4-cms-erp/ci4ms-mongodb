@@ -49,7 +49,7 @@
                     </div>
                 </article>
                 <hr>
-                <!-- Comments section TODO: kodlanacak.-->
+                <!-- Comments section -->
                 <section>
                     <div class="card bg-light">
                         <div class="card-body">
@@ -67,7 +67,14 @@
                                         <textarea class="form-control" rows="3" name="comMessage"
                                                   placeholder="Join the discussion and leave a comment!"><?= old('comMessage') ?></textarea>
                                 </div>
-                                <div class="col-12 form-group text-end">
+                                <div class="col-6 form-group">
+                                    <div class="input-group">
+                                        <img src="" class="captcha" alt="captcha">
+                                        <input type="text" placeholder="captcha" name="captcha" class="form-control">
+                                        <button class="btn btn-secondary" onclick="captchaF()" type="button">New Captcha</button>
+                                    </div>
+                                </div>
+                                <div class="col-6 form-group text-end">
                                     <button class="btn btn-primary btn-sm sendComment" type="button" data-id=""
                                             data-blogid="<?= (string)$infos->_id ?>">Send
                                     </button>

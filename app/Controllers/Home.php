@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Libraries\CommonLibrary;
 use CodeIgniter\I18n\Time;
+use Gregwar\Captcha\CaptchaBuilder;
 use JasonGrimes\Paginator;
 use Modules\Backend\Models\AjaxModel;
 use Modules\Backend\Models\UserscrudModel;
@@ -146,19 +147,22 @@ class Home extends BaseController
                 'comFullName' => ['label' => 'Full name', 'rules' => 'required'],
                 'comEmail' => ['label' => 'E-mail', 'rules' => 'required|valid_email'],
                 'comMessage' => ['label' => 'Join the discussion and leave a comment!', 'rules' => 'required'],
+                'captcha'=>['Captcha'=>'Captcha', 'rules'=>'required']
             ]);
             if ($this->validate($valData) == false) return $this->fail($this->validator->getErrors());
-            $data = ['blog_id' => new ObjectId($this->request->getPost('blog_id')),
-                'created_at' => date('Y-m-d H:i:s'),
-                'comFullName' => $this->request->getPost('comFullName'),
-                'comEmail' => $this->request->getPost('comEmail'),
-                'comMessage' => $this->request->getPost('comMessage')];
-            if (!empty($this->request->getPost('commentID'))) {
-                $data['parent_id'] = new ObjectId($this->request->getPost('commentID'));
-                //TODO: comment onaydan geçince burası olacak yada onaydan geçsin seçeneği kapalıysa
-                $this->commonModel->updateOne('comments', ['_id' => new ObjectId($this->request->getPost('commentID'))], ['isThereAnReply' => true]);
-            }
-            if ($this->commonModel->createOne('comments', $data)) return $this->respondCreated(['result' => true]);
+            if($this->request->getPost('captcha')==session()->getFlashdata('cap')) {
+                $data = ['blog_id' => new ObjectId($this->request->getPost('blog_id')),
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'comFullName' => $this->request->getPost('comFullName'),
+                    'comEmail' => $this->request->getPost('comEmail'),
+                    'comMessage' => $this->request->getPost('comMessage')];
+                if (!empty($this->request->getPost('commentID'))) {
+                    $data['parent_id'] = new ObjectId($this->request->getPost('commentID'));
+                    //TODO: comment onaydan geçince burası olacak yada onaydan geçsin seçeneği kapalıysa
+                    $this->commonModel->updateOne('comments', ['_id' => new ObjectId($this->request->getPost('commentID'))], ['isThereAnReply' => true]);
+                }
+                if ($this->commonModel->createOne('comments', $data)) return $this->respondCreated(['result' => true]);
+            }else return $this->fail('Please get a new captcha !','400');
         } else return $this->failForbidden();
     }
 
@@ -187,6 +191,18 @@ class Home extends BaseController
 
     public function commentCaptcha()
     {
-        
+        if($this->request->isAJAX()) {
+            $cap = new CaptchaBuilder();
+            $cap->setBackgroundColor(139, 203, 183);
+            $cap->setIgnoreAllEffects(false);
+            $cap->setMaxFrontLines(0);
+            $cap->setMaxBehindLines(0);
+            $cap->setMaxAngle(1);
+            $cap->setTextColor(18, 58, 73);
+            $cap->setLineColor(18, 58, 73);
+            $cap->build();
+            session()->setFlashdata('cap', $cap->getPhrase());
+            return $this->respond(['capIMG' => $cap->inline()], 200);
+        }else return $this->failForbidden();
     }
 }
