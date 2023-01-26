@@ -44,7 +44,8 @@ class Filters extends BaseConfig
                 'newComment',
                 'repliesComment',
                 'loadMoreComments',
-                'commentCaptcha'
+                'commentCaptcha',
+                'backend/blogs/comments/commentResponse'
             ]],
             // 'invalidchars',
         ],

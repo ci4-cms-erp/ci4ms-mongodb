@@ -6,9 +6,12 @@ use JasonGrimes\Paginator;
 use Modules\Backend\Libraries\CommonTagsLibrary;
 use Modules\Backend\Models\AjaxModel;
 use MongoDB\BSON\ObjectId;
+use MongoDB\BSON\Regex;
+use CodeIgniter\API\ResponseTrait;
 
 class Blog extends BaseController
 {
+    use ResponseTrait;
     private $commonTagsLib;
     private $model;
 
@@ -132,5 +135,57 @@ class Blog extends BaseController
             if ($this->commonModel->deleteOne('blog', ['_id' => new ObjectId($id)]) === true) return redirect()->route('blogs', [1])->with('message', 'blog silindi.');
             else return redirect()->back()->withInput()->with('error', 'Blog Silinemedi.');
         } else return redirect()->back()->withInput()->with('error', 'Blog Silinemedi.');
+    }
+
+    public function commentList()
+    {
+        return view('Modules\Backend\Views\blog\commentList',$this->defData);
+    }
+
+    public function commentResponse()
+    {
+        if ($this->request->isAJAX()) {
+            $data = clearFilter($this->request->getPost());
+            if (empty($data['search']['value'])) unset($data['search']);
+            unset($data['columns'], $data['order']);
+            $searchData=['isApproved'=>true];
+            if (!empty($data['search']['value'])) $searchData['comFullName'] = new Regex($data['search']['value'], 'i');
+            if ($data['length'] > 0) $results = $this->commonModel->getList('comments',$searchData, ['limit'=>(int)$data['length'], 'skip'=>(int)$data['start']]);
+            else $results = $this->commonModel->getList('comments',$searchData);
+            $c = ((int)$data['start']>0)?(int)$data['start']+1:1;
+            $data = [
+                'draw' => intval($data['draw']),
+                "iTotalRecords" => $this->commonModel->count('comments',$searchData),
+                "iTotalDisplayRecords" => $this->commonModel->count('comments',$searchData),
+            ];
+            foreach ($results as $result) {
+                $id = (string)$result->_id;
+                $data['aaData'][] = ['id' => $c,
+                    'com_name_surname' => $result->comFullName,
+                    'email' => $result->comEmail,
+                    'created_at'=>$result->created_at,
+                    'status'=>($result->isApproved==true)?'Approved':'Not approved',
+                    'process'=>'<a href="'.route_to('blogUpdate', $result->_id) .'"
+                                   class="btn btn-outline-info btn-sm">'.lang('Backend.update').'</a>
+                                <a href="'. route_to('blogDelete', $result->_id).'"
+                                   class="btn btn-outline-danger btn-sm">'.lang('Backend.delete').'</a>'];
+                $c++;
+            }
+            if (!empty($data)) return $this->respond($data, 200);
+            else return $this->respond(['message' => 'Not Found data'], 204);
+        }
+    }
+
+    public function commentPendingApproval(){
+        dd('commentPendingApproval');
+    }
+    public function confirmComment(){
+        dd('confirmComment');
+    }
+    public function badwordList(){
+        dd('badwordList');
+    }
+    public function badwordsAdd(){
+        dd('badwordsAdd');
     }
 }
