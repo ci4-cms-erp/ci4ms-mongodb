@@ -88,7 +88,7 @@ class Menu extends BaseController
             if ($this->commonModel->updateMany('menu', ['parent' => $this->request->getPost('id')], ['parent' => null]) && $this->commonModel->deleteOne('menu', ['pages_id' => new ObjectId($this->request->getPost('id')), 'urlType' => $this->request->getPost('type')])) {
                 if ($this->request->getPost('type') == 'pages')
                     $this->commonModel->updateOne('pages', ['_id' => new ObjectId($this->request->getPost('id'))], ['inMenu' => false]);
-                if ($this->request->getPost('type') == 'blog')
+                if ($this->request->getPost('type') == 'blogs')
                     $this->commonModel->updateOne('blog', ['_id' => new ObjectId($this->request->getPost('id'))], ['inMenu' => false]);
                 return view('Modules\Backend\Views\menu\render-nestable2', ['nestable2' => $this->commonModel->getList('menu',[],['sort'=>['queue'=>1]])]);
             }
